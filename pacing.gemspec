@@ -8,5 +8,5 @@ Gem::Specification.new do |s|
     s.files       = ["lib/pacing.rb"]
     s.homepage    =
       'https://rubygems.org/gems/pacing'
-    s.license       = ''
+    s.license       = 'MIT'
   end
