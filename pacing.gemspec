@@ -10,3 +10,5 @@ Gem::Specification.new do |s|
       'https://rubygems.org/gems/pacing'
     s.license       = 'MIT'
   end
+
+  spec.add_development_dependency "rspec"
