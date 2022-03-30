@@ -2,19 +2,21 @@
 
 Pacing is a tool that enables therapists to better manage and track their caseload. It is built for cases where there are therapy frequency limitations that need to be adhered to. For example, in the case of an [IEP (Individualized Education Program)](https://ambiki.com/glossary-concepts/iep), 504 plan, or a Services plan. This gem helps to calculate remaining visits as well as a therapist's current pace to meet visit mandates.
 
-🐇 Ahead of pace
-😁 On pace
-🐢 Behind pace
++ 🐇 Ahead of pace
++ 😁 On pace
++ 🐢 Behind pace
 
 ## Getting started
 
 **Ruby**
+
 *Supports Ruby x.x.x and above*
 ```
 gem install pacing
 ```
 
 **Ruby on Rails**
+
 Add this line to your application’s Gemfile:
 ```ruby
 gem 'pacing'
