@@ -24,6 +24,19 @@ gem 'pacing'
 
 ## How it works
 
+```ruby
+
+iep_interval = 12
+date = '22-1-2022'
+duration = 20
+completed_visits = 14
+paced = Pacing::Pacer.new(iep_interval: iep_interval, date: date, duration: duration,completed_visits: completed_visits)
+paced.pace
+
+# => { "remaining_visits" => 3, "reset_date" => '31-01-2022', "pace" => 4, "pace_indicator" => 🐇}
+
+```
+
 ## Terminology
 
 + **IEP (Individualized Education Program)**: Individualized Education Programs (IEPs) are required by law for every student who receives special education services and are developed on an annual basis. The IEP is an educational document that the school generates. The therapist is bound to the frequency on the IEP, and the insurance companies will not pay for anything above or beyond what is on the IEP. It is a blueprint for a student’s special education experience in a public school. The plan must ensure that the child receives a free appropriate public education, (FAPE).
