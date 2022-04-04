@@ -33,7 +33,7 @@ completed_visits = 14
 paced = Pacing::Pacer.new(iep_interval: iep_interval, date: date, duration: duration,completed_visits: completed_visits)
 paced.pace
 
-# => { "remaining_visits" => 3, "reset_date" => '31-01-2022', "pace" => 4, "pace_indicator" => 🐇}
+# => { "remaining_visits" => 3, "reset_date" => '31-01-2022', "pace" => 4, "pace_indicator" => "🐇"}
 
 ```
 

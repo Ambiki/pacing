@@ -1,5 +1,1 @@
-class Pacing
-    def greet
-        "Hello, world!"
-    end
-end
+require "pacing/pacer"
