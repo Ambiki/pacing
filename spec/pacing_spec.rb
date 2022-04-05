@@ -11,9 +11,10 @@ require 'spec_helper'
 RSpec.describe Pacing::Pacer do
   describe '#new' do
     it "return some data" do
-      iep = {iep_service: [{start_date: '1-01-22', end_date: '1-01-23', type_of_service: 'Language Therapy', frequency: 6, interval: 'monthly', time_per_session: 30, completed_visits_for_current_interval: 7 }, {start_date: '1-01-22', end_date: '1-01-23', type_of_service: 'Physical Therapy', frequency: 6, interval: 'monthly', time_per_session: 30, completed_visits_for_current_interval: 7 }]}
+      iep = {iep_service: [{start_date: '1-01-22', end_date: '1-01-23', type_of_service: 'Language Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: '1 per month' }, {start_date: '1-01-22', end_date: '1-01-23', type_of_service: 'Physical Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: '1 per month' }]}
       date = '22-1-2022'
-      expect(Pacing::Pacer.new(iep: iep, date: date).calculate).to eq({ "remaining_visits" => 3, "reset_date" => '31-01-2022', "pace" => 4, "pace_indicator" => "🐇"})
+      non_business_days = ['25-1-2022']
+      expect(Pacing::Pacer.new(iep: iep, date: date, non_business_days: non_business_days ).calculate).to eq({iep_service: [{start_date: '1-01-22', end_date: '1-01-23', type_of_service: 'Language Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: '1 per month', remaining_visits: 0, reset_date: '31-01-2022', pace: 4, pace_indicator: "🐇" }, {start_date: '1-01-22', end_date: '1-01-23', type_of_service: 'Physical Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: '1 per month', remaining_visits: 0, reset_date: '31-01-2022', pace: 4, pace_indicator: "🐇" }]})
     end
   end
 end
