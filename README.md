@@ -98,33 +98,33 @@ paced.calculate
 
 ## Data Types
 
-Pacing accepts input which consists of an iep, a date and a non_business_day variable. The iep variable is a hash that includes the various iep services that the client received, the date is a string and the non_business_days variable is an array of dates.
+Pacing accepts input which consists of an IEP, a date and a non_business_day variable. The IEP variable is a hash that includes the various IEP services that the client received, the date is a string and the non_business_days variable is an array of dates.
 
 The output received is a hash that contains all the necessary information that is useful to the user.
 
-The following list shows the various variables and what they conist of:
+The following list shows the various variables and what they consist of:
 
 1. Input
-   -start_date is a string.
-   -end_date is a string.
-   -type_of_service is a string.
-   -frequency is an integer
-   -interval is a string
-   -time_per_session_in_minutes is an integer
-   -extra_sessions_allowable is an integer
-   -interval_for_extra_sesiions_allowable is a string
+   - `start_date` is a string.
+   - `end_date` is a string.
+   - `type_of_service` is a string.
+   - `frequency` is an integer
+   - `interval` is a string
+   - `time_per_session_in_minutes` is an integer
+   - `extra_sessions_allowable` is an integer
+   - `interval_for_extra_sessions_allowable` is a string
 2. Output
-   -start_date is a string.
-   -end_date is a string.
-   -type_of_service is a string.
-   -frequency is an integer
-   -interval is a string
-   -time_per_session_in_minutes is an integer
-   -extra_sessions_allowable is an integer
-   -interval_for_extra_sesiions_allowable is a string
-   -reset_date is a string
-   -pace is an integer
-   -pace_indicator is a string
+   - `start_date` is a string.
+   - `end_date` is a string.
+   - `type_of_service` is a string.
+   - `frequency` is an integer
+   - `interval` is a string
+   - `time_per_session_in_minutes` is an integer
+   - `extra_sessions_allowable` is an integer
+   - `interval_for_extra_sessions_allowable` is a string
+   - `reset_date` is a string
+   - `pace` is an integer
+   - `pace_indicator` is a string
 
 ## Terminology
 
