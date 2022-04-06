@@ -26,16 +26,103 @@ gem 'pacing'
 
 ```ruby
 
-iep_interval = 12
+iep = {
+  iep_service: [
+    {
+      start_date: "1-01-22",
+      end_date: "1-01-23",
+      type_of_service: "Language Therapy",
+      frequency: 6,
+      interval: "monthly",
+      time_per_session_in_minutes: 30,
+      completed_visits_for_current_interval: 7,
+      extra_sessions_allowable: 1,
+      interval_for_extra_sessions_allowable: "monthly"
+    },
+    {
+      start_date: "1-01-22",
+      end_date: "1-01-23",
+      type_of_service: "Physical Therapy",
+      frequency: 6,
+      interval: "monthly",
+      time_per_session_in_minutes: 30,
+      completed_visits_for_current_interval: 7,
+      completed_visits_for_current_interval: 7,
+      extra_sessions_allowable: 1,
+      interval_for_extra_sessions_allowable: "monthly"
+    }
+  ]
+}
+  
 date = '22-1-2022'
-duration = 20
-completed_visits = 14
-paced = Pacing::Pacer.new(iep_interval: iep_interval, date: date, duration: duration,completed_visits: completed_visits)
-paced.pace
+non_business_days = ['25-1-2022']
+paced = Pacing::Pacer.new(iep: iep, date: date, non_business_days: non_business_days)
+paced.calculate
 
-# => { "remaining_visits" => 3, "reset_date" => '31-01-2022', "pace" => 4, "pace_indicator" => "🐇"}
+=begin => {
+  iep_service: [
+    {
+      start_date: "1-01-22",
+      end_date: "1-01-23",
+      type_of_service: "Language Therapy",
+      frequency: 6,
+      interval: "monthly",
+      time_per_session_in_minutes: 30,
+      completed_visits_for_current_interval: 7,
+      extra_sessions_allowable: 1,
+      interval_for_extra_sessions_allowable: "monthly"
+      reset_date: "31-01-2022"
+      pace: 4,
+      pace_indicator: "🐇"
+    },
+    {
+      start_date: "1-01-22",
+      end_date: "1-01-23",
+      type_of_service: "Physical Therapy",
+      frequency: 6,
+      interval: "monthly",
+      time_per_session_in_minutes: 30,
+      completed_visits_for_current_interval: 7,
+      extra_sessions_allowable: 1,
+      interval_for_extra_sessions_allowable: "monthly",
+      reset_date: "31-01-2022"
+      pace: 4,
+      pace_indicator: "🐇"
+    }
+  ]
+} =end
 
 ```
+
+## Data Types
+
+Pacing accepts input which consists of an iep, a date and a non_business_day variable. The iep variable is a hash that includes the various iep services that the client received, the date is a string and the non_business_days variable is an array of dates.
+
+The output received is a hash that contains all the necessary information that is useful to the user.
+
+The following list shows the various variables and what they conist of:
+
+1. Input
+   -start_date is a string.
+   -end_date is a string.
+   -type_of_service is a string.   
+   -frequency is an integer
+   -interval is a string
+   -time_per_session_in_minutes is an integer
+   -extra_sessions_allowable is an integer
+   -interval_for_extra_sesiions_allowable is a string
+2. Output
+   -start_date is a string.
+   -end_date is a string.
+   -type_of_service is a string.   
+   -frequency is an integer
+   -interval is a string
+   -time_per_session_in_minutes is an integer
+   -extra_sessions_allowable is an integer
+   -interval_for_extra_sesiions_allowable is a string
+   -reset_date is a string
+   -pace is an integer
+   -pace_indicator is a string
 
 ## Terminology
 
