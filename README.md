@@ -34,11 +34,7 @@ iep = {
       type_of_service: "Language Therapy",
       frequency: 6,
       interval: "monthly",
-<<<<<<< HEAD
       time_per_session_in_minutes: 30,
-=======
-      time_per_session: 30,
->>>>>>> main
       completed_visits_for_current_interval: 7,
       extra_sessions_allowable: 1,
       interval_for_extra_sessions_allowable: "monthly"
@@ -49,11 +45,7 @@ iep = {
       type_of_service: "Physical Therapy",
       frequency: 6,
       interval: "monthly",
-<<<<<<< HEAD
       time_per_session_in_minutes: 30,
-=======
-      time_per_session: 30,
->>>>>>> main
       completed_visits_for_current_interval: 7,
       completed_visits_for_current_interval: 7,
       extra_sessions_allowable: 1,
@@ -61,7 +53,7 @@ iep = {
     }
   ]
 }
-  
+
 date = '22-1-2022'
 non_business_days = ['25-1-2022']
 paced = Pacing::Pacer.new(iep: iep, date: date, non_business_days: non_business_days)
@@ -143,7 +135,7 @@ The following list shows the various variables and what they conist of:
 1. Input
    -start_date is a string.
    -end_date is a string.
-   -type_of_service is a string.   
+   -type_of_service is a string.
    -frequency is an integer
    -interval is a string
    -time_per_session_in_minutes is an integer
@@ -152,7 +144,7 @@ The following list shows the various variables and what they conist of:
 2. Output
    -start_date is a string.
    -end_date is a string.
-   -type_of_service is a string.   
+   -type_of_service is a string.
    -frequency is an integer
    -interval is a string
    -time_per_session_in_minutes is an integer
