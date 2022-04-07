@@ -27,23 +27,23 @@ gem 'pacing'
 ```ruby
 
 school_plan = {
-  school_plan_service: [
+  school_plan_services: [
     {
       school_plan_type: "IEP", # string ('IEP', '504 Plan', 'Services Plan' )
-      start_date: "1-01-22", # string (mm-dd-yyyy)
-      end_date: "1-01-23", # string (mm-dd-yyyy)
+      start_date: "01-01-2022", # string (mm-dd-yyyy)
+      end_date: "01-01-2023", # string (mm-dd-yyyy)
       type_of_service: "Language Therapy", # string ('Language Therapy', 'Speech Therapy', 'Occupation Therapy', 'Physical Therapy', 'Feeding Therapy', 'Speech and Language Therapy')
       frequency: 6, # integer
       interval: "monthly", # string ('weekly', 'monthly', 'yearly')
       time_per_session_in_minutes: 30, # integer
       completed_visits_for_current_interval: 7, # integer
       extra_sessions_allowable: 1, # integer
-      interval_for_extra_sessions_allowable: "monthly", # ('weekly', 'monthly', 'yearly')
+      interval_for_extra_sessions_allowable: "monthly", # string ('weekly', 'monthly', 'yearly')
     },
     {
       school_plan_type: "IEP", # string ('IEP', '504 Plan', 'Services Plan' )
-      start_date: "1-01-22", # string (mm-dd-yyyy)
-      end_date: "1-01-23", # string (mm-dd-yyyy)
+      start_date: "01-01-2022", # string (mm-dd-yyyy)
+      end_date: "01-01-2023", # string (mm-dd-yyyy)
       type_of_service: "Physical Therapy", # string ('Language Therapy', 'Speech Therapy', 'Occupation Therapy', 'Physical Therapy', 'Feeding Therapy', 'Speech and Language Therapy')
       frequency: 6, # integer
       interval: "monthly", # string ('weekly', 'monthly', 'yearly')
@@ -55,18 +55,18 @@ school_plan = {
   ]
 }
 
-date = '22-1-2022', # string (mm-dd-yyyy)
-non_business_days = ['25-1-2022'], # array of strings (mm-dd-yyyy)
+date = '01-22-2022', # string (mm-dd-yyyy)
+non_business_days = ['01-25-2022'], # array of strings (mm-dd-yyyy)
 paced = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
 paced.calculate
 
 =begin
 => {
-  school_plan_service: [
+  school_plan_services: [
     {
       school_plan_type = "IEP"
-      start_date: "1-01-22",
-      end_date: "1-01-23",
+      start_date: "01-01-2022",
+      end_date: "01-01-2023",
       type_of_service: "Language Therapy",
       frequency: 6,
       interval: "monthly",
@@ -74,14 +74,14 @@ paced.calculate
       completed_visits_for_current_interval: 7,
       extra_sessions_allowable: 1,
       interval_for_extra_sessions_allowable: "monthly"
-      reset_date: "31-01-2022"
+      reset_date: "01-31-2022"
       pace: 4,
       pace_indicator: "🐇"
     },
     {
       school_plan_type = "IEP"
-      start_date: "1-01-22",
-      end_date: "1-01-23",
+      start_date: "01-01-2022",
+      end_date: "01-01-2023",
       type_of_service: "Physical Therapy",
       frequency: 6,
       interval: "monthly",
@@ -89,7 +89,7 @@ paced.calculate
       completed_visits_for_current_interval: 7,
       extra_sessions_allowable: 1,
       interval_for_extra_sessions_allowable: "monthly",
-      reset_date: "31-01-2022"
+      reset_date: "01-31-2022"
       pace: 4,
       pace_indicator: "🐇"
     }

@@ -1,6 +1,6 @@
 module Pacing
   class Pacer
-    attr_reader :iep_interval, :date
+    attr_reader :school_plan, :date, :non_business_days
     def initialize(school_plan:, date:, non_business_days:)
       @school_plan = school_plan
       @date = date
@@ -8,7 +8,7 @@ module Pacing
     end
 
     #  iep_interval = 12
-    #  date = '22-1-2022'
+    #  date = '01-22-2022'
     #  duration = 20
     #  completed_visits = 14
 
@@ -29,7 +29,7 @@ module Pacing
         # Service C (4Mx20)
 
     def calculate
-      return {school_plan_service: [{school_plan_type: 'IEP', start_date: '1-01-22', end_date: '1-01-23', type_of_service: 'Language Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1 , interval_for_extra_sesssions_allowable: 'monthly', remaining_visits: 0, reset_date: '31-01-2022', pace: 4, pace_indicator: "🐇" }, {school_plan_type: 'IEP', start_date: '1-01-22', end_date: '1-01-23', type_of_service: 'Physical Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1 , interval_for_extra_sesssions_allowable: 'monthly', remaining_visits: 0, reset_date: '31-01-2022', pace: 4, pace_indicator: "🐇" }]}
+      return {school_plan_services: [{school_plan_type: 'IEP', start_date: '01-01-2022', end_date: '01-01-2023', type_of_service: 'Language Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1 , interval_for_extra_sesssions_allowable: 'monthly', remaining_visits: 0, reset_date: '01-31-2022', pace: 4, pace_indicator: "🐇" }, {school_plan_type: 'IEP', start_date: '01-01-2022', end_date: '01-01-2023', type_of_service: 'Physical Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1 , interval_for_extra_sesssions_allowable: 'monthly', remaining_visits: 0, reset_date: '01-31-2022', pace: 4, pace_indicator: "🐇" }]}
     end
 
   end
