@@ -26,43 +26,45 @@ gem 'pacing'
 
 ```ruby
 
-iep = {
-  iep_service: [
+school_plan = {
+  school_plan_service: [
     {
-      start_date: "1-01-22",
-      end_date: "1-01-23",
-      type_of_service: "Language Therapy",
-      frequency: 6,
-      interval: "monthly",
-      time_per_session_in_minutes: 30,
-      completed_visits_for_current_interval: 7,
-      extra_sessions_allowable: 1,
-      interval_for_extra_sessions_allowable: "monthly"
+      school_plan_type: "IEP", # string ('IEP', '504 Plan', 'Services Plan' )
+      start_date: "1-01-22", # string (mm-dd-yyyy)
+      end_date: "1-01-23", # string (mm-dd-yyyy)
+      type_of_service: "Language Therapy", # string ('Language Therapy', 'Speech Therapy', 'Occupation Therapy', 'Physical Therapy', 'Feeding Therapy', 'Speech and Language Therapy')
+      frequency: 6, # integer
+      interval: "monthly", # string ('weekly', 'monthly', 'yearly')
+      time_per_session_in_minutes: 30, # integer
+      completed_visits_for_current_interval: 7, # integer
+      extra_sessions_allowable: 1, # integer
+      interval_for_extra_sessions_allowable: "monthly", # ('weekly', 'monthly', 'yearly')
     },
     {
-      start_date: "1-01-22",
-      end_date: "1-01-23",
-      type_of_service: "Physical Therapy",
-      frequency: 6,
-      interval: "monthly",
-      time_per_session_in_minutes: 30,
-      completed_visits_for_current_interval: 7,
-      completed_visits_for_current_interval: 7,
-      extra_sessions_allowable: 1,
-      interval_for_extra_sessions_allowable: "monthly"
+      school_plan_type: "IEP", # string ('IEP', '504 Plan', 'Services Plan' )
+      start_date: "1-01-22", # string (mm-dd-yyyy)
+      end_date: "1-01-23", # string (mm-dd-yyyy)
+      type_of_service: "Physical Therapy", # string ('Language Therapy', 'Speech Therapy', 'Occupation Therapy', 'Physical Therapy', 'Feeding Therapy', 'Speech and Language Therapy')
+      frequency: 6, # integer
+      interval: "monthly", # string ('weekly', 'monthly', 'yearly')
+      time_per_session_in_minutes: 30, # integer
+      completed_visits_for_current_interval: 7, # integer
+      extra_sessions_allowable: 1, # integer
+      interval_for_extra_sessions_allowable: "monthly", # string ('weekly', 'monthly', 'yearly')
     }
   ]
 }
 
-date = '22-1-2022'
-non_business_days = ['25-1-2022']
-paced = Pacing::Pacer.new(iep: iep, date: date, non_business_days: non_business_days)
+date = '22-1-2022', # string (mm-dd-yyyy)
+non_business_days = ['25-1-2022'], # array of strings (mm-dd-yyyy)
+paced = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
 paced.calculate
 
 =begin
 => {
-  iep_service: [
+  school_plan_service: [
     {
+      school_plan_type = "IEP"
       start_date: "1-01-22",
       end_date: "1-01-23",
       type_of_service: "Language Therapy",
@@ -77,6 +79,7 @@ paced.calculate
       pace_indicator: "🐇"
     },
     {
+      school_plan_type = "IEP"
       start_date: "1-01-22",
       end_date: "1-01-23",
       type_of_service: "Physical Therapy",
@@ -98,33 +101,35 @@ paced.calculate
 
 ## Data Types
 
-Pacing accepts input which consists of an IEP, a date and a non_business_day variable. The IEP variable is a hash that includes the various IEP services that the client received, the date is a string and the non_business_days variable is an array of dates.
+Pacing accepts input which consists of a school_plan, a date and a non_business_day variable. The school_plan variable is a hash that includes the various school plan services that the client received, the date is a string and the non_business_days variable is an array of dates.
 
 The output received is a hash that contains all the necessary information that is useful to the user.
 
 The following list shows the various variables and what they consist of:
 
 1. Input
+   - `school_plan_type` is a string.
    - `start_date` is a string.
    - `end_date` is a string.
    - `type_of_service` is a string.
-   - `frequency` is an integer
-   - `interval` is a string
-   - `time_per_session_in_minutes` is an integer
-   - `extra_sessions_allowable` is an integer
-   - `interval_for_extra_sessions_allowable` is a string
+   - `frequency` is an integer.
+   - `interval` is a string.
+   - `time_per_session_in_minutes` is an integer.
+   - `extra_sessions_allowable` is an integer.
+   - `interval_for_extra_sessions_allowable` is a string.
 2. Output
+   - `school_plan_type` is a string.
    - `start_date` is a string.
    - `end_date` is a string.
    - `type_of_service` is a string.
-   - `frequency` is an integer
-   - `interval` is a string
-   - `time_per_session_in_minutes` is an integer
-   - `extra_sessions_allowable` is an integer
-   - `interval_for_extra_sessions_allowable` is a string
-   - `reset_date` is a string
-   - `pace` is an integer
-   - `pace_indicator` is a string
+   - `frequency` is an integer.
+   - `interval` is a string.
+   - `time_per_session_in_minutes` is an integer.
+   - `extra_sessions_allowable` is an integer.
+   - `interval_for_extra_sessions_allowable` is a string.
+   - `reset_date` is a string.
+   - `pace` is an integer.
+   - `pace_indicator` is a string.
 
 ## Terminology
 
