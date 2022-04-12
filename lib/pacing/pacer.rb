@@ -3,9 +3,13 @@ module Pacing
     attr_reader :school_plan, :date, :non_business_days
     def initialize(school_plan:, date:, non_business_days:)
       @school_plan = school_plan
+      raise ArgumentError.new("You must pass in at least one school plan") if @school_plan.nil?
       @date = date
       raise TypeError.new("The date should be formatted as a string in the format mm-dd-yyyy") if @date.class != String || !/[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}-[1-2]{1}[0-9]{3}/.match?(@date)
       @non_business_days = non_business_days
+      @non_business_days.each do |non_business_day|
+        raise TypeError.new('"Non business days" dates should be formatted as a string in the format mm-dd-yyyy') if non_business_day.class != String || !/[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}-[1-2]{1}[0-9]{3}/.match?(non_business_day)
+      end
     end
 
     #  iep_interval = 12
