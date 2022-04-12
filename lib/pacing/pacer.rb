@@ -4,7 +4,7 @@ module Pacing
     def initialize(school_plan:, date:, non_business_days:)
       @school_plan = school_plan
       @date = date
-      raise TypeError.new("Dates should be formatted as a string in the format mm-dd-yyyy") if @date.class != String || !/[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}-[1-2]{1}[0-9]{3}/.match?(@date)
+      raise TypeError.new("The date should be formatted as a string in the format mm-dd-yyyy") if @date.class != String || !/[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}-[1-2]{1}[0-9]{3}/.match?(@date)
       @non_business_days = non_business_days
     end
 
