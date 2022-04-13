@@ -4,6 +4,7 @@ module Pacing
     def initialize(school_plan:, date:, non_business_days:)
       @school_plan = school_plan
       raise ArgumentError.new("You must pass in at least one school plan") if @school_plan.nil?
+      raise TypeError.new("School plan must be a hash") if @school_plan.class != Hash
       @date = date
       raise ArgumentError.new('You must pass in a date') if @date.nil?
       raise TypeError.new("The date should be formatted as a string in the format mm-dd-yyyy") if @date.class != String || !/[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}-[1-2]{1}[0-9]{3}/.match?(@date)
