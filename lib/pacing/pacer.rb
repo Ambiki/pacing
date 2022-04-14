@@ -7,11 +7,15 @@ module Pacing
       raise TypeError.new("School plan must be a hash") if @school_plan.class != Hash
       @date = date
       raise ArgumentError.new('You must pass in a date') if @date.nil?
-      raise TypeError.new("The date should be formatted as a string in the format mm-dd-yyyy") if @date.class != String || !/[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}-[1-2]{1}[0-9]{3}/.match?(@date)
+      raise TypeError.new("The date should be formatted as a string in the format mm-dd-yyyy") if @date.class != String || !/(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-(19|20)\d\d/.match?(@date)
       @non_business_days = non_business_days
       raise ArgumentError.new('You must pass in a non_business_day') if @non_business_days.empty?
       @non_business_days.each do |non_business_day|
-        raise TypeError.new('"Non business days" dates should be formatted as a string in the format mm-dd-yyyy') if non_business_day.class != String || !/[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}-[1-2]{1}[0-9]{3}/.match?(non_business_day)
+        raise TypeError.new('"Non business days" dates should be formatted as a string in the format mm-dd-yyyy') if non_business_day.class != String || !/(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-(19|20)\d\d/.match?(non_business_day)
+      end
+      @school_plan[:school_plan_services].each do |school_plan_service|
+        raise TypeError.new("School plan services start and end dates should be formatted as a string in the format mm-dd-yyyy") if school_plan_service[:start_date].class != String || !/(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-(19|20)\d\d/.match?(school_plan_service[:start_date])
+        raise TypeError.new("School plan services start and end dates should be formatted as a string in the format mm-dd-yyyy") if school_plan_service[:end_date].class != String || !/(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-(19|20)\d\d/.match?(school_plan_service[:end_date])
       end
     end
 
