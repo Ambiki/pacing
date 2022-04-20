@@ -64,7 +64,7 @@ paced.calculate
 => {
   school_plan_services: [
     {
-      school_plan_type = "IEP"
+      school_plan_type: "IEP"
       start_date: "01-01-2022",
       end_date: "01-01-2023",
       type_of_service: "Language Therapy",
@@ -79,7 +79,7 @@ paced.calculate
       pace_indicator: "🐇"
     },
     {
-      school_plan_type = "IEP"
+      school_plan_type: "IEP"
       start_date: "01-01-2022",
       end_date: "01-01-2023",
       type_of_service: "Physical Therapy",
