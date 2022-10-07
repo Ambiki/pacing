@@ -50,30 +50,32 @@ module Pacing
     def calculate
       # Pace = actual visits at point in time - expected visits to meet frequency at that point in time
       service = @school_plan[:school_plan_services][0]
-      puts expected_visits(start_date: parse_date(service[:start_date]), end_date: parse_date(service[:end_date]), frequency: service[:frequency], interval: service[:interval]), "e dey work?"
+      expected = expected_visits(start_date: parse_date(service[:start_date]), end_date: parse_date(service[:end_date]), frequency: service[:frequency], interval: service[:interval])
+
+      puts "pace #{service[:completed_visits_for_current_interval] - expected}"
+
       return {school_plan_services: [{school_plan_type: 'IEP', start_date: '01-01-2022', end_date: '01-01-2023', type_of_service: 'Language Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1 , interval_for_extra_sessions_allowable: 'monthly', remaining_visits: 0, reset_date: '01-31-2022', pace: 4, pace_indicator: "🐇" }, {school_plan_type: 'IEP', start_date: '01-01-2022', end_date: '01-01-2023', type_of_service: 'Physical Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1 , interval_for_extra_sessions_allowable: 'monthly', remaining_visits: 0, reset_date: '01-31-2022', pace: 4, pace_indicator: "🐇" }]}
     end
 
     def expected_visits(start_date:, end_date:, frequency:, interval:)
-      start_of_treatment_date = parse_date("#{parse_date(@date).month}-#{@parse_date(start_date).day}-#{parse_date(@date).month}")
+      start_of_treatment_date = parse_date("#{parse_date(@date).month}-#{start_date.day}-#{parse_date(@date).year}")
 
       end_of_treatment_date = start_of_treatment_date + COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]
 
-      days_between = business_days(start_of_treatment_date, end_of_treatment_date)
+      days_between = business_days(start_of_treatment_date, end_of_treatment_date).count
 
-      days_passed(15) = business_days(start_of_treatment_date, @date)
+      days_passed = business_days(start_of_treatment_date, parse_date(@date)).count
 
-      days_between(30) == frequency(12)
 
-      (frequency/days_between) * days_passed
+      ((frequency/days_between.to_f) * days_passed).floor
+      #, days_between, days_passed, "how are you doing bro"
 
 
       # visitable_days = business_days(start_date, start_date + COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]).count
 
       # visitable_days_left = business_days(parse_date(@date), start_date + COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]).count
 
-      
-      
+
       # puts parse_date(@date), "wellness", ((frequency.to_f / visitable_days) * (visitable_days - visitable_days_left)), "our expectation", frequency, "days left", visitable_days_left, visitable_days
     end
 
@@ -98,8 +100,6 @@ module Pacing
 
     # days on which a session can hold
     def business_days(start_date, end_date)
-      # using florida here just for now
-      
       # remove saturdays and sundays
       # remove holidays(array from Ambiki)
       # remove school holidays/non business days
@@ -108,7 +108,6 @@ module Pacing
       end
 
       holidays = Holidays.between(start_date, end_date, @state).map { |holiday| holiday[:date] }
-      puts holidays, "how many holidays"
 
       working_days - [@date] - @non_business_days - holidays
     end
