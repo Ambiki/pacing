@@ -536,6 +536,225 @@ RSpec.describe Pacing::Pacer do
     end
   end
 
+  describe "yearly interval allowable sessions" do
+    it "should return a positive pacing when more visits are completed than expected before a particular point in time" do
+
+      school_plan = {
+        school_plan_services: [
+          {
+            school_plan_type: 'IEP',
+            start_date: '04-01-2022',
+            end_date: '04-01-2025',
+            type_of_service: 'Speech Therapy',
+            frequency: 12,
+            interval: 'yearly',
+            time_per_session_in_minutes: 30,
+            completed_visits_for_current_interval: 6,
+            extra_sessions_allowable: 1,
+            interval_for_extra_sessions_allowable: 'yearly' 
+          }, {
+            school_plan_type: 'IEP',
+            start_date: '04-01-2022',
+            end_date: '04-01-2025',
+            type_of_service: 'Physical Therapy',
+            frequency: 6, 
+            interval: 'yearly',
+            time_per_session_in_minutes: 30,
+            completed_visits_for_current_interval: 4,
+            extra_sessions_allowable: 1,
+            interval_for_extra_sessions_allowable: 'yearly' 
+          }
+        ]
+      }
+
+      date = '08-16-2022'
+      non_business_days = ['04-25-2022']
+
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days ).calculate
+
+      expect(results).to eq(
+        {
+          school_plan_services: [
+            {
+              school_plan_type: 'IEP',
+              start_date: '04-01-2022',
+              end_date: '04-01-2025',
+              type_of_service: 'Speech Therapy',
+              frequency: 12,
+              interval: 'yearly',
+              time_per_session_in_minutes: 30,
+              completed_visits_for_current_interval: 6,
+              extra_sessions_allowable: 1,
+              interval_for_extra_sessions_allowable: 'yearly',
+              remaining_visits: 6,
+              reset_date: '04-01-2023',
+              pace: 1,
+              pace_indicator: "🐇"
+            }, {
+              school_plan_type: 'IEP',
+              start_date: '04-01-2022',
+              end_date: '04-01-2025',
+              type_of_service: 'Physical Therapy',
+              frequency: 6,
+              interval: 'yearly',
+              time_per_session_in_minutes: 30,
+              completed_visits_for_current_interval: 4,
+              extra_sessions_allowable: 1,
+              interval_for_extra_sessions_allowable: 'yearly',
+              remaining_visits: 2,
+              reset_date: '04-01-2023',
+              pace: 2,
+              pace_indicator: "🐇"
+            }
+          ]
+        })
+    end
+
+    it "should return a negative pacing when fewer visits are completed than expected before a particular point in time" do
+      school_plan = {
+        school_plan_services: [
+          {
+            school_plan_type: 'IEP',
+            start_date: '04-01-2022',
+            end_date: '04-01-2024',
+            type_of_service: 'Speech Therapy',
+            frequency: 12,
+            interval: 'yearly',
+            time_per_session_in_minutes: 30,
+            completed_visits_for_current_interval: 2,
+            extra_sessions_allowable: 1,
+            interval_for_extra_sessions_allowable: 'yearly' 
+          }, {
+            school_plan_type: 'IEP',
+            start_date: '04-01-2022',
+            end_date: '04-01-2024',
+            type_of_service: 'Physical Therapy',
+            frequency: 6,
+            interval: 'yearly',
+            time_per_session_in_minutes: 30,
+            completed_visits_for_current_interval: 1,
+            extra_sessions_allowable: 1,
+            interval_for_extra_sessions_allowable: 'yearly' 
+          }
+        ]
+      }
+
+      date = '08-15-2022'
+      non_business_days = ['04-25-2022']
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days ).calculate
+
+      expect(results).to eq(
+        {
+          school_plan_services: [
+            {
+              school_plan_type: 'IEP',
+              start_date: '04-01-2022',
+              end_date: '04-01-2024',
+              type_of_service: 'Speech Therapy',
+              frequency: 12,
+              interval: 'yearly',
+              time_per_session_in_minutes: 30,
+              completed_visits_for_current_interval: 2,
+              extra_sessions_allowable: 1,
+              interval_for_extra_sessions_allowable: 'yearly',
+              remaining_visits: 10,
+              reset_date: '04-01-2023',
+              pace: -2,
+              pace_indicator: "🐇"
+            }, {
+              school_plan_type: 'IEP',
+              start_date: '04-01-2022',
+              end_date: '04-01-2024',
+              type_of_service: 'Physical Therapy',
+              frequency: 6,
+              interval: 'yearly',
+              time_per_session_in_minutes: 30,
+              completed_visits_for_current_interval: 1,
+              extra_sessions_allowable: 1,
+              interval_for_extra_sessions_allowable: 'yearly',
+              remaining_visits: 5,
+              reset_date: '04-01-2023',
+              pace: -1,
+              pace_indicator: "🐇" 
+            }
+          ]
+        }
+      )
+    end
+
+    it "should return a zero(neutral) pacing when visits completed equal expected visits at a particular point in time" do
+      school_plan = {
+        school_plan_services: [
+          {
+            school_plan_type: 'IEP',
+            start_date: '05-01-2022',
+            end_date: '05-01-2024',
+            type_of_service: 'Speech Therapy',
+            frequency: 12,
+            interval: 'yearly',
+            time_per_session_in_minutes: 30,
+            completed_visits_for_current_interval: 4,
+            extra_sessions_allowable: 1,
+            interval_for_extra_sessions_allowable: 'yearly' 
+          }, {
+            school_plan_type: 'IEP',
+            start_date: '05-01-2022',
+            end_date: '05-01-2024',
+            type_of_service: 'Physical Therapy',
+            frequency: 6,
+            interval: 'yearly',
+            time_per_session_in_minutes: 30,
+            completed_visits_for_current_interval: 2,
+            extra_sessions_allowable: 1,
+            interval_for_extra_sessions_allowable: 'yearly'
+          }
+        ]
+      }
+
+      date = '09-10-2022'
+      non_business_days = ['05-25-2022']
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days ).calculate
+
+      expect(results).to eq(
+        {
+          school_plan_services: [
+            {
+              school_plan_type: 'IEP',
+              start_date: '05-01-2022',
+              end_date: '05-01-2024',
+              type_of_service: 'Speech Therapy',
+              frequency: 12,
+              interval: 'yearly',
+              time_per_session_in_minutes: 30,
+              completed_visits_for_current_interval: 4,
+              extra_sessions_allowable: 1,
+              interval_for_extra_sessions_allowable: 'yearly',
+              remaining_visits: 8,
+              reset_date: '05-01-2023',
+              pace: 0,
+              pace_indicator: "🐇"
+            }, {
+              school_plan_type: 'IEP',
+              start_date: '05-01-2022',
+              end_date: '05-01-2024',
+              type_of_service: 'Physical Therapy',
+              frequency: 6,
+              interval: 'yearly',
+              time_per_session_in_minutes: 30,
+              completed_visits_for_current_interval: 2,
+              extra_sessions_allowable: 1,
+              interval_for_extra_sessions_allowable: 'yearly',
+              remaining_visits: 4,
+              reset_date: '05-01-2023',
+              pace: 0,
+              pace_indicator: "🐇"
+            }
+          ]
+        }
+      )
+    end
+  end
+
   describe 'error handling' do
     it "should respond with friendly error message for a misformed date" do
       school_plan = {school_plan_services: [{school_plan_type: 'IEP', start_date: '04-01-2022', end_date: '04-01-2023', type_of_service: 'Language Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1, interval_for_extra_sessions_allowable: 'monthly' }, {school_plan_type: 'IEP', start_date: '04-01-2022', end_date: '04-01-2023', type_of_service: 'Physical Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1, interval_for_extra_sessions_allowable: 'monthly' }]}

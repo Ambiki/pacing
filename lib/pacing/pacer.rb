@@ -48,7 +48,6 @@ module Pacing
     end
 
     def calculate
-      # Pace = actual visits at point in time - expected visits to meet frequency at that point in time
       services = @school_plan[:school_plan_services]
 
       services = services.map do |service|
@@ -63,14 +62,10 @@ module Pacing
         service
       end
 
-
-      
-
-      # return {school_plan_services: [{school_plan_type: 'IEP', start_date: '01-01-2022', end_date: '01-01-2023', type_of_service: 'Language Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1 , interval_for_extra_sessions_allowable: 'monthly', remaining_visits: 0, reset_date: '01-31-2022', pace: 4, pace_indicator: "🐇" }, {school_plan_type: 'IEP', start_date: '01-01-2022', end_date: '01-01-2023', type_of_service: 'Physical Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1 , interval_for_extra_sessions_allowable: 'monthly', remaining_visits: 0, reset_date: '01-31-2022', pace: 4, pace_indicator: "🐇" }]}
-
       { school_plan_services: services }
     end
 
+    # get a spreadout of visit dates over an interval by using simple proportion.
     def expected_visits(start_date:, end_date:, frequency:, interval:)
       reset_start = start_of_treatment_date(start_date, interval)
 
@@ -110,6 +105,7 @@ module Pacing
     end
 
     def pace(actual_visits, expected_visits)
+      # Pace = actual visits at point in time - expected visits to meet frequency at that point in time
       actual_visits - expected_visits
     end
 
@@ -126,10 +122,8 @@ module Pacing
         !(day.saturday? || day.sunday?)
       end
 
-      puts "start_date #{start_date} and end_date #{end_date}"
       holidays = Holidays.between(start_date, end_date, @state).map { |holiday| holiday[:date] }
 
-      puts "holidays oh #{holidays}" if holidays.count > 1
       working_days - [@date] - @non_business_days - holidays
     end
 
@@ -147,7 +141,8 @@ module Pacing
         return (start_of_treatment_date(parse_date(start_date), interval) + COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]-1).strftime("%m-%d-%Y")
       when "weekly"
         return (start_of_treatment_date(parse_date(start_date), interval) + 7).strftime("%m-%d-%Y")
-      else
+      when "yearly"
+        return (parse_date(@date).leap? ? parse_date(start_date) + 366 : parse_date(start_date) + 365).strftime("%m-%d-%Y")
       end
     end
 
@@ -163,7 +158,7 @@ module Pacing
         weekly_date = date < weekly_date ? weekly_date - 7 : weekly_date
         return weekly_date
       when "yearly"
-        return start_date
+        return parse_date("#{start_date.month}-#{start_date.day}-#{parse_date(@date).year}")
       end
     end
 
