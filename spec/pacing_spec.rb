@@ -288,10 +288,6 @@ RSpec.describe Pacing::Pacer do
         }
       )
     end
-
-    # # not exactly sure how to handle this particular situation.
-    # it "treatment start date different from school plan start date" do
-    # end
   end
 
   describe "weekly pacer" do

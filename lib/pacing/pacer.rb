@@ -74,7 +74,11 @@ module Pacing
 
       days_passed = business_days(reset_start, parse_date(@date)).count
 
-      ((frequency/days_between.to_f) * days_passed).round
+      if days_between != 0
+        return ((frequency/days_between.to_f) * days_passed).round
+      else
+        return 0
+      end
     end
 
     def interval_days(interval)
@@ -107,16 +111,23 @@ module Pacing
       Date.strptime(date, '%m-%d-%Y')
     end
 
+    def parsed_non_business_days
+      @non_business_days.map do |day|
+        parse_date(day)
+      end
+    end
+
     # days on which a session can hold
     def business_days(start_date, end_date)
       # remove saturdays and sundays
       # remove holidays(array from Ambiki)
       # remove school holidays/non business days
+      # should we remove today?(datetime call?)
       working_days = get_working_days(start_date, end_date)
 
       holidays = get_holidays(start_date, end_date)
-
-      working_days - [@date] - @non_business_days - holidays
+      
+      working_days.sort - parsed_non_business_days.sort - holidays.sort
     end
 
     # scoped to the interval
