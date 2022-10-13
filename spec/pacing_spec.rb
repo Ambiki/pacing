@@ -67,7 +67,7 @@ RSpec.describe Pacing::Pacer do
             remaining_visits: 4,
             reset_date: '04-30-2022',
             pace: -3,
-            pace_indicator: "🐇"
+            pace_indicator: "🐢"
           }
         ]
       })
@@ -195,7 +195,7 @@ RSpec.describe Pacing::Pacer do
               remaining_visits: 9,
               reset_date: '04-30-2022',
               pace: -8,
-              pace_indicator: "🐇"
+              pace_indicator: "🐢"
             }, {
               school_plan_type: 'IEP',
               start_date: '04-01-2022',
@@ -210,7 +210,7 @@ RSpec.describe Pacing::Pacer do
               remaining_visits: 5,
               reset_date: '04-30-2022',
               pace: -5,
-              pace_indicator: "🐇" 
+              pace_indicator: "🐢" 
             }
           ]
         }
@@ -267,7 +267,7 @@ RSpec.describe Pacing::Pacer do
               remaining_visits: 6,
               reset_date: '05-31-2022',
               pace: 0,
-              pace_indicator: "🐇"
+              pace_indicator: "😁"
             }, {
               school_plan_type: 'IEP',
               start_date: '05-01-2022',
@@ -282,7 +282,7 @@ RSpec.describe Pacing::Pacer do
               remaining_visits: 3,
               reset_date: '05-31-2022',
               pace: 0,
-              pace_indicator: "🐇"
+              pace_indicator: "😁"
             }
           ]
         }
@@ -418,7 +418,7 @@ RSpec.describe Pacing::Pacer do
               remaining_visits: 3,
               reset_date: '04-22-2022',
               pace: -3,
-              pace_indicator: "🐇"
+              pace_indicator: "🐢"
             }, {
               school_plan_type: 'IEP',
               start_date: '04-01-2022',
@@ -433,7 +433,7 @@ RSpec.describe Pacing::Pacer do
               remaining_visits: 2,
               reset_date: '04-22-2022',
               pace: -2,
-              pace_indicator: "🐇" 
+              pace_indicator: "🐢" 
             }
           ]
         }
@@ -490,7 +490,7 @@ RSpec.describe Pacing::Pacer do
               remaining_visits: 2,
               reset_date: '05-22-2022',
               pace: 0,
-              pace_indicator: "🐇"
+              pace_indicator: "😁"
             }, {
               school_plan_type: 'IEP',
               start_date: '05-01-2022',
@@ -505,7 +505,7 @@ RSpec.describe Pacing::Pacer do
               remaining_visits: 1,
               reset_date: '05-22-2022',
               pace: 0,
-              pace_indicator: "🐇"
+              pace_indicator: "😁"
             }
           ]
         }
@@ -637,7 +637,7 @@ RSpec.describe Pacing::Pacer do
               remaining_visits: 10,
               reset_date: '04-01-2023',
               pace: -2,
-              pace_indicator: "🐇"
+              pace_indicator: "🐢"
             }, {
               school_plan_type: 'IEP',
               start_date: '04-01-2022',
@@ -652,7 +652,7 @@ RSpec.describe Pacing::Pacer do
               remaining_visits: 5,
               reset_date: '04-01-2023',
               pace: -1,
-              pace_indicator: "🐇" 
+              pace_indicator: "🐢" 
             }
           ]
         }
@@ -709,7 +709,7 @@ RSpec.describe Pacing::Pacer do
               remaining_visits: 8,
               reset_date: '05-01-2023',
               pace: 0,
-              pace_indicator: "🐇"
+              pace_indicator: "😁"
             }, {
               school_plan_type: 'IEP',
               start_date: '05-01-2022',
@@ -724,7 +724,7 @@ RSpec.describe Pacing::Pacer do
               remaining_visits: 4,
               reset_date: '05-01-2023',
               pace: 0,
-              pace_indicator: "🐇"
+              pace_indicator: "😁"
             }
           ]
         }

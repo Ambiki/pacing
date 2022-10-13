@@ -56,7 +56,7 @@ module Pacing
         service[:pace] = pace(service[:completed_visits_for_current_interval], expected)
         service[:reset_date] = reset_date(start_date: service[:start_date], interval: service[:interval_for_extra_sessions_allowable])
         service[:remaining_visits] = remaining_visits(completed_visits: service[:completed_visits_for_current_interval], required_visits: service[:frequency])
-        service[:pace_indicator] = "🐇"
+        service[:pace_indicator] = pace_indicator(service[:pace])
 
         service
       end
@@ -93,6 +93,16 @@ module Pacing
       actual_visits - expected_visits
     end
 
+    def pace_indicator(pace)
+      if pace == 0
+        return "😁"
+      elsif pace > 0
+        return "🐇"
+      elsif pace < 0
+        return "🐢"
+      end
+    end
+
     def parse_date(date)
       Date.strptime(date, '%m-%d-%Y')
     end
@@ -102,11 +112,9 @@ module Pacing
       # remove saturdays and sundays
       # remove holidays(array from Ambiki)
       # remove school holidays/non business days
-      working_days = (start_date..end_date).filter do |day|
-        !(day.saturday? || day.sunday?)
-      end
+      working_days = get_working_days(start_date, end_date)
 
-      holidays = Holidays.between(start_date, end_date, @state).map { |holiday| holiday[:date] }
+      holidays = get_holidays(start_date, end_date)
 
       working_days - [@date] - @non_business_days - holidays
     end
@@ -122,11 +130,11 @@ module Pacing
     def reset_date(start_date:, interval:)
       case interval
       when "monthly"
-        return (start_of_treatment_date(parse_date(start_date), interval) + COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]-1).strftime("%m-%d-%Y")
+        return reset_date_monthly(start_date, interval)
       when "weekly"
-        return (start_of_treatment_date(parse_date(start_date), interval) + 7).strftime("%m-%d-%Y")
+        return reset_date_weekly(start_date, interval)
       when "yearly"
-        return (parse_date(@date).leap? ? parse_date(start_date) + 366 : parse_date(start_date) + 365).strftime("%m-%d-%Y")
+        return reset_date_yearly(start_date)
       end
     end
 
@@ -134,20 +142,63 @@ module Pacing
     def start_of_treatment_date(start_date, interval="monthly")
       case interval
       when "monthly"
-        return parse_date("#{parse_date(@date).month}-#{start_date.day}-#{parse_date(@date).year}")
+        return start_of_treatment_date_monthly(start_date)
       when "weekly"
-        date = parse_date(@date)
-        week_start_date = week_start(date)
-        weekly_date = week_start_date + start_date.wday
-        weekly_date = date < weekly_date ? weekly_date - 7 : weekly_date
-        return weekly_date
+        return start_of_treatment_date_weekly(start_date)
       when "yearly"
-        return parse_date("#{start_date.month}-#{start_date.day}-#{parse_date(@date).year}")
+        return start_of_treatment_date_yearly(start_date)
       end
     end
 
+    def get_working_days(start_date, end_date)
+      (start_date..end_date).filter do |day|
+        !(day.saturday? || day.sunday?)
+      end
+    end
+
+    def get_holidays(start_date, end_date)
+      Holidays.between(start_date, end_date, @state).map { |holiday| holiday[:date] }
+    end
+
+    # get actual date of the first day of the week where date falls
     def week_start(date, offset_from_sunday=0)
       date - ((date.wday - offset_from_sunday)%7)
-    end    
+    end
+    
+    # reset date for the yearly interval
+    def reset_date_yearly(start_date)
+      (parse_date(@date).leap? ? parse_date(start_date) + 366 : parse_date(start_date) + 365).strftime("%m-%d-%Y")
+    end
+
+    # reset date for the monthly interval
+    def reset_date_monthly(start_date, interval)
+      (start_of_treatment_date(parse_date(start_date), interval) + COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]-1).strftime("%m-%d-%Y")
+    end
+
+    # reset date for the weekly interval
+    def reset_date_weekly(start_date, interval)
+      (start_of_treatment_date(parse_date(start_date), interval) + 7).strftime("%m-%d-%Y")
+    end
+
+    # start of treatment for the yearly interval
+    def start_of_treatment_date_yearly(start_date)
+      parse_date("#{start_date.month}-#{start_date.day}-#{parse_date(@date).year}")
+    end
+
+    # start of treatment for the montly interval
+    def start_of_treatment_date_monthly(start_date)
+      parse_date("#{parse_date(@date).month}-#{start_date.day}-#{parse_date(@date).year}")
+    end
+
+    # start of treatment for the weekly interval
+    def start_of_treatment_date_weekly(start_date)
+      date = parse_date(@date)
+
+      week_start_date = week_start(date)
+      weekly_date = week_start_date + start_date.wday
+      weekly_date = date < weekly_date ? weekly_date - 7 : weekly_date
+
+      weekly_date
+    end
   end
 end
