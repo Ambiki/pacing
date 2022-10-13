@@ -49,34 +49,41 @@ module Pacing
 
     def calculate
       # Pace = actual visits at point in time - expected visits to meet frequency at that point in time
-      service = @school_plan[:school_plan_services][0]
-      expected = expected_visits(start_date: parse_date(service[:start_date]), end_date: parse_date(service[:end_date]), frequency: service[:frequency], interval: service[:interval])
+      services = @school_plan[:school_plan_services]
 
-      puts "pace #{service[:completed_visits_for_current_interval] - expected}"
+      services = services.map do |service|
+        expected = expected_visits(start_date: parse_date(service[:start_date]), end_date: parse_date(service[:end_date]), frequency: service[:frequency], interval: service[:interval])
 
-      return {school_plan_services: [{school_plan_type: 'IEP', start_date: '01-01-2022', end_date: '01-01-2023', type_of_service: 'Language Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1 , interval_for_extra_sessions_allowable: 'monthly', remaining_visits: 0, reset_date: '01-31-2022', pace: 4, pace_indicator: "🐇" }, {school_plan_type: 'IEP', start_date: '01-01-2022', end_date: '01-01-2023', type_of_service: 'Physical Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1 , interval_for_extra_sessions_allowable: 'monthly', remaining_visits: 0, reset_date: '01-31-2022', pace: 4, pace_indicator: "🐇" }]}
+        service[:pace] = pace(service[:completed_visits_for_current_interval], expected)
+        service[:reset_date] = reset_date(start_date: service[:start_date], interval: service[:interval_for_extra_sessions_allowable])
+        service[:remaining_visits] = remaining_visits(completed_visits: service[:completed_visits_for_current_interval], required_visits: service[:frequency])
+        service[:pace_indicator] = "🐇"
+
+        puts "pace #{service[:pace]}, completed #{service[:completed_visits_for_current_interval]} expected #{expected}"
+        service
+      end
+
+
+      
+
+      # return {school_plan_services: [{school_plan_type: 'IEP', start_date: '01-01-2022', end_date: '01-01-2023', type_of_service: 'Language Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1 , interval_for_extra_sessions_allowable: 'monthly', remaining_visits: 0, reset_date: '01-31-2022', pace: 4, pace_indicator: "🐇" }, {school_plan_type: 'IEP', start_date: '01-01-2022', end_date: '01-01-2023', type_of_service: 'Physical Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1 , interval_for_extra_sessions_allowable: 'monthly', remaining_visits: 0, reset_date: '01-31-2022', pace: 4, pace_indicator: "🐇" }]}
+
+      { school_plan_services: services }
     end
 
     def expected_visits(start_date:, end_date:, frequency:, interval:)
-      start_of_treatment_date = parse_date("#{parse_date(@date).month}-#{start_date.day}-#{parse_date(@date).year}")
+      reset_start = start_of_treatment_date(start_date, interval)
 
-      end_of_treatment_date = start_of_treatment_date + COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]
+      reset_end =  reset_start + interval_days(interval)
 
-      days_between = business_days(start_of_treatment_date, end_of_treatment_date).count
+      days_between = business_days(reset_start, reset_end).count
 
-      days_passed = business_days(start_of_treatment_date, parse_date(@date)).count
+      days_passed = business_days(reset_start, parse_date(@date)).count
 
+      puts "frequency #{frequency}, days_between #{
+        days_between}, days_passed #{days_passed} start: #{reset_start} end: #{parse_date(@date)}"
 
-      ((frequency/days_between.to_f) * days_passed).floor
-      #, days_between, days_passed, "how are you doing bro"
-
-
-      # visitable_days = business_days(start_date, start_date + COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]).count
-
-      # visitable_days_left = business_days(parse_date(@date), start_date + COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]).count
-
-
-      # puts parse_date(@date), "wellness", ((frequency.to_f / visitable_days) * (visitable_days - visitable_days_left)), "our expectation", frequency, "days left", visitable_days_left, visitable_days
+      ((frequency/days_between.to_f) * days_passed).round
     end
 
     def yearly_pacer
@@ -91,11 +98,23 @@ module Pacing
       # when interval is weekly
     end
 
-    def parse_date(date)
-      Date.strptime(date, '%m-%d-%Y')
+    def interval_days(interval)
+      case interval
+      when "monthly"
+        return COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]
+      when "weekly"
+        return 6
+      when "yearly"
+        return parse_date(@date).leap? ? 366 : 365
+      end
     end
 
-    def reset_date
+    def pace(actual_visits, expected_visits)
+      actual_visits - expected_visits
+    end
+
+    def parse_date(date)
+      Date.strptime(date, '%m-%d-%Y')
     end
 
     # days on which a session can hold
@@ -107,9 +126,49 @@ module Pacing
         !(day.saturday? || day.sunday?)
       end
 
+      puts "start_date #{start_date} and end_date #{end_date}"
       holidays = Holidays.between(start_date, end_date, @state).map { |holiday| holiday[:date] }
 
+      puts "holidays oh #{holidays}" if holidays.count > 1
       working_days - [@date] - @non_business_days - holidays
     end
+
+    # scoped to the interval
+    def remaining_visits(completed_visits:, required_visits:)
+      visits = required_visits.to_i - completed_visits.to_i
+      visits = 0 if visits < 0
+      visits
+    end
+
+    # scoped to the interval
+    def reset_date(start_date:, interval:)
+      case interval
+      when "monthly"
+        return (start_of_treatment_date(parse_date(start_date), interval) + COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]-1).strftime("%m-%d-%Y")
+      when "weekly"
+        return (start_of_treatment_date(parse_date(start_date), interval) + 7).strftime("%m-%d-%Y")
+      else
+      end
+    end
+
+    # scoped to the interval
+    def start_of_treatment_date(start_date, interval="monthly")
+      case interval
+      when "monthly"
+        return parse_date("#{parse_date(@date).month}-#{start_date.day}-#{parse_date(@date).year}")
+      when "weekly"
+        date = parse_date(@date)
+        week_start_date = week_start(date)
+        weekly_date = week_start_date + start_date.wday
+        weekly_date = date < weekly_date ? weekly_date - 7 : weekly_date
+        return weekly_date
+      when "yearly"
+        return start_date
+      end
+    end
+
+    def week_start(date, offset_from_sunday=0)
+      date - ((date.wday - offset_from_sunday)%7)
+    end    
   end
 end
