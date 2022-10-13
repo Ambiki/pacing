@@ -58,7 +58,6 @@ module Pacing
         service[:remaining_visits] = remaining_visits(completed_visits: service[:completed_visits_for_current_interval], required_visits: service[:frequency])
         service[:pace_indicator] = "🐇"
 
-        puts "pace #{service[:pace]}, completed #{service[:completed_visits_for_current_interval]} expected #{expected}"
         service
       end
 
@@ -75,22 +74,7 @@ module Pacing
 
       days_passed = business_days(reset_start, parse_date(@date)).count
 
-      puts "frequency #{frequency}, days_between #{
-        days_between}, days_passed #{days_passed} start: #{reset_start} end: #{parse_date(@date)}"
-
       ((frequency/days_between.to_f) * days_passed).round
-    end
-
-    def yearly_pacer
-      # when interval is yearly
-    end
-
-    def monthly_pacer
-      # when interval is monthly
-    end
-
-    def weekly_pacer
-      # when interval is weekly
     end
 
     def interval_days(interval)

@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'date'
 
 RSpec.describe Pacing::Pacer do
-  describe '#new' do
+  describe "monthly pacer" do
     it "return some data" do
       school_plan = {
         school_plan_services: [
@@ -74,29 +74,6 @@ RSpec.describe Pacing::Pacer do
     end
 
     it "should return a positive pacing when more visits are completed than expected before a particular point in time" do
-      # We definitely need state data to determine holidays
-      # some ideas
-      # fix pacing definition and formula
-      # fix date format
-      # Pace = actual visits at point in time - expected visits to meet frequency at that point in time 6 -6
-
-      # TODO Missing Data
-      # IEP reset date
-      # Frequency (weekly, monthly)
-
-
-      # IEP visits allowed per the period
-      # How many visits have happened in the period
-
-
-      # IEP (parent)
-
-      # IEP Services
-      # Service A (discipline, 2Wx30)
-      # Service B (3Mx30)
-      # Service C (4Mx20)
-
-      # consider the very scenario of the treatment start date being different from the school plan start date. Include specs for these?
       school_plan = {
         school_plan_services: [
           {
@@ -317,7 +294,7 @@ RSpec.describe Pacing::Pacer do
     # end
   end
 
-  describe "weekly interval allowable sessions" do
+  describe "weekly pacer" do
     it "should return a positive pacing when more visits are completed than expected before a particular point in time" do
 
       school_plan = {
@@ -536,7 +513,7 @@ RSpec.describe Pacing::Pacer do
     end
   end
 
-  describe "yearly interval allowable sessions" do
+  describe "yearly pacer" do
     it "should return a positive pacing when more visits are completed than expected before a particular point in time" do
 
       school_plan = {
