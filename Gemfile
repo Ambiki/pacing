@@ -2,6 +2,8 @@
 
 source "https://rubygems.org"
 
-# gem "rails"
-
 gem "holidays", "~> 8.6"
+
+group :test do
+  gem 'rspec'
+end
