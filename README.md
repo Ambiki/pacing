@@ -156,6 +156,11 @@ To get started with development:
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
+## Publishing
+
+1. gem build pacing.gemspec
+2. gem push pacing-x.x.x.gem
+
 ## License
 
 The MIT License (MIT)
