@@ -55,8 +55,8 @@ school_plan = {
   ]
 }
 
-date = '01-22-2022', # string (mm-dd-yyyy)
-non_business_days = ['01-25-2022'], # array of strings (mm-dd-yyyy)
+date = '01-22-2022' # string (mm-dd-yyyy)
+non_business_days = ['01-25-2022'] # array of strings (mm-dd-yyyy)
 paced = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
 paced.calculate
 
