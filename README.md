@@ -139,6 +139,8 @@ The following list shows the various variables and what they consist of:
 
 ## Testing
 
++ `bundle exec rspec`
+
 ## Contributing
 
 Everyone is encouraged to help improve this project. Here are a few ways you can help:
