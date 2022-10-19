@@ -4,13 +4,14 @@ require 'holidays'
 module Pacing
   class Pacer
     COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    attr_reader :school_plan, :date, :non_business_days, :state
+    attr_reader :school_plan, :date, :non_business_days, :state, :mode
 
-    def initialize(school_plan:, date:, non_business_days:, state: :us_tn)
+    def initialize(school_plan:, date:, non_business_days:, state: :us_tn, mode: :liberal)
       @school_plan = school_plan
       @non_business_days = non_business_days
       @date = date
       @state = state
+      @mode = mode
 
       raise ArgumentError.new("You must pass in at least one school plan") if @school_plan.nil?
       raise TypeError.new("School plan must be a hash") if @school_plan.class != Hash
@@ -68,7 +69,7 @@ module Pacing
     def expected_visits(start_date:, end_date:, frequency:, interval:)
       reset_start = start_of_treatment_date(start_date, interval)
 
-      reset_end =  reset_start + interval_days(interval)
+      reset_end = end_of_treatment_date(reset_start, interval)
 
       days_between = business_days(reset_start, reset_end).count
 
@@ -198,7 +199,15 @@ module Pacing
 
     # start of treatment for the montly interval
     def start_of_treatment_date_monthly(start_date)
-      parse_date("#{parse_date(@date).month}-#{start_date.day}-#{parse_date(@date).year}")
+      if @mode == :strict
+        return parse_date("#{parse_date(@date).month}-#{start_date.day}-#{parse_date(@date).year}")
+      else
+        return parse_date("#{parse_date(@date).month}-01-#{parse_date(@date).year}")
+      end
+    end
+
+    def end_of_treatment_date(reset_start, interval)
+      reset_start + interval_days(interval)
     end
 
     # start of treatment for the weekly interval
