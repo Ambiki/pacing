@@ -1,11 +1,6 @@
 require 'spec_helper'
 require 'date'
 
-# update readme for treatment start date
-# update readme for state
-# update readme for new start date issue
-# update code for it
-
 RSpec.describe Pacing::Pacer do
   describe "monthly pacer" do
     it "return some data" do

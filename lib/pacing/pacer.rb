@@ -2,6 +2,7 @@ require 'date'
 require 'holidays'
 
 module Pacing
+  # two modes(strict: use start dates strictly in calculating pacing)
   class Pacer
     COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     attr_reader :school_plan, :date, :non_business_days, :state, :mode
