@@ -5,7 +5,7 @@ module Pacing
   # two modes(strict: use start dates strictly in calculating pacing)
   class Pacer
     COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    attr_reader :school_plan, :date, :non_business_days, :state, :mode
+    attr_reader :school_plan, :date, :non_business_days, :state, :mode, :interval
 
     def initialize(school_plan:, date:, non_business_days:, state: :us_tn, mode: :liberal)
       @school_plan = school_plan
@@ -19,6 +19,7 @@ module Pacing
       
       raise ArgumentError.new('You must pass in a date') if @date.nil?
       raise TypeError.new("The date should be formatted as a string in the format mm-dd-yyyy") if @date.class != String || !/(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-(19|20)\d\d/.match?(@date)
+      raise ArgumentError.new('Date must be within the interval range of the school plan') if !date_within_range
       
       @non_business_days.each do |non_business_day|
         raise TypeError.new('"Non business days" dates should be formatted as a string in the format mm-dd-yyyy') if non_business_day.class != String || !/(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-(19|20)\d\d/.match?(non_business_day)
@@ -74,7 +75,11 @@ module Pacing
 
       days_between = business_days(reset_start, reset_end).count
 
-      days_passed = business_days(reset_start, parse_date(@date)).count
+      days_passed = 0
+
+      if parse_date(@date) > reset_start
+        days_passed = business_days(reset_start, parse_date(@date)).count
+      end
 
       if days_between != 0
         return ((frequency/days_between.to_f) * days_passed).round
@@ -110,7 +115,11 @@ module Pacing
     end
 
     def parse_date(date)
-      Date.strptime(date, '%m-%d-%Y')
+      begin
+        Date.strptime(date, '%m-%d-%Y')
+      rescue => exception
+        
+      end
     end
 
     def parsed_non_business_days
@@ -170,7 +179,11 @@ module Pacing
     end
 
     def get_holidays(start_date, end_date)
-      Holidays.between(start_date, end_date, @state).map { |holiday| holiday[:date] }
+      begin
+        Holidays.between(start_date, end_date, @state).map { |holiday| holiday[:date] }
+      rescue => exception
+        puts "@e have an error here buddy start date #{start_date} and end date #{end_date} and the interval #{@interval} and the sum #{interval_days(interval)} "
+      end
     end
 
     # get actual date of the first day of the week where date falls
@@ -220,6 +233,22 @@ module Pacing
       weekly_date = date < weekly_date ? weekly_date - 7 : weekly_date
 
       weekly_date
+    end
+
+    def date_within_range
+      within_range = true
+
+      begin
+        @school_plan[:school_plan_services].each do |school_plan_service|
+          if !(parse_date(school_plan_service[:start_date]) <= parse_date(@date) && parse_date(@date) <= parse_date(school_plan_service[:end_date]))
+            within_range = false
+          end
+        end
+      rescue => exception
+        # within_range = false
+      end
+      
+      within_range
     end
   end
 end
