@@ -77,15 +77,19 @@ module Pacing
 
       days_passed = 0
 
+      visits = 0
+
       if parse_date(@date) > reset_start
         days_passed = business_days(reset_start, parse_date(@date)).count
       end
 
       if days_between != 0
-        return ((frequency/days_between.to_f) * days_passed).round
-      else
-        return 0
+        visits = ((frequency/days_between.to_f) * days_passed).round
       end
+
+      # puts "the weekly #{days_between} end date: #{reset_end} start date: #{reset_start} and days_passed #{days_passed}, expected: #{visits}" if interval == "weekly"
+
+      return visits
     end
 
     def interval_days(interval)
@@ -182,7 +186,6 @@ module Pacing
       begin
         Holidays.between(start_date, end_date, @state).map { |holiday| holiday[:date] }
       rescue => exception
-        puts "@e have an error here buddy start date #{start_date} and end date #{end_date} and the interval #{@interval} and the sum #{interval_days(interval)} "
       end
     end
 
@@ -229,8 +232,12 @@ module Pacing
       date = parse_date(@date)
 
       week_start_date = week_start(date)
-      weekly_date = week_start_date + start_date.wday
-      weekly_date = date < weekly_date ? weekly_date - 7 : weekly_date
+      weekly_date = week_start_date
+
+      if week_start_date != parse_date(@date) && @mode == :strict
+        weekly_date = week_start_date + start_date.wday #unless start_date.wday == 1
+        weekly_date = date < weekly_date ? weekly_date - 7 : weekly_date
+      end
 
       weekly_date
     end
