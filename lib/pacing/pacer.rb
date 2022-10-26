@@ -54,17 +54,23 @@ module Pacing
       services = @school_plan[:school_plan_services]
 
       services = services.map do |service|
+        discipline = {}
+
         expected = expected_visits(start_date: parse_date(service[:start_date]), end_date: parse_date(service[:end_date]), frequency: service[:frequency], interval: service[:interval])
 
-        service[:pace] = pace(service[:completed_visits_for_current_interval], expected)
-        service[:reset_date] = reset_date(start_date: service[:start_date], interval: service[:interval_for_extra_sessions_allowable])
-        service[:remaining_visits] = remaining_visits(completed_visits: service[:completed_visits_for_current_interval], required_visits: service[:frequency])
-        service[:pace_indicator] = pace_indicator(service[:pace])
+        discipline[:pace] = pace(service[:completed_visits_for_current_interval], expected)
+        discipline[:reset_date] = reset_date(start_date: service[:start_date], interval: service[:interval_for_extra_sessions_allowable])
+        discipline[:remaining_visits] = remaining_visits(completed_visits: service[:completed_visits_for_current_interval], required_visits: service[:frequency])
+        discipline[:pace_indicator] = pace_indicator(discipline[:pace])
+        discipline[:used_visits] =  service[:completed_visits_for_current_interval]
+        discipline[:pace_suggestion] = "once a day"
+        discipline[:expected_visits_at_date] = expected
+        discipline[:discipline] = ["Language Therapy", "Speech Therapy"].include?(service[:type_of_service]) ? "Speech Therapy" : service[:type_of_service]
 
-        service
+        discipline
       end
 
-      { school_plan_services: services }
+      services
     end
 
     # get a spreadout of visit dates over an interval by using simple proportion.
@@ -201,7 +207,7 @@ module Pacing
 
     # reset date for the monthly interval
     def reset_date_monthly(start_date, interval)
-      (start_of_treatment_date(parse_date(start_date), interval) + COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]-1).strftime("%m-%d-%Y")
+      (start_of_treatment_date(parse_date(start_date), interval) + COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]).strftime("%m-%d-%Y")
     end
 
     # reset date for the weekly interval
@@ -256,6 +262,20 @@ module Pacing
       end
       
       within_range
+    end
+
+    def group_to_disciplines
+    end
+
+    def speech_discipline(services)
+      discipline = {}
+      speech_services = services.filter do |service|
+        ["Language Therapy", "Speech Therapy"].include? service[:type_of_service]
+      end
+
+      speech_services.each do |service|
+        discipline[:pace] = discipline[:pace].to_i + service[:pace] 
+      end
     end
   end
 end
