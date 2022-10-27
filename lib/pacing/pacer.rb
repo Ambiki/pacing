@@ -13,7 +13,6 @@ module Pacing
       @date = date
       @state = state
       @mode = mode
-      @summer_holidays = summer_holidays.empty? ? [parse_date("05-31-#{parse_date(date).year}"), parse_date("09-01-#{parse_date(date).year}")] : summer_holidays
 
       raise ArgumentError.new("You must pass in at least one school plan") if @school_plan.nil?
       raise TypeError.new("School plan must be a hash") if @school_plan.class != Hash
@@ -49,6 +48,8 @@ module Pacing
 
         raise TypeError.new("Interval for extra sessions allowable must be a string and cannot be nil") if school_plan_service[:interval_for_extra_sessions_allowable].class != String || school_plan_service[:interval_for_extra_sessions_allowable].nil?
       end
+
+      @summer_holidays = summer_holidays.empty? ? [parse_date("05-31-#{parse_date(date).year}"), parse_date("09-01-#{parse_date(date).year}")] : summer_holidays
     end
 
     def calculate
