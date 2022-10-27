@@ -186,7 +186,7 @@ RSpec.describe Pacing::Pacer do
             frequency: 12,
             interval: 'monthly',
             time_per_session_in_minutes: 30,
-            completed_visits_for_current_interval: 6,
+            completed_visits_for_current_interval: 7,
             extra_sessions_allowable: 1,
             interval_for_extra_sessions_allowable: 'monthly'
           }, {
@@ -212,10 +212,10 @@ RSpec.describe Pacing::Pacer do
           [
             {
               discipline: 'Speech Therapy',
-              remaining_visits: 6,
-              used_visits: 6,
+              remaining_visits: 5,
+              used_visits: 7,
               reset_date: '06-01-2022',
-              expected_visits_at_date: 6,
+              expected_visits_at_date: 7,
               pace: 0,
               pace_indicator: "😁",
               pace_suggestion: "once a day"

@@ -7,13 +7,13 @@ module Pacing
     COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     attr_reader :school_plan, :date, :non_business_days, :state, :mode, :interval, :summer_holidays
 
-    def initialize(school_plan:, date:, non_business_days:, state: :us_tn, mode: :liberal, summer_holidays: 75)
+    def initialize(school_plan:, date:, non_business_days:, state: :us_tn, mode: :liberal, summer_holidays: [])
       @school_plan = school_plan
       @non_business_days = non_business_days
       @date = date
       @state = state
       @mode = mode
-      @summer_holidays = summer_holidays
+      @summer_holidays = summer_holidays.empty? ? [parse_date("05-31-#{parse_date(date).year}"), parse_date("09-01-#{parse_date(date).year}")] : summer_holidays
 
       raise ArgumentError.new("You must pass in at least one school plan") if @school_plan.nil?
       raise TypeError.new("School plan must be a hash") if @school_plan.class != Hash
@@ -91,22 +91,17 @@ module Pacing
 
       days_between = business_days(reset_start, reset_end).count
 
-      days_between = interval == "yearly" ? days_between - @summer_holidays : days_between
-
       days_passed = 0
 
       visits = 0
 
       if parse_date(@date) > reset_start
         days_passed = business_days(reset_start, parse_date(@date)).count
-        days_passed = interval == "yearly" ? days_passed - @summer_holidays : days_passed
       end
 
       if days_between != 0
         visits = ((frequency/days_between.to_f) * days_passed).round
       end
-  
-      # puts "the weekly #{days_between} end date: #{reset_end} start date: #{reset_start} and days_passed #{days_passed}, expected: #{visits}" if interval == "weekly"
 
       return visits
     end
@@ -157,11 +152,13 @@ module Pacing
       # remove holidays(array from Ambiki)
       # remove school holidays/non business days
       # should we remove today?(datetime call?)
+      summer = get_working_days(summer_holidays[0], summer_holidays[1])
+
       working_days = get_working_days(start_date, end_date)
 
       holidays = get_holidays(start_date, end_date)
-      
-      working_days.sort - parsed_non_business_days.sort - holidays.sort
+
+      working_days.sort - parsed_non_business_days.sort - holidays.sort - summer.sort
     end
 
     # scoped to the interval
@@ -230,7 +227,13 @@ module Pacing
 
     # start of treatment for the yearly interval
     def start_of_treatment_date_yearly(start_date)
-      parse_date("#{start_date.month}-#{start_date.day}-#{parse_date(@date).year}")
+      start = parse_date("#{start_date.month}-#{start_date.day}-#{parse_date(@date).year}")
+      if start > parse_date(date)
+        start = start_date
+      end
+
+      start
+      # start_date
     end
 
     # start of treatment for the montly interval
@@ -248,14 +251,13 @@ module Pacing
 
     # start of treatment for the weekly interval
     def start_of_treatment_date_weekly(start_date)
-      date = parse_date(@date)
-
-      week_start_date = week_start(date)
+      parsed_date = parse_date(@date)
+      week_start_date = week_start(parsed_date)
       weekly_date = week_start_date
 
-      if week_start_date != parse_date(@date) && @mode == :strict
+      if week_start_date != parsed_date && @mode == :strict
         weekly_date = week_start_date + start_date.wday #unless start_date.wday == 1
-        weekly_date = date < weekly_date ? weekly_date - 7 : weekly_date
+        weekly_date = parsed_date < weekly_date ? weekly_date - 7 : weekly_date
       end
 
       weekly_date
@@ -320,7 +322,6 @@ module Pacing
       reset_end = end_of_treatment_date(reset_start, interval)
 
       days_left = business_days(parse_date(@date), reset_end).count
-      days_left = interval == "yearly" ? days_left - @summer_holidays : days_left
 
       days_left
     end
