@@ -444,7 +444,7 @@ RSpec.describe Pacing::Pacer do
         ]
       }
 
-      date = '08-16-2022'
+      date = '03-16-2023'
       non_business_days = ['04-25-2022']
 
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, mode: :strict).calculate
@@ -760,7 +760,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>4, :pace=>1, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 51" do
