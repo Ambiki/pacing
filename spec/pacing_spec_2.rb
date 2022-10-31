@@ -7,7 +7,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-10-2022", :end_date=>"05-10-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-10-2022", :end_date=>"05-10-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -15,7 +15,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-06-2021", :end_date=>"12-06-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"12-06-2021", :end_date=>"12-06-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -23,7 +23,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-15-2022", :end_date=>"02-15-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -31,7 +31,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-14-2022", :end_date=>"04-14-2023", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -39,7 +39,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-09-2022", :end_date=>"12-02-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"02-09-2002", :end_date=>"12-02-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -47,7 +47,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-31-2022", :end_date=>"08-31-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -55,7 +55,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-17-2022", :end_date=>"03-30-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -63,7 +63,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-16-2021", :end_date=>"11-16-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -71,7 +71,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-11-2022", :end_date=>"01-11-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -79,7 +79,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-30-2022", :end_date=>"09-30-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -87,7 +87,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-16-2022", :end_date=>"08-15-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-16-2022", :end_date=>"08-15-2023", :type_of_service=>"Speech Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -95,7 +95,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-29-2022", :end_date=>"04-29-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -103,7 +103,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-21-2022", :end_date=>"03-21-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -111,7 +111,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-04-2022", :end_date=>"04-04-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-04-2022", :end_date=>"04-04-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -119,7 +119,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-06-2022", :end_date=>"09-06-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -127,7 +127,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-06-2021", :end_date=>"11-06-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -135,7 +135,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-21-2021", :end_date=>"10-21-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>1, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -143,7 +143,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-11-2022", :end_date=>"03-11-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -151,7 +151,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-04-2022", :end_date=>"02-04-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -159,7 +159,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-04-2022", :end_date=>"02-04-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -167,7 +167,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-16-2022", :end_date=>"02-16-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -175,7 +175,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-28-2022", :end_date=>"05-24-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-01-2022", :end_date=>"02-28-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>1, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -183,7 +183,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-03-2022", :end_date=>"05-03-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-03-2022", :end_date=>"05-03-2023", :type_of_service=>"Occupation Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>2, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -191,7 +191,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-18-2022", :end_date=>"08-18-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -199,7 +199,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-22-2022", :end_date=>"03-22-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -207,7 +207,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-28-2022", :end_date=>"04-28-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-14-2022", :end_date=>"07-07-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -215,7 +215,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-16-2022", :end_date=>"09-16-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -223,7 +223,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-08-2021", :end_date=>"12-08-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -231,7 +231,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-02-2022", :end_date=>"09-01-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-02-2022", :end_date=>"09-01-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -239,7 +239,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-02-2022", :end_date=>"09-01-2023", :type_of_service=>"Speech Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"09-02-2022", :end_date=>"09-01-2023", :type_of_service=>"Language Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -247,7 +247,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-17-2022", :end_date=>"02-17-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"02-17-2022", :end_date=>"02-17-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -255,7 +255,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-18-2022", :end_date=>"04-18-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -263,7 +263,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-22-2022", :end_date=>"11-30-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -271,7 +271,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-12-2021", :end_date=>"11-12-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -279,7 +279,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-08-2022", :end_date=>"09-07-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-08-2022", :end_date=>"09-07-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>5, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -287,7 +287,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-10-2022", :end_date=>"05-09-2023", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>5, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>1, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"11-01-2022"}])
     end
 
@@ -295,7 +295,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-24-2022", :end_date=>"08-24-2023", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-24-2022", :end_date=>"08-24-2023", :type_of_service=>"Speech Therapy", :frequency=>1, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>2, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -303,7 +303,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-28-2022", :end_date=>"09-27-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -311,7 +311,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-29-2021", :end_date=>"11-28-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>5, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -319,7 +319,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-09-2022", :end_date=>"09-09-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-09-2022", :end_date=>"09-09-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -327,7 +327,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-14-2022", :end_date=>"04-13-2023", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -335,7 +335,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-25-2022", :end_date=>"08-25-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -343,7 +343,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-03-2021", :end_date=>"11-03-2022", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>73, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"11-03-2021", :end_date=>"11-03-2022", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>73, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>43, :used_visits=>65, :pace=>-38, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>103, :reset_date=>"11-03-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>29, :pace=>-1, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>30, :reset_date=>"11-03-2022"}])
     end
 
@@ -351,7 +351,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-23-2022", :end_date=>"09-22-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -359,7 +359,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-11-2021", :end_date=>"11-11-2022", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>66, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"11-11-2021", :end_date=>"11-11-2022", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>66, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>60, :used_visits=>48, :pace=>-52, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>100, :reset_date=>"11-11-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>28, :pace=>-2, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>30, :reset_date=>"11-11-2022"}])
     end
 
@@ -367,7 +367,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-11-2021", :end_date=>"11-11-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -375,7 +375,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-07-2022", :end_date=>"09-07-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-07-2022", :end_date=>"09-07-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2023", :end_date=>"06-30-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2023", :end_date=>"06-30-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -383,7 +383,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-11-2022", :end_date=>"03-10-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-11-2022", :end_date=>"03-10-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -391,7 +391,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-07-2022", :end_date=>"09-07-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-07-2022", :end_date=>"09-07-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -399,7 +399,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-24-2022", :end_date=>"03-24-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -407,7 +407,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-23-2022", :end_date=>"11-29-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -415,7 +415,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-11-2022", :end_date=>"11-29-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -423,7 +423,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-09-2022", :end_date=>"02-09-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -431,7 +431,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-15-2021", :end_date=>"11-15-2022", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>8, :used_visits=>1, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -439,7 +439,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-18-2022", :end_date=>"08-18-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -447,7 +447,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-18-2021", :end_date=>"11-18-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -455,7 +455,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-08-2022", :end_date=>"04-08-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-08-2022", :end_date=>"04-08-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -463,7 +463,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-28-2022", :end_date=>"09-28-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-28-2022", :end_date=>"09-28-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -471,7 +471,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-14-2022", :end_date=>"09-14-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -479,7 +479,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-19-2022", :end_date=>"09-19-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -487,7 +487,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-02-2021", :end_date=>"11-02-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -495,7 +495,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-20-2021", :end_date=>"10-20-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-20-2021", :end_date=>"10-20-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -503,7 +503,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-28-2022", :end_date=>"09-28-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-28-2022", :end_date=>"09-28-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -511,7 +511,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-08-2022", :end_date=>"09-08-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-08-2022", :end_date=>"09-08-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -519,7 +519,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-10-2022", :end_date=>"05-10-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-10-2022", :end_date=>"05-10-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -527,7 +527,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-05-2022", :end_date=>"10-05-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -535,7 +535,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-02-2022", :end_date=>"04-07-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-02-2022", :end_date=>"04-07-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -543,7 +543,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-04-2021", :end_date=>"11-04-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -551,7 +551,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-19-2022", :end_date=>"05-19-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>83, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"05-19-2022", :end_date=>"05-19-2023", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>83, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>91, :used_visits=>17, :pace=>-28, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>45, :reset_date=>"05-19-2023"}, {:discipline=>"Occupational Therapy", :remaining_visits=>23, :used_visits=>9, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>13, :reset_date=>"05-19-2023"}])
     end
 
@@ -559,7 +559,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-10-2021", :end_date=>"12-10-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"12-10-2021", :end_date=>"12-10-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -567,7 +567,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-24-2022", :end_date=>"03-24-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -575,7 +575,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-29-2021", :end_date=>"10-29-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-29-2021", :end_date=>"10-29-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>0, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -583,7 +583,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-23-2021", :end_date=>"11-22-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -591,7 +591,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-03-2022", :end_date=>"09-03-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-03-2022", :end_date=>"09-03-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -599,7 +599,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-03-2022", :end_date=>"10-03-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -607,7 +607,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-16-2022", :end_date=>"08-16-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -615,7 +615,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-29-2022", :end_date=>"07-27-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-29-2022", :end_date=>"07-27-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"07-28-2022", :end_date=>"03-28-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"07-28-2022", :end_date=>"03-28-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -623,7 +623,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-02-2022", :end_date=>"05-02-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -631,7 +631,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-29-2021", :end_date=>"10-29-2022", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>81, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"10-29-2021", :end_date=>"10-29-2022", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>81, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>35, :used_visits=>73, :pace=>-31, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>104, :reset_date=>"10-29-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>1, :used_visits=>31, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>31, :reset_date=>"10-29-2022"}])
     end
 
@@ -639,7 +639,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-13-2022", :end_date=>"11-22-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -647,7 +647,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-28-2021", :end_date=>"10-27-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -655,7 +655,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-19-2021", :end_date=>"10-19-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -663,7 +663,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-23-2022", :end_date=>"02-23-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -671,7 +671,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-29-2021", :end_date=>"10-29-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-29-2021", :end_date=>"10-29-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -679,7 +679,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-08-2021", :end_date=>"11-08-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -687,7 +687,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-08-2021", :end_date=>"11-08-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -695,7 +695,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-29-2021", :end_date=>"11-29-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -703,7 +703,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-31-2022", :end_date=>"08-30-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -711,7 +711,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-13-2022", :end_date=>"04-13-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -719,7 +719,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-06-2022", :end_date=>"09-06-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -727,7 +727,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-14-2022", :end_date=>"05-20-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-20-2022", :end_date=>"02-14-2023", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"11-01-2022"}])
     end
 
@@ -735,7 +735,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-31-2022", :end_date=>"11-17-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"01-31-2022", :end_date=>"11-17-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -743,7 +743,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-28-2021", :end_date=>"10-27-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -751,7 +751,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-20-2022", :end_date=>"12-01-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-20-2022", :end_date=>"12-01-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>5, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -759,7 +759,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-06-2022", :end_date=>"09-06-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -767,7 +767,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-06-2022", :end_date=>"05-10-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -775,7 +775,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-12-2022", :end_date=>"04-12-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -783,7 +783,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-18-2021", :end_date=>"11-18-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"11-18-2021", :end_date=>"11-18-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -791,7 +791,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-07-2022", :end_date=>"10-07-2023", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -799,7 +799,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-12-2022", :end_date=>"10-12-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -807,7 +807,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-24-2022", :end_date=>"05-10-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-24-2022", :end_date=>"05-10-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -815,7 +815,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-12-2022", :end_date=>"11-18-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-12-2022", :end_date=>"11-18-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-14-2022", :end_date=>"07-07-2022", :type_of_service=>"Speech Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"06-14-2022", :end_date=>"07-07-2022", :type_of_service=>"Language Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -823,7 +823,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-08-2022", :end_date=>"09-08-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-08-2022", :end_date=>"09-08-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -831,7 +831,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-14-2021", :end_date=>"12-14-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"12-14-2021", :end_date=>"12-14-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -839,7 +839,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-25-2022", :end_date=>"08-24-2023", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -847,7 +847,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-19-2022", :end_date=>"08-18-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-19-2022", :end_date=>"08-18-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -855,7 +855,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-06-2022", :end_date=>"10-06-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-06-2022", :end_date=>"10-06-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>3, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -863,7 +863,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-03-2021", :end_date=>"11-03-2022", :type_of_service=>"Language Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>1, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -871,7 +871,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-16-2022", :end_date=>"09-15-2023", :type_of_service=>"Language Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>1, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -879,7 +879,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-31-2022", :end_date=>"08-31-2023", :type_of_service=>"Speech Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"08-31-2022", :end_date=>"08-31-2023", :type_of_service=>"Language Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"10-24-2022"}])
     end
 
@@ -887,7 +887,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-07-2022", :end_date=>"04-07-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -895,7 +895,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-20-2022", :end_date=>"01-20-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -903,7 +903,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-13-2022", :end_date=>"09-13-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -911,7 +911,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-02-2022", :end_date=>"09-02-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -919,7 +919,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-10-2022", :end_date=>"05-10-2023", :type_of_service=>"Language Therapy", :frequency=>55, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>47, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>36, :used_visits=>19, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>24, :reset_date=>"05-10-2023"}])
     end
 
@@ -927,7 +927,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-10-2022", :end_date=>"02-10-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -935,7 +935,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-12-2022", :end_date=>"04-12-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -943,7 +943,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-12-2022", :end_date=>"01-12-2023", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -951,7 +951,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-30-2021", :end_date=>"11-29-2022", :type_of_service=>"Speech Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"11-30-2021", :end_date=>"11-29-2022", :type_of_service=>"Language Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -959,7 +959,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-25-2022", :end_date=>"02-16-2023", :type_of_service=>"Speech Therapy", :frequency=>54, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>93, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"03-25-2022", :end_date=>"02-16-2023", :type_of_service=>"Language Therapy", :frequency=>54, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>93, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"03-25-2022", :end_date=>"02-16-2023", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>93, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>60, :used_visits=>48, :pace=>-20, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>68, :reset_date=>"02-16-2023"}, {:discipline=>"Occupational Therapy", :remaining_visits=>12, :used_visits=>20, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>20, :reset_date=>"02-16-2023"}])
     end
 
@@ -967,7 +967,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-04-2022", :end_date=>"10-04-2023", :type_of_service=>"Speech Therapy", :frequency=>55, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>43, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>62, :used_visits=>3, :pace=>1, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"10-04-2023"}])
     end
 
@@ -975,7 +975,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-18-2022", :end_date=>"02-18-2023", :type_of_service=>"Speech Therapy", :frequency=>90, :interval=>"yearly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>70, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"02-18-2022", :end_date=>"02-18-2023", :type_of_service=>"Language Therapy", :frequency=>90, :interval=>"yearly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>70, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"06-06-2022", :end_date=>"06-24-2022", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"06-06-2022", :end_date=>"06-24-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>45, :used_visits=>55, :pace=>-11, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>66, :reset_date=>"02-18-2023"}])
     end
 
@@ -983,7 +983,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-10-2022", :end_date=>"02-10-2023", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>44, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"02-10-2022", :end_date=>"02-10-2023", :type_of_service=>"Speech Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>44, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>47, :used_visits=>33, :pace=>-21, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>54, :reset_date=>"02-10-2023"}])
     end
 
@@ -991,7 +991,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-10-2022", :end_date=>"02-10-2023", :type_of_service=>"Language Therapy", :frequency=>55, :interval=>"yearly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>49, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"02-10-2022", :end_date=>"02-10-2023", :type_of_service=>"Speech Therapy", :frequency=>55, :interval=>"yearly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>49, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>27, :used_visits=>38, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>44, :reset_date=>"02-10-2023"}])
     end
 
@@ -999,7 +999,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-03-2022", :end_date=>"05-03-2023", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>57, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>41, :used_visits=>29, :pace=>-3, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>32, :reset_date=>"05-03-2023"}])
     end
 
@@ -1007,7 +1007,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-13-2022", :end_date=>"04-13-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1015,7 +1015,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-19-2022", :end_date=>"09-19-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1023,7 +1023,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-01-2022", :end_date=>"02-01-2023", :type_of_service=>"Speech Therapy", :frequency=>60, :interval=>"yearly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>47, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"02-01-2022", :end_date=>"02-01-2023", :type_of_service=>"Language Therapy", :frequency=>60, :interval=>"yearly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>47, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>17, :used_visits=>43, :pace=>1, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>42, :reset_date=>"02-01-2023"}])
     end
 
@@ -1031,7 +1031,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-19-2021", :end_date=>"11-19-2022", :type_of_service=>"Speech Therapy", :frequency=>54, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>57, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"11-19-2021", :end_date=>"11-19-2022", :type_of_service=>"Language Therapy", :frequency=>54, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>57, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>55, :used_visits=>63, :pace=>-44, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>107, :reset_date=>"11-19-2022"}])
     end
 
@@ -1039,7 +1039,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-12-2022", :end_date=>"01-12-2023", :type_of_service=>"Language Therapy", :frequency=>65, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>45, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>23, :used_visits=>42, :pace=>-7, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>49, :reset_date=>"01-12-2023"}])
     end
 
@@ -1047,7 +1047,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-16-2022", :end_date=>"05-16-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>82, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"05-16-2022", :end_date=>"05-16-2023", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>82, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>90, :used_visits=>18, :pace=>-28, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>46, :reset_date=>"05-16-2023"}, {:discipline=>"Occupational Therapy", :remaining_visits=>23, :used_visits=>9, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>14, :reset_date=>"05-16-2023"}])
     end
 
@@ -1055,7 +1055,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-06-2022", :end_date=>"09-06-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -1063,7 +1063,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-29-2021", :end_date=>"11-28-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"11-29-2021", :end_date=>"11-28-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1071,7 +1071,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-29-2021", :end_date=>"10-29-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1079,7 +1079,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-26-2022", :end_date=>"01-26-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1087,7 +1087,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-13-2021", :end_date=>"12-13-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1095,7 +1095,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-30-2022", :end_date=>"08-30-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1103,7 +1103,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-11-2022", :end_date=>"01-10-2023", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -1111,7 +1111,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-30-2022", :end_date=>"09-30-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-30-2022", :end_date=>"09-30-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1119,7 +1119,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-19-2022", :end_date=>"05-19-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-19-2022", :end_date=>"05-19-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1127,7 +1127,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-08-2021", :end_date=>"11-08-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"11-08-2021", :end_date=>"11-08-2022", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -1135,7 +1135,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-16-2021", :end_date=>"12-16-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -1143,7 +1143,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-12-2022", :end_date=>"04-07-2023", :type_of_service=>"Language Therapy", :frequency=>16, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>6, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>6, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>9, :reset_date=>"11-01-2022"}])
     end
 
@@ -1151,7 +1151,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-19-2021", :end_date=>"10-19-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-19-2021", :end_date=>"10-19-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1159,7 +1159,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-23-2022", :end_date=>"08-23-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-23-2022", :end_date=>"08-23-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1167,7 +1167,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-08-2022", :end_date=>"09-08-2023", :type_of_service=>"Language Therapy", :frequency=>60, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>50, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>57, :used_visits=>13, :pace=>6, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"09-08-2023"}])
     end
 
@@ -1175,7 +1175,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-01-2021", :end_date=>"10-31-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1183,7 +1183,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-30-2022", :end_date=>"08-30-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-30-2022", :end_date=>"08-30-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1191,7 +1191,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-01-2022", :end_date=>"03-03-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-03-2022", :end_date=>"05-23-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1199,7 +1199,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-15-2022", :end_date=>"08-15-2023", :type_of_service=>"Speech Therapy", :frequency=>65, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>48, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>59, :used_visits=>16, :pace=>3, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>13, :reset_date=>"08-15-2023"}])
     end
 
@@ -1207,7 +1207,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-30-2022", :end_date=>"08-30-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-30-2022", :end_date=>"08-30-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1215,7 +1215,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-29-2021", :end_date=>"11-29-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1223,7 +1223,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-07-2022", :end_date=>"12-10-2022", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -1231,7 +1231,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-22-2021", :end_date=>"11-21-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -1239,7 +1239,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-25-2022", :end_date=>"04-25-2023", :type_of_service=>"Speech Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>46, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>45, :used_visits=>25, :pace=>-9, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>34, :reset_date=>"04-25-2023"}])
     end
 
@@ -1247,7 +1247,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-25-2022", :end_date=>"04-25-2023", :type_of_service=>"Speech Therapy", :frequency=>90, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>63, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>54, :used_visits=>36, :pace=>-7, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>43, :reset_date=>"04-25-2023"}])
     end
 
@@ -1255,7 +1255,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-26-2022", :end_date=>"04-26-2023", :type_of_service=>"Speech Therapy", :frequency=>30, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>42, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>18, :used_visits=>12, :pace=>-2, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>14, :reset_date=>"04-26-2023"}])
     end
 
@@ -1263,7 +1263,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-06-2022", :end_date=>"09-06-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1271,7 +1271,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-11-2022", :end_date=>"01-11-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1279,7 +1279,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-29-2022", :end_date=>"01-01-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"01-01-2023", :end_date=>"09-29-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1287,7 +1287,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-12-2021", :end_date=>"11-12-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1295,7 +1295,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-29-2021", :end_date=>"11-29-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1303,7 +1303,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-11-2022", :end_date=>"01-11-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1311,7 +1311,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-10-2021", :end_date=>"12-10-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1319,7 +1319,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-30-2022", :end_date=>"03-30-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1327,7 +1327,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-02-2021", :end_date=>"12-02-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -1335,7 +1335,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-21-2022", :end_date=>"01-21-2023", :type_of_service=>"Speech Therapy", :frequency=>55, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>45, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>23, :used_visits=>42, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>48, :reset_date=>"01-21-2023"}])
     end
 
@@ -1343,7 +1343,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-27-2021", :end_date=>"10-27-2022", :type_of_service=>"Speech Therapy", :frequency=>55, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>40, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>52, :pace=>-1, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>53, :reset_date=>"10-27-2022"}])
     end
 
@@ -1351,7 +1351,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-05-2022", :end_date=>"10-05-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1359,7 +1359,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-22-2022", :end_date=>"04-22-2023", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"11-01-2022"}])
     end
 
@@ -1367,7 +1367,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-11-2022", :end_date=>"03-11-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1375,7 +1375,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-22-2022", :end_date=>"09-22-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1383,7 +1383,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-29-2022", :end_date=>"09-29-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1391,7 +1391,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-11-2022", :end_date=>"03-11-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1399,7 +1399,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-28-2022", :end_date=>"09-28-2023", :type_of_service=>"Language Therapy", :frequency=>60, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>48, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>54, :used_visits=>6, :pace=>3, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"09-28-2023"}])
     end
 
@@ -1407,7 +1407,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-07-2022", :end_date=>"09-07-2023", :type_of_service=>"Language Therapy", :frequency=>30, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>64, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"09-07-2022", :end_date=>"09-07-2023", :type_of_service=>"Speech Therapy", :frequency=>30, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>64, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>57, :used_visits=>13, :pace=>5, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>8, :reset_date=>"09-07-2023"}])
     end
 
@@ -1415,7 +1415,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-21-2021", :end_date=>"10-21-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -1423,7 +1423,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-16-2021", :end_date=>"11-16-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1431,7 +1431,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-19-2022", :end_date=>"09-19-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>46, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>100, :used_visits=>8, :pace=>-1, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>9, :reset_date=>"09-19-2023"}])
     end
 
@@ -1439,7 +1439,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-28-2021", :end_date=>"10-28-2022", :type_of_service=>"Language Therapy", :frequency=>55, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>40, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>52, :pace=>-1, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>53, :reset_date=>"10-28-2022"}])
     end
 
@@ -1447,7 +1447,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-18-2022", :end_date=>"02-18-2023", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>25, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"10-24-2022"}])
     end
 
@@ -1455,7 +1455,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-08-2021", :end_date=>"11-08-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"11-08-2021", :end_date=>"11-08-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1463,7 +1463,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-04-2022", :end_date=>"02-04-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>84, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>45, :used_visits=>73, :pace=>-9, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>82, :reset_date=>"02-04-2023"}])
     end
 
@@ -1471,7 +1471,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-17-2022", :end_date=>"08-17-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1479,7 +1479,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-10-2021", :end_date=>"12-10-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1487,7 +1487,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-21-2021", :end_date=>"10-21-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-21-2021", :end_date=>"10-21-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1495,7 +1495,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-30-2021", :end_date=>"11-30-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1503,7 +1503,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-09-2021", :end_date=>"11-09-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"11-09-2021", :end_date=>"11-09-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1511,7 +1511,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-08-2021", :end_date=>"11-08-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -1519,7 +1519,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-01-2022", :end_date=>"03-01-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1527,7 +1527,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-12-2022", :end_date=>"01-12-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"01-12-2022", :end_date=>"01-12-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1535,7 +1535,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-08-2022", :end_date=>"09-08-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-08-2022", :end_date=>"09-08-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2023", :end_date=>"06-30-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2023", :end_date=>"06-30-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1543,7 +1543,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-08-2022", :end_date=>"09-08-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2023", :end_date=>"06-30-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1551,7 +1551,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-16-2021", :end_date=>"11-16-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1559,7 +1559,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-19-2021", :end_date=>"11-18-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1567,7 +1567,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-09-2022", :end_date=>"03-08-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1575,7 +1575,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-16-2021", :end_date=>"12-16-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"12-16-2021", :end_date=>"12-16-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1583,7 +1583,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-01-2022", :end_date=>"09-01-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>100, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>103, :used_visits=>15, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>15, :reset_date=>"09-01-2023"}])
     end
 
@@ -1591,7 +1591,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-29-2022", :end_date=>"08-29-2023", :type_of_service=>"Language Therapy", :frequency=>60, :interval=>"yearly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>51, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"08-29-2022", :end_date=>"08-29-2023", :type_of_service=>"Speech Therapy", :frequency=>60, :interval=>"yearly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>51, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>48, :used_visits=>12, :pace=>4, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>8, :reset_date=>"08-29-2023"}])
     end
 
@@ -1599,7 +1599,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-19-2022", :end_date=>"12-10-2022", :type_of_service=>"Language Therapy", :frequency=>54, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>63, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"04-19-2022", :end_date=>"12-10-2022", :type_of_service=>"Speech Therapy", :frequency=>54, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>63, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>74, :used_visits=>34, :pace=>-49, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>83, :reset_date=>"12-10-2022"}])
     end
 
@@ -1607,7 +1607,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-21-2022", :end_date=>"02-21-2023", :type_of_service=>"Language Therapy", :frequency=>60, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>56, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>28, :used_visits=>42, :pace=>-4, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>46, :reset_date=>"02-21-2023"}])
     end
 
@@ -1615,7 +1615,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-18-2022", :end_date=>"04-18-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1623,7 +1623,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-20-2022", :end_date=>"01-20-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1631,7 +1631,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-27-2022", :end_date=>"01-27-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1639,7 +1639,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-19-2022", :end_date=>"09-19-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-19-2022", :end_date=>"09-19-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>13, :used_visits=>0, :pace=>-7, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1647,7 +1647,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-26-2021", :end_date=>"10-25-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-26-2021", :end_date=>"10-25-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1655,7 +1655,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-15-2022", :end_date=>"09-15-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -1663,7 +1663,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-30-2022", :end_date=>"08-30-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1671,7 +1671,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-21-2021", :end_date=>"10-21-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-21-2021", :end_date=>"10-21-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1679,7 +1679,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-31-2022", :end_date=>"08-31-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1687,7 +1687,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-12-2022", :end_date=>"04-12-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1695,7 +1695,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-02-2022", :end_date=>"03-02-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1703,7 +1703,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-15-2022", :end_date=>"11-05-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"08-15-2022", :end_date=>"11-05-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>15, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -1711,7 +1711,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-13-2022", :end_date=>"01-13-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -1719,7 +1719,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-05-2022", :end_date=>"04-05-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-05-2022", :end_date=>"04-05-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-05-2022", :end_date=>"04-05-2023", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -1727,7 +1727,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-03-2021", :end_date=>"12-03-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>3, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -1735,7 +1735,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-11-2022", :end_date=>"01-11-2023", :type_of_service=>"Speech Therapy", :frequency=>62, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>17, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>45, :used_visits=>17, :pace=>-30, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>47, :reset_date=>"01-11-2023"}])
     end
 
@@ -1743,7 +1743,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-29-2021", :end_date=>"11-29-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"11-29-2021", :end_date=>"11-29-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1751,7 +1751,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-12-2022", :end_date=>"04-12-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>67, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>83, :used_visits=>35, :pace=>-26, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>61, :reset_date=>"04-12-2023"}])
     end
 
@@ -1759,7 +1759,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-22-2022", :end_date=>"08-21-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1767,7 +1767,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-09-2022", :end_date=>"03-09-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1775,7 +1775,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-29-2022", :end_date=>"04-29-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1783,7 +1783,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-26-2022", :end_date=>"08-25-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1791,7 +1791,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-12-2022", :end_date=>"04-12-2023", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"04-12-2022", :end_date=>"04-12-2023", :type_of_service=>"Occupation Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>1, :used_visits=>1, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"11-01-2022"}])
     end
 
@@ -1799,7 +1799,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-07-2022", :end_date=>"03-07-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-07-2022", :end_date=>"03-07-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>25, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -1807,7 +1807,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-26-2021", :end_date=>"10-26-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-26-2021", :end_date=>"10-26-2022", :type_of_service=>"Occupation Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -1815,7 +1815,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-24-2022", :end_date=>"02-24-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1823,7 +1823,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-23-2022", :end_date=>"03-23-2023", :type_of_service=>"Speech and Language Therapy", :frequency=>3, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"10-24-2022"}])
     end
 
@@ -1831,7 +1831,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-16-2022", :end_date=>"09-16-2023", :type_of_service=>"Language Therapy", :frequency=>55, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>35, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>51, :used_visits=>4, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"09-16-2023"}])
     end
 
@@ -1839,7 +1839,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-01-2022", :end_date=>"02-01-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"02-01-2022", :end_date=>"02-01-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1847,7 +1847,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-11-2022", :end_date=>"03-11-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -1855,7 +1855,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-31-2022", :end_date=>"08-31-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-31-2022", :end_date=>"08-31-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2023", :end_date=>"06-30-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2023", :end_date=>"06-30-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1863,7 +1863,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-18-2022", :end_date=>"10-18-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -1871,7 +1871,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-27-2022", :end_date=>"01-27-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1879,7 +1879,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-25-2022", :end_date=>"03-25-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1887,7 +1887,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-19-2022", :end_date=>"01-19-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>92, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"01-19-2022", :end_date=>"01-19-2023", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>92, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>45, :used_visits=>63, :pace=>-17, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>80, :reset_date=>"01-19-2023"}, {:discipline=>"Occupational Therapy", :remaining_visits=>9, :used_visits=>23, :pace=>-1, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>24, :reset_date=>"01-19-2023"}])
     end
 
@@ -1895,7 +1895,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-01-2022", :end_date=>"02-01-2023", :type_of_service=>"Speech Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"02-01-2022", :end_date=>"02-01-2023", :type_of_service=>"Occupation Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>1, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"11-01-2022"}])
     end
 
@@ -1903,7 +1903,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-22-2022", :end_date=>"08-21-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>5, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1911,7 +1911,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-03-2022", :end_date=>"02-03-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"02-03-2022", :end_date=>"02-03-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1919,7 +1919,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-01-2022", :end_date=>"09-01-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-01-2022", :end_date=>"09-01-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1927,7 +1927,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-07-2022", :end_date=>"02-07-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -1935,7 +1935,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-23-2022", :end_date=>"02-17-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1943,7 +1943,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-22-2021", :end_date=>"10-21-2022", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-22-2021", :end_date=>"10-21-2022", :type_of_service=>"Speech Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -1951,7 +1951,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-03-2022", :end_date=>"10-03-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -1959,7 +1959,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-22-2022", :end_date=>"04-22-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-22-2022", :end_date=>"04-22-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1967,7 +1967,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-21-2022", :end_date=>"03-20-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1975,7 +1975,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-26-2022", :end_date=>"09-26-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"10-24-2022"}])
     end
 
@@ -1983,7 +1983,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-30-2022", :end_date=>"09-29-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-30-2022", :end_date=>"09-29-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>21, :used_visits=>4, :pace=>-9, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>13, :reset_date=>"11-01-2022"}])
     end
 
@@ -1991,7 +1991,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-23-2022", :end_date=>"03-23-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -1999,7 +1999,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-06-2022", :end_date=>"05-05-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2007,7 +2007,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-29-2021", :end_date=>"11-29-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>13, :used_visits=>0, :pace=>-7, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2015,7 +2015,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-01-2021", :end_date=>"12-01-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2023,7 +2023,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-13-2022", :end_date=>"04-12-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2031,7 +2031,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-05-2022", :end_date=>"05-05-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2039,7 +2039,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-31-2022", :end_date=>"03-30-2023", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"07-29-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"10-24-2022"}])
     end
 
@@ -2047,7 +2047,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-28-2022", :end_date=>"04-28-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -2055,7 +2055,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-28-2022", :end_date=>"04-28-2023", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-28-2022", :end_date=>"04-28-2023", :type_of_service=>"Speech Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -2063,7 +2063,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-03-2021", :end_date=>"11-02-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>13, :used_visits=>0, :pace=>-7, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2071,7 +2071,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-02-2022", :end_date=>"03-02-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2079,7 +2079,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-23-2022", :end_date=>"02-23-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -2087,7 +2087,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-19-2022", :end_date=>"09-19-2023", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-19-2022", :end_date=>"09-19-2023", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>7, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}, {:discipline=>"Physical Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2095,7 +2095,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-25-2022", :end_date=>"01-25-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"01-25-2022", :end_date=>"01-25-2023", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>9, :used_visits=>0, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}, {:discipline=>"Physical Therapy", :remaining_visits=>4, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2103,7 +2103,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-19-2022", :end_date=>"01-19-2023", :type_of_service=>"Occupation Therapy", :frequency=>12, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>10, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>6, :used_visits=>6, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>9, :reset_date=>"01-19-2023"}])
     end
 
@@ -2111,7 +2111,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-10-2021", :end_date=>"11-10-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"11-10-2021", :end_date=>"11-10-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>13, :used_visits=>0, :pace=>-7, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2119,7 +2119,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-04-2022", :end_date=>"03-04-2023", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-04-2022", :end_date=>"03-04-2023", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-04-2022", :end_date=>"03-04-2023", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-04-2022", :end_date=>"03-04-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Physical Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>5, :used_visits=>3, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}, {:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"03-07-2023"}])
     end
 
@@ -2127,7 +2127,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-02-2022", :end_date=>"03-02-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2135,7 +2135,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-01-2021", :end_date=>"11-01-2022", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"11-01-2021", :end_date=>"11-01-2022", :type_of_service=>"Physical Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Physical Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}, {:discipline=>"Physical Therapy", :remaining_visits=>5, :used_visits=>3, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -2143,7 +2143,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-04-2022", :end_date=>"10-04-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -2151,7 +2151,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-05-2022", :end_date=>"05-05-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2159,7 +2159,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-07-2022", :end_date=>"04-08-2023", :type_of_service=>"Speech Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-07-2022", :end_date=>"04-08-2023", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -2167,7 +2167,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-25-2022", :end_date=>"08-25-2023", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-25-2022", :end_date=>"08-25-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -2175,7 +2175,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-14-2021", :end_date=>"12-14-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -2183,7 +2183,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-02-2022", :end_date=>"09-01-2023", :type_of_service=>"Speech Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>57, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>77, :used_visits=>14, :pace=>3, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>11, :reset_date=>"09-01-2023"}])
     end
 
@@ -2191,7 +2191,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-13-2022", :end_date=>"01-13-2023", :type_of_service=>"Occupation Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2199,7 +2199,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-19-2022", :end_date=>"08-18-2023", :type_of_service=>"Speech Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>67, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>72, :used_visits=>19, :pace=>4, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>15, :reset_date=>"08-18-2023"}])
     end
 
@@ -2207,7 +2207,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-15-2022", :end_date=>"02-15-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2215,7 +2215,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-13-2022", :end_date=>"05-12-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-13-2022", :end_date=>"05-12-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>25, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2223,7 +2223,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-14-2022", :end_date=>"04-14-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-14-2022", :end_date=>"04-14-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-14-2022", :end_date=>"04-14-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>5, :used_visits=>0, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2231,7 +2231,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-26-2022", :end_date=>"04-26-2023", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>48, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>43, :used_visits=>27, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>33, :reset_date=>"04-26-2023"}])
     end
 
@@ -2239,7 +2239,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-08-2022", :end_date=>"02-08-2023", :type_of_service=>"Language Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>35, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>51, :used_visits=>30, :pace=>-26, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>56, :reset_date=>"02-08-2023"}])
     end
 
@@ -2247,7 +2247,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-17-2022", :end_date=>"05-17-2023", :type_of_service=>"Language Therapy", :frequency=>40, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>38, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"05-17-2022", :end_date=>"05-17-2023", :type_of_service=>"Speech Therapy", :frequency=>41, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>38, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>69, :used_visits=>12, :pace=>-22, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>34, :reset_date=>"05-17-2023"}])
     end
 
@@ -2255,7 +2255,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-01-2022", :end_date=>"04-01-2023", :type_of_service=>"Language Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>41, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>68, :used_visits=>23, :pace=>-27, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>50, :reset_date=>"04-01-2023"}])
     end
 
@@ -2263,7 +2263,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-10-2021", :end_date=>"11-10-2022", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>43, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>18, :used_visits=>52, :pace=>-13, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>65, :reset_date=>"11-10-2022"}])
     end
 
@@ -2271,7 +2271,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-15-2021", :end_date=>"11-15-2022", :type_of_service=>"Speech Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>45, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>0, :used_visits=>56, :pace=>9, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>47, :reset_date=>"11-15-2022"}])
     end
 
@@ -2279,7 +2279,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-08-2021", :end_date=>"11-08-2022", :type_of_service=>"Speech Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>44, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>42, :used_visits=>49, :pace=>-36, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>85, :reset_date=>"11-08-2022"}])
     end
 
@@ -2287,7 +2287,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-29-2022", :end_date=>"04-29-2023", :type_of_service=>"Speech Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>50, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>56, :used_visits=>24, :pace=>-13, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>37, :reset_date=>"04-29-2023"}])
     end
 
@@ -2295,7 +2295,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-18-2022", :end_date=>"04-18-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2303,7 +2303,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-24-2022", :end_date=>"02-24-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2311,7 +2311,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-30-2022", :end_date=>"03-30-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2319,7 +2319,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-28-2022", :end_date=>"02-28-2023", :type_of_service=>"Occupation Therapy", :frequency=>10, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>30, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"02-28-2022", :end_date=>"02-28-2023", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>15, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>8, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"02-28-2023"}, {:discipline=>"Physical Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2327,7 +2327,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-08-2022", :end_date=>"03-08-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2335,7 +2335,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-01-2021", :end_date=>"11-01-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2343,7 +2343,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-13-2022", :end_date=>"12-10-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-13-2022", :end_date=>"12-10-2022", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}, {:discipline=>"Physical Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2351,7 +2351,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-29-2022", :end_date=>"03-29-2023", :type_of_service=>"Physical Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>7, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-29-2022", :end_date=>"03-29-2023", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>7, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-29-2022", :end_date=>"03-29-2023", :type_of_service=>"Language Therapy", :frequency=>9, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>7, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Physical Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}, {:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>3, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -2359,7 +2359,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-01-2021", :end_date=>"11-01-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2367,7 +2367,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-20-2022", :end_date=>"05-20-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2375,7 +2375,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-11-2022", :end_date=>"05-11-2023", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-11-2022", :end_date=>"05-11-2023", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Physical Therapy", :remaining_visits=>4, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>8, :used_visits=>1, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -2383,7 +2383,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-07-2022", :end_date=>"04-06-2023", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-07-2022", :end_date=>"04-06-2023", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Physical Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>5, :used_visits=>3, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -2391,7 +2391,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-09-2022", :end_date=>"05-09-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2399,7 +2399,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-13-2021", :end_date=>"12-13-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"12-13-2022", :end_date=>"12-13-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2407,7 +2407,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-07-2021", :end_date=>"12-07-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>5, :used_visits=>0, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2415,7 +2415,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-11-2022", :end_date=>"05-11-2023", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-11-2022", :end_date=>"05-11-2023", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}, {:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -2423,7 +2423,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-09-2022", :end_date=>"03-09-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2431,7 +2431,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-23-2022", :end_date=>"02-23-2023", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -2439,7 +2439,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-05-2022", :end_date=>"04-27-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-27-2022", :end_date=>"08-04-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2447,7 +2447,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-10-2022", :end_date=>"01-10-2023", :type_of_service=>"Speech Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>42, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>42, :pace=>4, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>38, :reset_date=>"01-10-2023"}])
     end
 
@@ -2455,7 +2455,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-26-2022", :end_date=>"08-26-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-26-2022", :end_date=>"08-26-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2463,7 +2463,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-27-2022", :end_date=>"09-27-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2471,7 +2471,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-19-2022", :end_date=>"09-19-2023", :type_of_service=>"Speech Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-19-2022", :end_date=>"09-19-2023", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2479,7 +2479,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-09-2022", :end_date=>"05-09-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2487,7 +2487,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-31-2022", :end_date=>"01-31-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2495,7 +2495,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-03-2021", :end_date=>"11-03-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2503,7 +2503,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-11-2022", :end_date=>"02-11-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2511,7 +2511,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-07-2022", :end_date=>"02-07-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2519,7 +2519,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-07-2022", :end_date=>"04-07-2023", :type_of_service=>"Speech Therapy", :frequency=>40, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>76, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"04-07-2022", :end_date=>"04-07-2023", :type_of_service=>"Language Therapy", :frequency=>41, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>76, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>49, :used_visits=>42, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>48, :reset_date=>"04-07-2023"}])
     end
 
@@ -2527,7 +2527,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-09-2022", :end_date=>"09-09-2023", :type_of_service=>"Language Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>73, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>82, :used_visits=>9, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>9, :reset_date=>"09-09-2023"}])
     end
 
@@ -2535,7 +2535,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-06-2022", :end_date=>"09-06-2023", :type_of_service=>"Speech Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>70, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>77, :used_visits=>14, :pace=>4, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>10, :reset_date=>"09-06-2023"}])
     end
 
@@ -2543,7 +2543,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-18-2022", :end_date=>"08-18-2023", :type_of_service=>"Speech Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>65, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>63, :used_visits=>18, :pace=>5, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>13, :reset_date=>"08-18-2023"}])
     end
 
@@ -2551,7 +2551,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-04-2022", :end_date=>"03-03-2023", :type_of_service=>"Language Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>75, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>37, :used_visits=>54, :pace=>-2, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>56, :reset_date=>"03-03-2023"}])
     end
 
@@ -2559,7 +2559,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-07-2022", :end_date=>"03-07-2023", :type_of_service=>"Language Therapy", :frequency=>41, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>71, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"03-07-2022", :end_date=>"03-07-2023", :type_of_service=>"Speech Therapy", :frequency=>40, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>71, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>39, :used_visits=>52, :pace=>-4, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>56, :reset_date=>"03-07-2023"}])
     end
 
@@ -2567,7 +2567,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-04-2022", :end_date=>"03-03-2023", :type_of_service=>"Language Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>73, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>37, :used_visits=>54, :pace=>-2, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>56, :reset_date=>"03-03-2023"}])
     end
 
@@ -2575,7 +2575,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-11-2022", :end_date=>"08-11-2023", :type_of_service=>"Speech Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>47, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>56, :used_visits=>14, :pace=>1, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>13, :reset_date=>"08-11-2023"}])
     end
 
@@ -2583,7 +2583,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-19-2022", :end_date=>"05-19-2023", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>43, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>62, :used_visits=>18, :pace=>-15, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>33, :reset_date=>"05-19-2023"}])
     end
 
@@ -2591,7 +2591,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-16-2021", :end_date=>"12-16-2022", :type_of_service=>"Language Therapy", :frequency=>35, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>29, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>29, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>29, :reset_date=>"12-16-2022"}])
     end
 
@@ -2599,7 +2599,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-18-2021", :end_date=>"10-18-2022", :type_of_service=>"Language Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>46, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>34, :used_visits=>57, :pace=>-34, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>91, :reset_date=>"10-18-2022"}])
     end
 
@@ -2607,7 +2607,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-08-2022", :end_date=>"04-08-2023", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>50, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>53, :used_visits=>27, :pace=>-15, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>42, :reset_date=>"04-08-2023"}])
     end
 
@@ -2615,7 +2615,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-05-2022", :end_date=>"05-05-2023", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>52, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>46, :used_visits=>24, :pace=>-8, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>32, :reset_date=>"05-05-2023"}])
     end
 
@@ -2623,7 +2623,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-05-2021", :end_date=>"11-04-2022", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>46, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>14, :used_visits=>56, :pace=>-10, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>66, :reset_date=>"11-04-2022"}])
     end
 
@@ -2631,7 +2631,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-25-2022", :end_date=>"08-24-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2639,7 +2639,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-26-2021", :end_date=>"10-26-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2647,7 +2647,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-22-2022", :end_date=>"09-22-2023", :type_of_service=>"Speech Therapy", :frequency=>3, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"10-24-2022"}])
     end
 
@@ -2655,7 +2655,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-11-2022", :end_date=>"10-11-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>3, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2663,7 +2663,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-29-2022", :end_date=>"12-03-2022", :type_of_service=>"Language Therapy", :frequency=>10, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"12-03-2021", :end_date=>"12-03-2022", :type_of_service=>"Occupation Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>3, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>2, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2671,7 +2671,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-06-2022", :end_date=>"09-06-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -2679,7 +2679,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-23-2022", :end_date=>"02-23-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2687,7 +2687,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-31-2022", :end_date=>"08-30-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>2, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2695,7 +2695,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-01-2021", :end_date=>"11-30-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -2703,7 +2703,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-01-2022", :end_date=>"04-01-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2711,7 +2711,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-13-2021", :end_date=>"12-12-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>15, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"12-13-2021", :end_date=>"12-12-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>15, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>0, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -2719,7 +2719,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-09-2022", :end_date=>"09-09-2023", :type_of_service=>"Language Therapy", :frequency=>10, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-09-2022", :end_date=>"09-09-2023", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2727,7 +2727,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-18-2022", :end_date=>"02-17-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2735,7 +2735,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-14-2022", :end_date=>"01-14-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2743,7 +2743,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-22-2022", :end_date=>"08-22-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2751,7 +2751,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-15-2022", :end_date=>"02-15-2023", :type_of_service=>"Speech Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>68, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>36, :used_visits=>55, :pace=>-6, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>61, :reset_date=>"02-15-2023"}])
     end
 
@@ -2759,7 +2759,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-25-2021", :end_date=>"10-24-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-25-2021", :end_date=>"10-24-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-24-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-24-2022", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2767,7 +2767,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-11-2022", :end_date=>"01-10-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"01-11-2022", :end_date=>"01-10-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2775,7 +2775,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-04-2022", :end_date=>"04-04-2023", :type_of_service=>"Speech Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>37, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>50, :used_visits=>20, :pace=>-18, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>38, :reset_date=>"04-04-2023"}])
     end
 
@@ -2783,7 +2783,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-26-2022", :end_date=>"08-26-2023", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-26-2022", :end_date=>"08-26-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Physical Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -2791,7 +2791,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-09-2022", :end_date=>"03-09-2023", :type_of_service=>"Language Therapy", :frequency=>35, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>52, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"03-09-2022", :end_date=>"03-09-2023", :type_of_service=>"Speech Therapy", :frequency=>35, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>52, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>42, :used_visits=>38, :pace=>-11, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>49, :reset_date=>"03-09-2023"}])
     end
 
@@ -2799,7 +2799,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-09-2022", :end_date=>"09-09-2023", :type_of_service=>"Language Therapy", :frequency=>10, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-09-2022", :end_date=>"09-09-2023", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2807,7 +2807,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-29-2021", :end_date=>"10-29-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2815,7 +2815,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-19-2021", :end_date=>"11-19-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2823,7 +2823,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-09-2022", :end_date=>"09-09-2023", :type_of_service=>"Language Therapy", :frequency=>41, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>69, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"09-09-2022", :end_date=>"09-09-2023", :type_of_service=>"Speech Therapy", :frequency=>40, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>69, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>80, :used_visits=>11, :pace=>2, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>9, :reset_date=>"09-09-2023"}])
     end
 
@@ -2831,7 +2831,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-21-2022", :end_date=>"03-21-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2839,7 +2839,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-28-2022", :end_date=>"09-28-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-28-2022", :end_date=>"09-28-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2847,7 +2847,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-01-2022", :end_date=>"01-13-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2855,7 +2855,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-01-2022", :end_date=>"01-13-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2863,7 +2863,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-11-2022", :end_date=>"11-30-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2871,7 +2871,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-30-2021", :end_date=>"11-30-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -2879,7 +2879,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-11-2022", :end_date=>"03-11-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-11-2022", :end_date=>"03-11-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2887,7 +2887,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-01-2022", :end_date=>"11-09-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-21-2022", :end_date=>"05-24-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"weekly", :time_per_session_in_minutes=>15, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2895,7 +2895,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-19-2022", :end_date=>"05-19-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2903,7 +2903,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-24-2022", :end_date=>"01-24-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>25, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"01-24-2022", :end_date=>"01-24-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}, {:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2911,7 +2911,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-01-2022", :end_date=>"08-31-2023", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -2919,7 +2919,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-26-2022", :end_date=>"07-31-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"07-31-2022", :end_date=>"04-26-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2927,7 +2927,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-30-2022", :end_date=>"08-30-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2935,7 +2935,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-26-2022", :end_date=>"11-03-2022", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-26-2022", :end_date=>"11-03-2022", :type_of_service=>"Speech Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -2943,7 +2943,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-23-2022", :end_date=>"05-23-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2951,7 +2951,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-06-2022", :end_date=>"05-06-2023", :type_of_service=>"Speech Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>64, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>102, :used_visits=>16, :pace=>-37, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>53, :reset_date=>"05-06-2023"}])
     end
 
@@ -2959,7 +2959,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-26-2022", :end_date=>"01-26-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -2967,7 +2967,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-26-2022", :end_date=>"04-26-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -2975,7 +2975,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-07-2022", :end_date=>"04-07-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>58, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"04-07-2022", :end_date=>"04-07-2023", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>58, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-28-2022", :type_of_service=>"Occupation Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>86, :used_visits=>32, :pace=>-30, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>62, :reset_date=>"04-07-2023"}, {:discipline=>"Occupational Therapy", :remaining_visits=>33, :used_visits=>9, :pace=>-13, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>22, :reset_date=>"04-07-2023"}])
     end
 
@@ -2983,7 +2983,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-25-2022", :end_date=>"08-25-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -2991,7 +2991,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-30-2022", :end_date=>"09-29-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-30-2022", :end_date=>"09-29-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -2999,7 +2999,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-26-2022", :end_date=>"09-26-2023", :type_of_service=>"Language Therapy", :frequency=>9, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>4, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -3007,7 +3007,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-03-2021", :end_date=>"12-03-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"12-03-2021", :end_date=>"12-03-2022", :type_of_service=>"Occupation Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"10-24-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -3015,7 +3015,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-31-2022", :end_date=>"08-30-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3023,7 +3023,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-08-2022", :end_date=>"01-10-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"02-08-2022", :end_date=>"01-10-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3031,7 +3031,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-14-2022", :end_date=>"01-14-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"01-14-2022", :end_date=>"01-14-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3039,7 +3039,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-06-2021", :end_date=>"12-06-2022", :type_of_service=>"Language Therapy", :frequency=>10, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>3, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -3047,7 +3047,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-07-2022", :end_date=>"09-07-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3055,7 +3055,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-20-2022", :end_date=>"01-20-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -3063,7 +3063,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-20-2022", :end_date=>"01-20-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3071,7 +3071,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-20-2022", :end_date=>"01-20-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-04-2022", :end_date=>"01-20-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>13, :used_visits=>0, :pace=>-7, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3079,7 +3079,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-22-2022", :end_date=>"08-22-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3087,7 +3087,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-05-2021", :end_date=>"11-04-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"11-05-2021", :end_date=>"11-04-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3095,7 +3095,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-05-2022", :end_date=>"04-05-2023", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>49, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>42, :used_visits=>28, :pace=>-9, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>37, :reset_date=>"04-05-2023"}])
     end
 
@@ -3103,7 +3103,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-20-2022", :end_date=>"02-16-2023", :type_of_service=>"Language Therapy", :frequency=>9, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -3111,7 +3111,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-28-2021", :end_date=>"10-28-2022", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>74, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"10-28-2021", :end_date=>"10-28-2022", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>74, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>60, :used_visits=>58, :pace=>-56, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>114, :reset_date=>"10-28-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>8, :used_visits=>34, :pace=>-7, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>41, :reset_date=>"10-28-2022"}])
     end
 
@@ -3119,7 +3119,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-15-2022", :end_date=>"09-15-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>5, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3127,7 +3127,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-01-2022", :end_date=>"03-01-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3135,7 +3135,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-12-2022", :end_date=>"01-12-2023", :type_of_service=>"Language Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>45, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>37, :used_visits=>44, :pace=>-18, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>62, :reset_date=>"01-12-2023"}])
     end
 
@@ -3143,7 +3143,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-04-2021", :end_date=>"11-04-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"11-04-2021", :end_date=>"11-04-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3151,7 +3151,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-19-2022", :end_date=>"09-19-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3159,7 +3159,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-10-2021", :end_date=>"11-10-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"11-10-2021", :end_date=>"11-10-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3167,7 +3167,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-13-2022", :end_date=>"09-13-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -3175,7 +3175,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-09-2022", :end_date=>"09-09-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3183,7 +3183,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-22-2022", :end_date=>"09-21-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3191,7 +3191,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-26-2022", :end_date=>"08-26-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-26-2022", :end_date=>"08-26-2023", :type_of_service=>"Speech Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3199,7 +3199,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-16-2022", :end_date=>"03-16-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-16-2022", :end_date=>"03-16-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3207,7 +3207,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-23-2022", :end_date=>"04-05-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-23-2022", :end_date=>"04-05-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>4, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>8, :reset_date=>"11-01-2022"}])
     end
 
@@ -3215,7 +3215,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-03-2021", :end_date=>"11-02-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"11-03-2021", :end_date=>"11-02-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3223,7 +3223,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-22-2022", :end_date=>"02-02-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>56, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>91, :used_visits=>17, :pace=>-20, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>37, :reset_date=>"02-02-2023"}])
     end
 
@@ -3231,7 +3231,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-25-2022", :end_date=>"04-25-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3239,7 +3239,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-26-2022", :end_date=>"01-31-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3247,7 +3247,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-22-2021", :end_date=>"11-22-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3255,7 +3255,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-04-2022", :end_date=>"05-04-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3263,7 +3263,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-09-2021", :end_date=>"12-09-2022", :type_of_service=>"Speech and Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3271,7 +3271,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-09-2022", :end_date=>"05-09-2023", :type_of_service=>"Speech Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-09-2022", :end_date=>"05-09-2023", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3279,7 +3279,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-03-2021", :end_date=>"11-03-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3287,7 +3287,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-08-2022", :end_date=>"02-04-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3295,7 +3295,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-25-2022", :end_date=>"04-25-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3303,7 +3303,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-01-2022", :end_date=>"03-22-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3311,7 +3311,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-20-2022", :end_date=>"09-20-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3319,7 +3319,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-28-2022", :end_date=>"04-28-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-28-2022", :end_date=>"04-28-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>71, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>39, :used_visits=>27, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>31, :reset_date=>"04-28-2023"}])
     end
 
@@ -3327,7 +3327,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-19-2021", :end_date=>"11-19-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3335,7 +3335,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-09-2022", :end_date=>"05-09-2023", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-09-2022", :end_date=>"05-09-2023", :type_of_service=>"Speech Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3343,7 +3343,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-15-2022", :end_date=>"08-15-2023", :type_of_service=>"Speech Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>42, :used_visits=>3, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>8, :reset_date=>"08-15-2023"}])
     end
 
@@ -3351,7 +3351,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-30-2021", :end_date=>"11-30-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3359,7 +3359,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-27-2022", :end_date=>"01-27-2023", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"01-27-2022", :end_date=>"01-27-2023", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}, {:discipline=>"Physical Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -3367,7 +3367,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-14-2022", :end_date=>"01-13-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"01-14-2022", :end_date=>"01-13-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-31-2022", :end_date=>"06-23-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-31-2022", :end_date=>"06-23-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3375,7 +3375,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-08-2022", :end_date=>"04-07-2023", :type_of_service=>"Language Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>75, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>49, :used_visits=>42, :pace=>-6, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>48, :reset_date=>"04-07-2023"}])
     end
 
@@ -3383,7 +3383,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-04-2022", :end_date=>"10-04-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>78, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>117, :used_visits=>1, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"10-04-2023"}])
     end
 
@@ -3391,7 +3391,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-18-2021", :end_date=>"10-18-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3399,7 +3399,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-14-2022", :end_date=>"09-14-2023", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>6, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-14-2022", :end_date=>"09-14-2023", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>6, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-14-2022", :end_date=>"09-14-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>6, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Physical Therapy", :remaining_visits=>4, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}, {:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3407,7 +3407,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-08-2021", :end_date=>"12-08-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3415,7 +3415,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-12-2022", :end_date=>"09-12-2023", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -3423,7 +3423,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-15-2021", :end_date=>"11-15-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3431,7 +3431,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-26-2022", :end_date=>"04-26-2023", :type_of_service=>"Language Therapy", :frequency=>54, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>79, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"04-26-2022", :end_date=>"04-26-2023", :type_of_service=>"Speech Therapy", :frequency=>54, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>79, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"04-26-2022", :end_date=>"04-26-2023", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>79, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>82, :used_visits=>26, :pace=>-26, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>52, :reset_date=>"04-26-2023"}, {:discipline=>"Occupational Therapy", :remaining_visits=>22, :used_visits=>10, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>15, :reset_date=>"04-26-2023"}])
     end
 
@@ -3439,7 +3439,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-10-2022", :end_date=>"02-10-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>75, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"02-10-2022", :end_date=>"02-10-2023", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>75, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-28-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-28-2022", :type_of_service=>"Occupation Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>72, :used_visits=>46, :pace=>-34, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>80, :reset_date=>"02-10-2023"}, {:discipline=>"Occupational Therapy", :remaining_visits=>25, :used_visits=>17, :pace=>-12, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>29, :reset_date=>"02-10-2023"}])
     end
 
@@ -3447,7 +3447,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-31-2022", :end_date=>"08-30-2023", :type_of_service=>"Language Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>25, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"08-31-2022", :end_date=>"08-30-2023", :type_of_service=>"Speech Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>25, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -3455,7 +3455,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-15-2022", :end_date=>"09-15-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>75, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>101, :used_visits=>7, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>9, :reset_date=>"09-15-2023"}])
     end
 
@@ -3463,7 +3463,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-05-2022", :end_date=>"10-05-2023", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>83, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"10-05-2022", :end_date=>"10-05-2023", :type_of_service=>"Language Therapy", :frequency=>54, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>83, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"10-05-2022", :end_date=>"10-05-2023", :type_of_service=>"Speech Therapy", :frequency=>54, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>83, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>32, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"10-05-2023"}, {:discipline=>"Speech Therapy", :remaining_visits=>107, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"10-05-2023"}])
     end
 
@@ -3471,7 +3471,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-04-2022", :end_date=>"04-28-2023", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-04-2022", :end_date=>"04-28-2023", :type_of_service=>"Speech Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3479,7 +3479,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-18-2022", :end_date=>"02-23-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3487,7 +3487,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-02-2022", :end_date=>"05-02-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3495,7 +3495,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-04-2022", :end_date=>"01-27-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3503,7 +3503,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-08-2022", :end_date=>"04-08-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-08-2022", :end_date=>"04-08-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3511,7 +3511,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-16-2021", :end_date=>"11-16-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3519,7 +3519,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-20-2022", :end_date=>"09-20-2023", :type_of_service=>"Speech Therapy", :frequency=>9, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>0, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -3527,7 +3527,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-21-2021", :end_date=>"10-21-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3535,7 +3535,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-30-2022", :end_date=>"03-07-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3543,7 +3543,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-13-2022", :end_date=>"09-12-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-13-2022", :end_date=>"09-13-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3551,7 +3551,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-06-2022", :end_date=>"09-06-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3559,7 +3559,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-03-2022", :end_date=>"03-03-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3567,7 +3567,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-28-2022", :end_date=>"09-28-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>5, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3575,7 +3575,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-16-2022", :end_date=>"05-16-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3583,7 +3583,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-12-2022", :end_date=>"05-12-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>0, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3591,7 +3591,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-24-2022", :end_date=>"02-24-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3599,7 +3599,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-15-2022", :end_date=>"03-15-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3607,7 +3607,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-21-2022", :end_date=>"03-20-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-21-2022", :end_date=>"03-20-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3615,7 +3615,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-16-2022", :end_date=>"09-16-2023", :type_of_service=>"Language Therapy", :frequency=>81, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>70, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>84, :used_visits=>7, :pace=>-1, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>8, :reset_date=>"09-16-2023"}])
     end
 
@@ -3623,7 +3623,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-19-2022", :end_date=>"08-18-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>0, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3631,7 +3631,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-24-2022", :end_date=>"03-24-2023", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-24-2022", :end_date=>"03-24-2023", :type_of_service=>"Speech Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3639,7 +3639,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-05-2021", :end_date=>"11-05-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3647,7 +3647,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-04-2022", :end_date=>"03-14-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3655,7 +3655,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-09-2022", :end_date=>"03-09-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -3663,7 +3663,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-28-2022", :end_date=>"04-28-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>34, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>1, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -3671,7 +3671,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-06-2021", :end_date=>"12-06-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3679,7 +3679,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-28-2022", :end_date=>"02-28-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"02-28-2022", :end_date=>"02-28-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3687,7 +3687,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-07-2022", :end_date=>"04-07-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>52, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>79, :used_visits=>29, :pace=>-28, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>57, :reset_date=>"04-07-2023"}])
     end
 
@@ -3695,7 +3695,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-08-2022", :end_date=>"04-25-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3703,7 +3703,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-01-2022", :end_date=>"02-04-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3711,7 +3711,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-30-2021", :end_date=>"11-30-2022", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>67, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>44, :used_visits=>74, :pace=>-30, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>104, :reset_date=>"11-30-2022"}])
     end
 
@@ -3719,7 +3719,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-18-2022", :end_date=>"02-17-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"02-18-2022", :end_date=>"02-17-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-14-2022", :end_date=>"07-07-2022", :type_of_service=>"Speech Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"06-14-2022", :end_date=>"07-07-2022", :type_of_service=>"Language Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3727,7 +3727,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-22-2022", :end_date=>"03-22-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-14-2022", :end_date=>"07-07-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3735,7 +3735,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-13-2022", :end_date=>"09-13-2023", :type_of_service=>"Speech Therapy", :frequency=>16, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>5, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>8, :reset_date=>"11-01-2022"}])
     end
 
@@ -3743,7 +3743,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-22-2022", :end_date=>"04-22-2023", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>50, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>53, :used_visits=>27, :pace=>-12, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>39, :reset_date=>"04-22-2023"}])
     end
 
@@ -3751,7 +3751,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-29-2022", :end_date=>"04-29-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3759,7 +3759,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-01-2022", :end_date=>"02-01-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3767,7 +3767,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-16-2022", :end_date=>"09-16-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3775,7 +3775,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-15-2022", :end_date=>"02-03-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>2, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -3783,7 +3783,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-24-2022", :end_date=>"12-13-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-24-2022", :end_date=>"12-13-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3791,7 +3791,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-16-2022", :end_date=>"09-16-2023", :type_of_service=>"Speech Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>72, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>109, :used_visits=>9, :pace=>-1, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>10, :reset_date=>"09-16-2023"}])
     end
 
@@ -3799,7 +3799,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-26-2022", :end_date=>"09-26-2023", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-26-2022", :end_date=>"09-26-2023", :type_of_service=>"Speech Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>0, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3807,7 +3807,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-11-2022", :end_date=>"05-11-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3815,7 +3815,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-06-2022", :end_date=>"01-06-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3823,7 +3823,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-09-2022", :end_date=>"03-09-2023", :type_of_service=>"Speech Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>111, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"03-09-2022", :end_date=>"03-09-2023", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>111, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>69, :used_visits=>49, :pace=>-23, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>72, :reset_date=>"03-09-2023"}, {:discipline=>"Occupational Therapy", :remaining_visits=>20, :used_visits=>22, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>25, :reset_date=>"03-09-2023"}])
     end
 
@@ -3831,7 +3831,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-19-2021", :end_date=>"10-19-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3839,7 +3839,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-09-2022", :end_date=>"02-09-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"02-09-2022", :end_date=>"02-09-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3847,7 +3847,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-10-2022", :end_date=>"02-10-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"02-10-2022", :end_date=>"02-10-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3855,7 +3855,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-26-2022", :end_date=>"08-26-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-26-2022", :end_date=>"08-26-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3863,7 +3863,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-26-2022", :end_date=>"08-26-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-26-2022", :end_date=>"08-26-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3871,7 +3871,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-05-2022", :end_date=>"10-05-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>4, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -3879,7 +3879,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-06-2021", :end_date=>"12-06-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3887,7 +3887,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-04-2021", :end_date=>"11-04-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3895,7 +3895,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-21-2022", :end_date=>"03-21-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>1, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -3903,7 +3903,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-04-2022", :end_date=>"04-04-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-04-2022", :end_date=>"04-04-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -3911,7 +3911,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-17-2021", :end_date=>"11-17-2022", :type_of_service=>"Language Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>1, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -3919,7 +3919,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-13-2022", :end_date=>"01-13-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -3927,7 +3927,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-14-2022", :end_date=>"04-14-2023", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>23, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>20, :used_visits=>12, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>16, :reset_date=>"04-14-2023"}])
     end
 
@@ -3935,7 +3935,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-16-2022", :end_date=>"11-09-2022", :type_of_service=>"Language Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"05-16-2022", :end_date=>"11-09-2022", :type_of_service=>"Speech Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"07-29-2022", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"07-29-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -3943,7 +3943,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-13-2022", :end_date=>"01-13-2023", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -3951,7 +3951,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-24-2022", :end_date=>"11-18-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-24-2022", :end_date=>"11-18-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -3959,7 +3959,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-07-2022", :end_date=>"09-07-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -3967,7 +3967,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-20-2022", :end_date=>"05-20-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3975,7 +3975,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-16-2022", :end_date=>"12-10-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3983,7 +3983,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-18-2022", :end_date=>"03-18-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -3991,7 +3991,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-27-2022", :end_date=>"01-26-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -3999,7 +3999,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-18-2022", :end_date=>"02-18-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4007,7 +4007,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-14-2022", :end_date=>"04-14-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -4015,7 +4015,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-13-2022", :end_date=>"04-13-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4023,7 +4023,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-01-2022", :end_date=>"09-01-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4031,7 +4031,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-21-2021", :end_date=>"10-21-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -4039,7 +4039,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-25-2022", :end_date=>"08-25-2023", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"08-25-2022", :end_date=>"08-25-2023", :type_of_service=>"Occupation Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"10-24-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -4047,7 +4047,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-22-2022", :end_date=>"09-22-2023", :type_of_service=>"Speech Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>65, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>113, :used_visits=>5, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>8, :reset_date=>"09-22-2023"}])
     end
 
@@ -4055,7 +4055,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-13-2021", :end_date=>"12-31-2022", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>26, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>15, :used_visits=>27, :pace=>-7, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>34, :reset_date=>"12-31-2022"}])
     end
 
@@ -4063,7 +4063,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-30-2022", :end_date=>"09-30-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4071,7 +4071,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-12-2022", :end_date=>"05-11-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-12-2022", :end_date=>"05-11-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4079,7 +4079,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-19-2022", :end_date=>"08-19-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4087,7 +4087,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-20-2021", :end_date=>"10-20-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-20-2021", :end_date=>"10-20-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4095,7 +4095,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-20-2021", :end_date=>"10-20-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4103,7 +4103,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-30-2021", :end_date=>"11-29-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4111,7 +4111,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-09-2022", :end_date=>"03-09-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-09-2022", :end_date=>"03-09-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>13, :used_visits=>3, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>8, :reset_date=>"11-01-2022"}])
     end
 
@@ -4119,7 +4119,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-05-2022", :end_date=>"04-05-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4127,7 +4127,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-07-2022", :end_date=>"03-07-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -4135,7 +4135,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-29-2022", :end_date=>"09-29-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-29-2022", :end_date=>"09-29-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4143,7 +4143,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-14-2022", :end_date=>"05-24-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-01-2022", :end_date=>"02-03-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>3, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -4151,7 +4151,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-05-2022", :end_date=>"01-04-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>0, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4159,7 +4159,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-30-2022", :end_date=>"09-30-2023", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -4167,7 +4167,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-08-2022", :end_date=>"02-08-2023", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -4175,7 +4175,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-29-2021", :end_date=>"10-25-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-29-2021", :end_date=>"10-25-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4183,7 +4183,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-12-2021", :end_date=>"11-12-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>13, :used_visits=>0, :pace=>-7, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4191,7 +4191,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-10-2022", :end_date=>"02-10-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>3, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4199,7 +4199,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-24-2021", :end_date=>"10-20-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"11-01-2022"}])
     end
 
@@ -4207,7 +4207,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-24-2022", :end_date=>"12-08-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -4215,7 +4215,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-01-2021", :end_date=>"11-01-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -4223,7 +4223,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-29-2022", :end_date=>"04-29-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-29-2022", :end_date=>"04-29-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4231,7 +4231,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-25-2022", :end_date=>"04-25-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>90, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"04-25-2022", :end_date=>"04-25-2023", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>90, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>82, :used_visits=>26, :pace=>-26, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>52, :reset_date=>"04-25-2023"}, {:discipline=>"Occupational Therapy", :remaining_visits=>22, :used_visits=>10, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>15, :reset_date=>"04-25-2023"}])
     end
 
@@ -4239,7 +4239,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-10-2022", :end_date=>"06-30-2022", :type_of_service=>"Language Therapy", :frequency=>80, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>31, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"08-03-2022", :end_date=>"05-10-2023", :type_of_service=>"Language Therapy", :frequency=>108, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>31, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>92, :used_visits=>16, :pace=>-13, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>29, :reset_date=>"05-10-2023"}])
     end
 
@@ -4247,7 +4247,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-28-2021", :end_date=>"10-28-2022", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-28-2021", :end_date=>"10-28-2022", :type_of_service=>"Physical Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2023", :type_of_service=>"Physical Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>7, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}, {:discipline=>"Physical Therapy", :remaining_visits=>15, :used_visits=>1, :pace=>-7, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>8, :reset_date=>"11-01-2022"}])
     end
 
@@ -4255,7 +4255,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-22-2022", :end_date=>"09-22-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-22-2022", :end_date=>"09-22-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4263,7 +4263,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-29-2021", :end_date=>"10-29-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4271,7 +4271,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-25-2022", :end_date=>"08-25-2023", :type_of_service=>"Language Therapy", :frequency=>9, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>3, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -4279,7 +4279,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-27-2021", :end_date=>"10-26-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4287,7 +4287,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-13-2022", :end_date=>"09-13-2023", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>2, :used_visits=>0, :pace=>0, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
@@ -4295,7 +4295,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-02-2022", :end_date=>"10-28-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4303,7 +4303,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-09-2022", :end_date=>"02-08-2023", :type_of_service=>"Language Therapy", :frequency=>41, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>36, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"02-09-2022", :end_date=>"02-08-2023", :type_of_service=>"Speech Therapy", :frequency=>40, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>36, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>20, :used_visits=>31, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>35, :reset_date=>"02-08-2023"}])
     end
 
@@ -4311,7 +4311,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-03-2022", :end_date=>"10-03-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4319,7 +4319,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-04-2022", :end_date=>"02-04-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4327,7 +4327,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-20-2022", :end_date=>"04-20-2023", :type_of_service=>"Language Therapy", :frequency=>2, :interval=>"weekly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"10-24-2022"}])
     end
 
@@ -4335,7 +4335,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-12-2022", :end_date=>"09-12-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>13, :used_visits=>0, :pace=>-7, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4343,7 +4343,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-11-2022", :end_date=>"02-11-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"02-11-2022", :end_date=>"02-11-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>25, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -4351,7 +4351,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-04-2022", :end_date=>"11-05-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>5, :used_visits=>0, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -4359,7 +4359,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-01-2022", :end_date=>"02-03-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-02-2022", :end_date=>"05-20-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4367,7 +4367,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-01-2022", :end_date=>"02-16-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-09-2022", :end_date=>"05-19-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-01-2022", :end_date=>"02-16-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>25, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -4375,7 +4375,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-20-2022", :end_date=>"05-19-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-01-2022", :end_date=>"04-20-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4383,7 +4383,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-06-2022", :end_date=>"05-06-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -4391,7 +4391,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-05-2022", :end_date=>"05-05-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-05-2022", :end_date=>"05-05-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>0, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4399,7 +4399,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-29-2022", :end_date=>"07-31-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-01-2022", :end_date=>"04-28-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4407,7 +4407,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-28-2021", :end_date=>"10-28-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-28-2021", :end_date=>"10-28-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -4415,7 +4415,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-22-2022", :end_date=>"02-22-2023", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>7, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4423,7 +4423,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-12-2021", :end_date=>"11-12-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4431,7 +4431,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-22-2022", :end_date=>"03-22-2023", :type_of_service=>"Speech Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>32, :used_visits=>0, :pace=>-18, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>18, :reset_date=>"03-22-2023"}])
     end
 
@@ -4439,7 +4439,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-07-2022", :end_date=>"09-07-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4447,7 +4447,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-13-2021", :end_date=>"12-13-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4455,7 +4455,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-10-2021", :end_date=>"12-09-2022", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"12-10-2021", :end_date=>"12-09-2022", :type_of_service=>"Physical Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Physical Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}, {:discipline=>"Physical Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -4463,7 +4463,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-19-2021", :end_date=>"10-19-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4471,7 +4471,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-30-2021", :end_date=>"11-30-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -4479,7 +4479,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-03-2021", :end_date=>"12-03-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4487,7 +4487,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-08-2022", :end_date=>"03-08-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -4495,7 +4495,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-25-2021", :end_date=>"10-24-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-25-2021", :end_date=>"10-24-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4503,7 +4503,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-28-2022", :end_date=>"09-28-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-28-2022", :end_date=>"09-28-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>3, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -4511,7 +4511,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-15-2021", :end_date=>"11-15-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4519,7 +4519,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-23-2022", :end_date=>"11-03-2022", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"02-23-2022", :end_date=>"11-03-2022", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>25, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>5, :used_visits=>0, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -4527,7 +4527,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-11-2022", :end_date=>"01-11-2023", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"06-01-2022", :end_date=>"06-30-2022", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>7, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4535,7 +4535,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-28-2022", :end_date=>"03-27-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-28-2022", :end_date=>"03-27-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4543,7 +4543,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-25-2022", :end_date=>"01-25-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4551,7 +4551,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-15-2022", :end_date=>"02-14-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4559,7 +4559,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-08-2022", :end_date=>"02-08-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"02-08-2022", :end_date=>"02-08-2023", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>14, :used_visits=>3, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>9, :reset_date=>"11-01-2022"}])
     end
 
@@ -4567,7 +4567,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-18-2021", :end_date=>"11-18-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4575,7 +4575,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-12-2022", :end_date=>"08-12-2023", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>8, :used_visits=>0, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4583,7 +4583,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-15-2021", :end_date=>"12-15-2022", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"weekly"}, {:school_plan_type=>"IEP", :start_date=>"12-15-2021", :end_date=>"12-15-2022", :type_of_service=>"Occupation Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"10-24-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>2, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -4591,7 +4591,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-04-2022", :end_date=>"05-04-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -4599,7 +4599,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-28-2022", :end_date=>"05-17-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -4607,7 +4607,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-16-2022", :end_date=>"10-27-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4615,7 +4615,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-09-2021", :end_date=>"11-09-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4623,7 +4623,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-06-2021", :end_date=>"12-06-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4631,7 +4631,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-15-2022", :end_date=>"09-15-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -4639,7 +4639,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-03-2022", :end_date=>"10-03-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4647,7 +4647,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-19-2021", :end_date=>"11-19-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"11-19-2021", :end_date=>"11-19-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4655,7 +4655,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-25-2022", :end_date=>"01-25-2023", :type_of_service=>"Language Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>3, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -4663,7 +4663,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-14-2021", :end_date=>"12-14-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4671,7 +4671,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-24-2022", :end_date=>"02-24-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>5, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4679,7 +4679,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-18-2022", :end_date=>"05-18-2023", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>38, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>56, :used_visits=>14, :pace=>-15, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>29, :reset_date=>"05-18-2023"}])
     end
 
@@ -4687,7 +4687,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-03-2021", :end_date=>"12-01-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -4695,7 +4695,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-05-2021", :end_date=>"11-05-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4703,7 +4703,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-11-2022", :end_date=>"05-11-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4711,7 +4711,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-17-2021", :end_date=>"11-17-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4719,7 +4719,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-08-2021", :end_date=>"12-08-2022", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4727,7 +4727,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-08-2022", :end_date=>"03-08-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-08-2022", :end_date=>"03-08-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4735,7 +4735,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-25-2022", :end_date=>"01-13-2023", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-25-2022", :end_date=>"01-13-2023", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -4743,7 +4743,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-13-2022", :end_date=>"05-13-2023", :type_of_service=>"Language Therapy", :frequency=>41, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>48, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"05-13-2022", :end_date=>"05-13-2023", :type_of_service=>"Speech Therapy", :frequency=>40, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>48, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>72, :used_visits=>19, :pace=>-20, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>39, :reset_date=>"05-13-2023"}])
     end
 
@@ -4751,7 +4751,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-02-2022", :end_date=>"02-16-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"08-02-2022", :end_date=>"02-16-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>10, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>0, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -4759,7 +4759,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-12-2022", :end_date=>"05-12-2023", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>44, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>63, :used_visits=>17, :pace=>-18, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>35, :reset_date=>"05-12-2023"}])
     end
 
@@ -4767,7 +4767,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-19-2022", :end_date=>"09-19-2023", :type_of_service=>"Language Therapy", :frequency=>35, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>48, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"09-19-2022", :end_date=>"09-19-2023", :type_of_service=>"Speech Therapy", :frequency=>35, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>48, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>65, :used_visits=>5, :pace=>-1, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"09-19-2023"}])
     end
 
@@ -4775,7 +4775,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-01-2022", :end_date=>"03-31-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-01-2022", :end_date=>"03-31-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4783,7 +4783,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-12-2022", :end_date=>"05-12-2023", :type_of_service=>"Speech Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>49, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>60, :used_visits=>20, :pace=>-15, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>35, :reset_date=>"05-12-2023"}])
     end
 
@@ -4791,7 +4791,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-31-2022", :end_date=>"03-31-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4799,7 +4799,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-07-2021", :end_date=>"12-07-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>1, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
@@ -4807,7 +4807,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-14-2021", :end_date=>"12-14-2022", :type_of_service=>"Language Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"12-14-2021", :end_date=>"12-14-2022", :type_of_service=>"Speech Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4815,7 +4815,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-04-2022", :end_date=>"02-04-2023", :type_of_service=>"Occupation Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"02-04-2022", :end_date=>"02-04-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Occupational Therapy", :remaining_visits=>4, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}, {:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>4, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
@@ -4823,7 +4823,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-13-2021", :end_date=>"12-13-2022", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4831,7 +4831,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-24-2022", :end_date=>"04-28-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-24-2022", :end_date=>"04-28-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4839,7 +4839,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-08-2022", :end_date=>"04-28-2023", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-08-2022", :end_date=>"04-28-2023", :type_of_service=>"Speech Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>3, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -4847,7 +4847,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-24-2022", :end_date=>"03-30-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-24-2022", :end_date=>"03-30-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4855,7 +4855,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-25-2022", :end_date=>"03-25-2023", :type_of_service=>"Speech Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"03-25-2022", :end_date=>"03-25-2023", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>2, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -4863,7 +4863,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-08-2022", :end_date=>"04-08-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>12, :used_visits=>1, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4871,7 +4871,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-11-2021", :end_date=>"11-08-2022", :type_of_service=>"Language Therapy", :frequency=>50, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>37, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>1, :used_visits=>49, :pace=>2, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>47, :reset_date=>"11-08-2022"}])
     end
 
@@ -4879,7 +4879,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-12-2022", :end_date=>"04-12-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-12-2022", :end_date=>"04-12-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4887,7 +4887,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-22-2022", :end_date=>"03-22-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
     end
 
@@ -4895,7 +4895,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-23-2022", :end_date=>"03-23-2023", :type_of_service=>"Language Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4903,7 +4903,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-21-2022", :end_date=>"03-21-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4911,7 +4911,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"08-30-2022", :end_date=>"08-30-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4919,7 +4919,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"04-26-2022", :end_date=>"04-26-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"04-26-2022", :end_date=>"04-26-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>5, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>5, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4927,7 +4927,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-14-2022", :end_date=>"01-14-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"01-14-2022", :end_date=>"01-14-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4935,7 +4935,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-02-2021", :end_date=>"12-02-2022", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"12-02-2021", :end_date=>"12-02-2022", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4943,7 +4943,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-30-2022", :end_date=>"03-30-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
@@ -4951,7 +4951,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-31-2022", :end_date=>"01-31-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
 
@@ -4959,7 +4959,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"03-09-2022", :end_date=>"03-09-2023", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>43, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>39, :used_visits=>31, :pace=>-11, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>42, :reset_date=>"03-09-2023"}])
     end
 
@@ -4967,7 +4967,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"01-11-2022", :end_date=>"01-11-2023", :type_of_service=>"Language Therapy", :frequency=>70, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>45, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>35, :used_visits=>45, :pace=>-16, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>61, :reset_date=>"01-11-2023"}])
     end
 
@@ -4975,7 +4975,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-29-2022", :end_date=>"02-25-2023", :type_of_service=>"Speech Therapy", :frequency=>2, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-29-2022", :end_date=>"02-25-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
     end
 
@@ -4983,7 +4983,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-09-2022", :end_date=>"05-09-2023", :type_of_service=>"Language Therapy", :frequency=>54, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>97, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"05-09-2022", :end_date=>"05-09-2023", :type_of_service=>"Speech Therapy", :frequency=>54, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>97, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}, {:school_plan_type=>"IEP", :start_date=>"05-09-2022", :end_date=>"05-09-2023", :type_of_service=>"Occupation Therapy", :frequency=>32, :interval=>"yearly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>97, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>86, :used_visits=>22, :pace=>-26, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>48, :reset_date=>"05-09-2023"}, {:discipline=>"Occupational Therapy", :remaining_visits=>21, :used_visits=>11, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>14, :reset_date=>"05-09-2023"}])
     end
 
@@ -4991,7 +4991,7 @@ RSpec.describe Pacing::Pacer do
       school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-12-2022", :end_date=>"09-12-2023", :type_of_service=>"Physical Therapy", :frequency=>4, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-12-2022", :end_date=>"09-12-2023", :type_of_service=>"Occupation Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>30, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-12-2022", :end_date=>"09-12-2023", :type_of_service=>"Language Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"09-12-2022", :end_date=>"09-12-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>2, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
       date = "10-17-2022"
       non_business_days = []
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days)
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
       expect(results).to eq([{:discipline=>"Physical Therapy", :remaining_visits=>4, :used_visits=>1, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}, {:discipline=>"Occupational Therapy", :remaining_visits=>8, :used_visits=>1, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}, {:discipline=>"Speech Therapy", :remaining_visits=>13, :used_visits=>0, :pace=>-7, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
     end
   end
