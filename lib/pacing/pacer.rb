@@ -7,7 +7,7 @@ module Pacing
     COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     attr_reader :school_plan, :date, :non_business_days, :state, :mode, :interval, :summer_holidays
 
-    def initialize(school_plan:, date:, non_business_days:, state: :us_tn, mode: :liberal, summer_holidays: [])
+    def initialize(school_plan:, date:, non_business_days:, state: :us_tn, mode: :liberal, summer_holidays: [], minimum_duration: 15)
       @school_plan = school_plan
       @non_business_days = non_business_days
       @date = date
@@ -49,11 +49,19 @@ module Pacing
         raise TypeError.new("Interval for extra sessions allowable must be a string and cannot be nil") if school_plan_service[:interval_for_extra_sessions_allowable].class != String || school_plan_service[:interval_for_extra_sessions_allowable].nil?
       end
 
-      @summer_holidays = summer_holidays.empty? ? [parse_date("05-31-#{parse_date(date).year}"), parse_date("09-01-#{parse_date(date).year}")] : summer_holidays
+      @summer_holidays = summer_holidays.empty? ? parse_summer_holiday_dates : [parse_date(summer_holidays[0]), parse_date(summer_holidays[1])]
     end
 
     def calculate
-      services = @school_plan[:school_plan_services]
+      # filter out services that haven't started or whose time is passed
+      services = @school_plan[:school_plan_services].filter do |school_plan_service|
+        within = true
+        if !(parse_date(school_plan_service[:start_date]) <= parse_date(@date) && parse_date(@date) <= parse_date(school_plan_service[:end_date]))
+          within = false
+        end
+
+        within
+      end
 
       services = services.map do |service|
         discipline = {}
@@ -62,9 +70,11 @@ module Pacing
 
         discipline[:pace] = pace(service[:completed_visits_for_current_interval], expected)
 
-        discipline[:reset_date] = reset_date(start_date: service[:start_date], interval: service[:interval_for_extra_sessions_allowable])
+        discipline[:reset_date] = reset_date(start_date: service[:start_date], interval: service[:interval])
 
-        discipline[:remaining_visits] = remaining_visits(completed_visits: service[:completed_visits_for_current_interval], required_visits: service[:frequency])
+        discipline[:reset_date] = parse_date(discipline[:reset_date]) > parse_date(service[:end_date]) && service[:interval] == "yearly" ? service[:end_date] : discipline[:reset_date]
+
+        discipline[:remaining_visits] = remaining_visits(completed_visits: service[:completed_visits_for_current_interval], required_visits: service[:frequency] + service[:extra_sessions_allowable])
 
         discipline[:pace_indicator] = pace_indicator(discipline[:pace])
 
@@ -205,7 +215,8 @@ module Pacing
 
     # get actual date of the first day of the week where date falls
     def week_start(date, offset_from_sunday=0)
-      date - ((date.wday - offset_from_sunday)%7)
+      return date if date.monday?
+      date - ((date.wday - offset_from_sunday) % 7)
     end
     
     # reset date for the yearly interval
@@ -273,6 +284,8 @@ module Pacing
       rescue => exception
         # within_range = false
       end
+
+      within_range = true
       
       within_range
     end
@@ -290,7 +303,7 @@ module Pacing
         :reset_date => nil } # some arbitrarity date in the past
 
       discipline_services = services.filter do |service|
-        ["Language Therapy", "Speech Therapy"].include? service[:type_of_service]
+        ["Language Therapy", "Speech Therapy", "Speech and Language Therapy", "Speech Language Therapy"].include? service[:type_of_service]
       end
 
       return {} if discipline_services.empty?
@@ -311,7 +324,7 @@ module Pacing
         :reset_date=> nil } # some arbitrarity date in the past
 
       discipline_services = services.filter do |service|
-        ["occupation Therapy", "Occupational Therapy"].include? service[:type_of_service]
+        ["occupation therapy", "occupational therapy"].include? (service[:type_of_service].downcase)
       end
 
       return {} if discipline_services.empty?
@@ -350,14 +363,17 @@ module Pacing
 
         discipline[:expected_visits_at_date] = discipline[:expected_visits_at_date] ? discipline[:expected_visits_at_date].to_i + service[:expected_visits_at_date].to_i : service[:expected_visits_at_date]
 
-        discipline[:suggested_rate] = discipline[:suggested_rate] ? discipline[:suggested_rate].to_i + service[:suggested_rate].to_i : service[:suggested_rate]
+        discipline[:suggested_rate] = discipline[:suggested_rate] ? discipline[:suggested_rate].to_i + service[:suggested_rate].to_i : service[:suggested_rate].to_i
 
-        discipline[:reset_date] = (!discipline[:reset_date].nil? && parse_date(service[:reset_date]) < parse_date(discipline[:reset_date])) ? service[:reset_date] : service[:reset_date]
+        discipline[:reset_date] = (!discipline[:reset_date].nil? && parse_date(service[:reset_date]) < parse_date(discipline[:reset_date])) ? discipline[:reset_date] : service[:reset_date]
       end
 
       discipline[:pace_indicator] = pace_indicator(discipline[:pace])
       discipline[:pace_suggestion] = readable_suggestion(rate: discipline[:suggested_rate]) 
       discipline[:pace_suggestion] = "once a day" # for the sake of tests
+      # # discipline[:pace] = discipline[:pace].round
+      # discipline[:expected_visits_at_date] = discipline[:expected_visits_at_date].round
+      # discipline[:pace] = pace(services[0][:used_visits], discipline[:expected_visits_at_date])
 
       discipline.delete(:suggested_rate)
       discipline
@@ -384,7 +400,9 @@ module Pacing
     end
 
     def suggested_rate(remaining_visits:, start_date:, interval:)
-      (remaining_visits / remaining_days(start_date: start_date, interval: interval).to_f).round(2)
+      days_left = remaining_days(start_date: start_date, interval: interval).to_f
+      days_left = 1 if days_left == 0
+      (remaining_visits / days_left).round(2)
     end
 
     def remaining_days(start_date:, interval:)
@@ -399,6 +417,16 @@ module Pacing
     def disciplines_cleaner(disciplines)
       # use the fake arbitrary reset date to remove unrequired disciplines
       disciplines.filter { |discipline| !discipline.empty? }
+    end
+
+    def parse_summer_holiday_dates
+      holidays_start = parse_date("05-13-#{parse_date(@date).year}")
+      holidays_start += 1 until holidays_start.wday == 5
+
+      holidays_end = parse_date("08-01-#{parse_date(@date).year}")
+      holidays_start += 1 until holidays_start.wday == 1
+
+      [holidays_start, holidays_end]
     end
   end
 end
