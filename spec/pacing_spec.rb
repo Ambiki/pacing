@@ -3924,7 +3924,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>1, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 3703" do
@@ -3932,7 +3932,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>2, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 3704" do
@@ -3940,7 +3940,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 3707" do
@@ -3948,7 +3948,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>4, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 3714" do
@@ -3956,7 +3956,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>6, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 3814" do
@@ -3964,7 +3964,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>4, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 3815" do
@@ -3988,7 +3988,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>8, :pace=>2, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 3822" do
@@ -3996,7 +3996,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>8, :pace=>2, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 3824" do
@@ -4004,7 +4004,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>8, :pace=>2, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 3827" do
@@ -4012,7 +4012,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>1, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>5, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>2, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>4, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 3828" do
@@ -4036,7 +4036,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>0, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>3, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>5, :used_visits=>0, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>2, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 3837" do
@@ -4052,7 +4052,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>6, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 3844" do
@@ -4100,7 +4100,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 3951" do
@@ -4172,7 +4172,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>49, :used_visits=>59, :pace=>-42, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>101, :reset_date=>"11-09-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>57, :used_visits=>51, :pace=>-48, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>99, :reset_date=>"11-09-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4038" do
@@ -4180,7 +4180,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>84, :used_visits=>24, :pace=>-77, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>101, :reset_date=>"11-09-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>91, :used_visits=>17, :pace=>-82, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>99, :reset_date=>"11-09-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4044" do
@@ -4196,7 +4196,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4055" do
@@ -4212,7 +4212,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>103, :used_visits=>15, :pace=>1, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>14, :reset_date=>"09-02-2023"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>57, :used_visits=>52, :pace=>39, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>13, :reset_date=>"09-02-2023"}])
     end
 
     it "should correctly parse the pacing for patient 4058" do
@@ -4220,7 +4220,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4070" do
@@ -4228,7 +4228,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4072" do
@@ -4236,7 +4236,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4078" do
@@ -4364,7 +4364,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>7, :used_visits=>9, :pace=>1, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>8, :reset_date=>"11-01-2022"}])
+      expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>9, :pace=>1, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>8, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4170" do
@@ -4372,7 +4372,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>18, :used_visits=>90, :pace=>-8, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>98, :reset_date=>"11-18-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>18, :used_visits=>90, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>96, :reset_date=>"11-18-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4180" do
@@ -4380,7 +4380,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>96, :used_visits=>22, :pace=>-28, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>50, :reset_date=>"05-16-2023"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>19, :used_visits=>90, :pace=>29, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>61, :reset_date=>"05-16-2023"}])
     end
 
     it "should correctly parse the pacing for patient 4181" do
@@ -4388,7 +4388,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4195" do
@@ -4436,7 +4436,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>4, :used_visits=>6, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>6, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4216" do
@@ -4540,7 +4540,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>20, :used_visits=>6, :pace=>-6, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>12, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4261" do
@@ -4612,7 +4612,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>78, :used_visits=>40, :pace=>-14, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>54, :reset_date=>"05-04-2023"}])
+      expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>0, :used_visits=>160, :pace=>126, :pace_indicator=>"🐇", :pace_suggestion=>"once a day", :expected_visits_at_date=>34, :reset_date=>"05-04-2023"}])
     end
 
     it "should correctly parse the pacing for patient 4297" do
@@ -4628,7 +4628,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>13, :used_visits=>3, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>8, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>6, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>8, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4305" do
@@ -4636,7 +4636,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4308" do
@@ -4644,7 +4644,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4310" do
@@ -4652,7 +4652,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>6, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4312" do
@@ -4668,7 +4668,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4327" do
@@ -4684,7 +4684,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4332" do
@@ -4724,7 +4724,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4349" do
@@ -4732,7 +4732,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4355" do
@@ -4740,7 +4740,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4361" do
@@ -4764,7 +4764,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>2, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4388" do
@@ -4796,7 +4796,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>-1, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>1, :reset_date=>"10-24-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4459" do
@@ -4868,7 +4868,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>7, :reset_date=>"11-01-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4514" do
@@ -4892,7 +4892,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>3, :used_visits=>0, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
+      expect(results).to match_array([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>0, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a day", :expected_visits_at_date=>0, :reset_date=>"10-24-2022"}])
     end
 
     it "should correctly parse the pacing for patient 4557" do
