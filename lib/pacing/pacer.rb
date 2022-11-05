@@ -273,21 +273,19 @@ module Pacing
     end
 
     def date_within_range
-      within_range = true
+      valid_range_or_exceptions = false
 
       begin
         @school_plan[:school_plan_services].each do |school_plan_service|
-          if !(parse_date(school_plan_service[:start_date]) <= parse_date(@date) && parse_date(@date) <= parse_date(school_plan_service[:end_date]))
-            within_range = false
+          if (parse_date(school_plan_service[:start_date]) <= parse_date(@date) && parse_date(@date) <= parse_date(school_plan_service[:end_date]))
+            valid_range_or_exceptions = true
           end
         end
       rescue => exception
-        # within_range = false
+        valid_range_or_exceptions = true
       end
-
-      within_range = true
       
-      within_range
+      valid_range_or_exceptions
     end
 
     def speech_discipline(services)
@@ -363,17 +361,13 @@ module Pacing
 
         discipline[:expected_visits_at_date] = discipline[:expected_visits_at_date] ? discipline[:expected_visits_at_date].to_i + service[:expected_visits_at_date].to_i : service[:expected_visits_at_date]
 
-        discipline[:suggested_rate] = discipline[:suggested_rate] ? discipline[:suggested_rate].to_i + service[:suggested_rate].to_i : service[:suggested_rate].to_i
+        discipline[:suggested_rate] = discipline[:suggested_rate] ? discipline[:suggested_rate].to_f + service[:suggested_rate].to_f : service[:suggested_rate].to_f
 
         discipline[:reset_date] = (!discipline[:reset_date].nil? && parse_date(service[:reset_date]) < parse_date(discipline[:reset_date])) ? discipline[:reset_date] : service[:reset_date]
       end
 
       discipline[:pace_indicator] = pace_indicator(discipline[:pace])
       discipline[:pace_suggestion] = readable_suggestion(rate: discipline[:suggested_rate]) 
-      discipline[:pace_suggestion] = "once a day" # for the sake of tests
-      # # discipline[:pace] = discipline[:pace].round
-      # discipline[:expected_visits_at_date] = discipline[:expected_visits_at_date].round
-      # discipline[:pace] = pace(services[0][:used_visits], discipline[:expected_visits_at_date])
 
       discipline.delete(:suggested_rate)
       discipline
@@ -402,7 +396,7 @@ module Pacing
     def suggested_rate(remaining_visits:, start_date:, interval:)
       days_left = remaining_days(start_date: start_date, interval: interval).to_f
       days_left = 1 if days_left == 0
-      (remaining_visits / days_left).round(2)
+      (remaining_visits / days_left.to_f).round(2)
     end
 
     def remaining_days(start_date:, interval:)
