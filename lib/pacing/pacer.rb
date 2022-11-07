@@ -12,7 +12,7 @@ module Pacing
       @non_business_days = non_business_days
       @date = date
       @state = state
-      @mode = mode
+      @mode = [:strict, :liberal].include?(mode) ? mode : :liberal
 
       raise ArgumentError.new("You must pass in at least one school plan") if @school_plan.nil?
       raise TypeError.new("School plan must be a hash") if @school_plan.class != Hash
@@ -89,7 +89,7 @@ module Pacing
         discipline
       end
 
-      disciplines_cleaner ([speech_discipline(services), occupational_discipline(services), physical_discipline(services)])
+      disciplines_cleaner ([speech_discipline(services), occupational_discipline(services), physical_discipline(services), feeding_discipline(services)])
     end
 
     # get a spreadout of visit dates over an interval by using simple proportion.
@@ -344,6 +344,27 @@ module Pacing
 
       discipline_services = services.filter do |service|
         ["Physical Therapy"].include? service[:type_of_service]
+      end
+
+      return {} if discipline_services.empty?
+
+      discipline_data(discipline_services, discipline)
+    end
+
+    def feeding_discipline(services)
+      discipline = {
+        :discipline=>"Feeding Therapy",
+        :remaining_visits=>0,
+        :used_visits=>0,
+        :pace=>0,
+        :pace_indicator=>"🐢",
+        :pace_suggestion=>"once a day",
+        :suggested_rate => 0,
+        :expected_visits_at_date=>0,
+        :reset_date=> nil } # some arbitrarity date in the past
+
+      discipline_services = services.filter do |service|
+        ["Feeding Therapy"].include? service[:type_of_service]
       end
 
       return {} if discipline_services.empty?
