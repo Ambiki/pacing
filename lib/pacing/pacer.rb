@@ -52,6 +52,36 @@ module Pacing
       @summer_holidays = summer_holidays.empty? ? parse_summer_holiday_dates : [parse_date(summer_holidays[0]), parse_date(summer_holidays[1])]
     end
 
+    def interval
+      # filter out services that haven't started or whose time is passed
+      services = @school_plan[:school_plan_services].filter do |school_plan_service|
+        within = true
+        if !(parse_date(school_plan_service[:start_date]) <= parse_date(@date) && parse_date(@date) <= parse_date(school_plan_service[:end_date]))
+          within = false
+        end
+
+        within
+      end
+
+      services = services.map do |service|
+        if ["pragmatic language", "speech and language", "language", "speech", "language therapy", "speech therapy", "speech and language therapy", "speech language therapy"].include?(service[:type_of_service].downcase)
+          discipline_name = "Speech Therapy"
+        elsif ["occupation therapy", "occupational therapy"].include?(service[:type_of_service].downcase)
+          discipline_name = "Occupational Therapy"
+        elsif ["physical therapy"].include?(service[:type_of_service].downcase)
+          discipline_name = "Physical Therapy"
+        elsif ["feeding therapy"].include?(service[:type_of_service].downcase)
+          discipline_name = "Feeding Therapy"
+        end
+
+        discipline = {}
+        discipline[:discipline] = discipline_name
+        discipline[:reset_date] = reset_date(start_date: service[:start_date], interval: service[:interval])
+        discipline[:start_date] = start_of_treatment_date(parse_date(service[:start_date]), service[:interval]).strftime("%m-%d-%Y")
+        discipline
+      end
+    end
+
     def calculate
       # filter out services that haven't started or whose time is passed
       services = @school_plan[:school_plan_services].filter do |school_plan_service|
@@ -245,7 +275,7 @@ module Pacing
       # start_date
     end
 
-    # start of treatment for the montly interval
+    # start of treatment for the monthly interval
     def start_of_treatment_date_monthly(start_date)
       if @mode == :strict
         return parse_date("#{parse_date(@date).month}-#{start_date.day}-#{parse_date(@date).year}")
@@ -265,7 +295,7 @@ module Pacing
       weekly_date = week_start_date
 
       if week_start_date != parsed_date && @mode == :strict
-        weekly_date = week_start_date + start_date.wday #unless start_date.wday == 1
+        weekly_date = week_start_date + start_date.wday # unless start_date.wday == 1
         weekly_date = parsed_date < weekly_date ? weekly_date - 7 : weekly_date
       end
 
@@ -364,7 +394,7 @@ module Pacing
         :reset_date=> nil } # some arbitrarity date in the past
 
       discipline_services = services.filter do |service|
-        ["Feeding Therapy"].include? service[:type_of_service]
+        ["feeding therapy"].include?(service[:type_of_service].downcase)
       end
 
       return {} if discipline_services.empty?

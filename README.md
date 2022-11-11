@@ -116,6 +116,10 @@ paced.calculate
     }
   ]
 =end
+
+paced.interval # Return current interval start and end dates
+
+# =>
 ```
 
 It is important to note that the `pace` is hugely influenced by the `summer_holidays` period and the `mode` in which it is calculated.

@@ -2,7 +2,103 @@ require 'spec_helper'
 require 'date'
 
 RSpec.describe Pacing::Pacer do
-  describe "monthly pacer" do
+  describe "#interval" do
+    it "return some the current interval #1" do
+      school_plan = {
+        school_plan_services: [
+          {
+            school_plan_type: 'IEP',
+            start_date: '04-01-2022',
+            end_date: '04-01-2023',
+            type_of_service: 'Language Therapy',
+            frequency: 6,
+            interval: 'monthly',
+            time_per_session_in_minutes: 30,
+            completed_visits_for_current_interval: 7,
+            extra_sessions_allowable: 1,
+            interval_for_extra_sessions_allowable: 'monthly'
+          }, {
+            school_plan_type: 'IEP',
+            start_date: '04-01-2022',
+            end_date: '04-01-2023',
+            type_of_service: 'Physical Therapy',
+            frequency: 6,
+            interval: 'monthly',
+            time_per_session_in_minutes: 30,
+            completed_visits_for_current_interval: 2,
+            extra_sessions_allowable: 1,
+            interval_for_extra_sessions_allowable: 'monthly'
+          }
+        ]
+      }
+
+      date = '04-22-2022'
+      non_business_days = ['04-25-2022']
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, mode: :strict).interval
+
+      expect(results).to eq([
+          {
+            discipline: 'Speech Therapy',
+            start_date: '04-01-2022',
+            reset_date: '05-01-2022'
+          },
+          {
+            discipline: 'Physical Therapy',
+            start_date: '04-01-2022',
+            reset_date: '05-01-2022'
+          }
+        ])
+    end
+
+    it "return some the current interval #2" do
+      school_plan = {
+        school_plan_services: [
+          {
+            school_plan_type: 'IEP',
+            start_date: '04-01-2022',
+            end_date: '04-01-2023',
+            type_of_service: 'Language Therapy',
+            frequency: 6,
+            interval: 'monthly',
+            time_per_session_in_minutes: 30,
+            completed_visits_for_current_interval: 7,
+            extra_sessions_allowable: 1,
+            interval_for_extra_sessions_allowable: 'monthly'
+          }, {
+            school_plan_type: 'IEP',
+            start_date: '04-01-2022',
+            end_date: '04-01-2023',
+            type_of_service: 'Physical Therapy',
+            frequency: 2,
+            interval: 'weekly',
+            time_per_session_in_minutes: 30,
+            completed_visits_for_current_interval: 2,
+            extra_sessions_allowable: 1,
+            interval_for_extra_sessions_allowable: 'weekly'
+          }
+        ]
+      }
+
+      date = '05-19-2022'
+      non_business_days = ['04-25-2022']
+      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, mode: :strict).interval
+
+      expect(results).to eq([
+          {
+            discipline: 'Speech Therapy',
+            start_date: '05-01-2022',
+            reset_date: '06-01-2022'
+          },
+          {
+            discipline: 'Physical Therapy',
+            start_date: '05-16-2022',
+            reset_date: '05-23-2022'
+          }
+        ])
+    end
+
+  end
+  describe "#calculate" do
     it "return some data" do
       school_plan = {
         school_plan_services: [
