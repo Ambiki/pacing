@@ -16,11 +16,11 @@ module Pacing
 
       raise ArgumentError.new("You must pass in at least one school plan") if @school_plan.nil?
       raise TypeError.new("School plan must be a hash") if @school_plan.class != Hash
-      
+
       raise ArgumentError.new('You must pass in a date') if @date.nil?
       raise TypeError.new("The date should be formatted as a string in the format mm-dd-yyyy") if @date.class != String || !/(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-(19|20)\d\d/.match?(@date)
       raise ArgumentError.new('Date must be within the interval range of the school plan') if !date_within_range
-      
+
       @non_business_days.each do |non_business_day|
         raise TypeError.new('"Non business days" dates should be formatted as a string in the format mm-dd-yyyy') if non_business_day.class != String || !/(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-(19|20)\d\d/.match?(non_business_day)
       end
@@ -117,11 +117,11 @@ module Pacing
 
     def interval_days(interval)
       case interval
-      when "monthly"
+      when "monthly", "per month"
         return COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]
-      when "weekly"
+      when "weekly", "per week"
         return 6
-      when "yearly"
+      when "yearly", "per year"
         return parse_date(@date).leap? ? 366 : 365
       end
     end
@@ -179,11 +179,11 @@ module Pacing
     # scoped to the interval
     def reset_date(start_date:, interval:)
       case interval
-      when "monthly"
+      when "monthly", "per month"
         return reset_date_monthly(start_date, interval)
-      when "weekly"
+      when "weekly", "per week"
         return reset_date_weekly(start_date, interval)
-      when "yearly"
+      when "yearly", "per year"
         return reset_date_yearly(start_date)
       end
     end
@@ -191,11 +191,11 @@ module Pacing
     # scoped to the interval
     def start_of_treatment_date(start_date, interval="monthly")
       case interval
-      when "monthly"
+      when "monthly", "per month"
         return start_of_treatment_date_monthly(start_date)
-      when "weekly"
+      when "weekly", "per week"
         return start_of_treatment_date_weekly(start_date)
-      when "yearly"
+      when "yearly", "per year"
         return start_of_treatment_date_yearly(start_date)
       end
     end
@@ -218,7 +218,7 @@ module Pacing
       return date if date.monday?
       date - ((date.wday - offset_from_sunday) % 7)
     end
-    
+
     # reset date for the yearly interval
     def reset_date_yearly(start_date)
       (parse_date(@date).leap? ? parse_date(start_date) + 366 : parse_date(start_date) + 365).strftime("%m-%d-%Y")
@@ -284,7 +284,7 @@ module Pacing
       rescue => exception
         valid_range_or_exceptions = true
       end
-      
+
       valid_range_or_exceptions
     end
 
@@ -301,7 +301,7 @@ module Pacing
         :reset_date => nil } # some arbitrarity date in the past
 
       discipline_services = services.filter do |service|
-        ["Language Therapy", "Speech Therapy", "Speech and Language Therapy", "Speech Language Therapy"].include? service[:type_of_service]
+        ["pragmatic language", "speech and language", "language", "speech", "language therapy", "speech therapy", "speech and language therapy", "speech language therapy"].include?(service[:type_of_service].downcase)
       end
 
       return {} if discipline_services.empty?
@@ -322,7 +322,7 @@ module Pacing
         :reset_date=> nil } # some arbitrarity date in the past
 
       discipline_services = services.filter do |service|
-        ["occupation therapy", "occupational therapy"].include? (service[:type_of_service].downcase)
+        ["occupation therapy", "occupational therapy"].include?(service[:type_of_service].downcase)
       end
 
       return {} if discipline_services.empty?
@@ -343,7 +343,7 @@ module Pacing
         :reset_date=> nil } # some arbitrarity date in the past
 
       discipline_services = services.filter do |service|
-        ["Physical Therapy"].include? service[:type_of_service]
+        ["physical therapy"].include?(service[:type_of_service].downcase)
       end
 
       return {} if discipline_services.empty?
@@ -388,7 +388,7 @@ module Pacing
       end
 
       discipline[:pace_indicator] = pace_indicator(discipline[:pace])
-      discipline[:pace_suggestion] = readable_suggestion(rate: discipline[:suggested_rate]) 
+      discipline[:pace_suggestion] = readable_suggestion(rate: discipline[:suggested_rate])
 
       discipline.delete(:suggested_rate)
       discipline
