@@ -290,6 +290,8 @@ module Pacing
 
     # start of treatment for the weekly interval
     def start_of_treatment_date_weekly(start_date)
+      # TODO: Update with assumption that Monday is start of week
+      # Future TODO: allow user to pass in configuration for start of week
       parsed_date = parse_date(@date)
       week_start_date = week_start(parsed_date)
       weekly_date = week_start_date
