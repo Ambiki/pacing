@@ -1,6 +1,6 @@
 # Pacing
 
-Pacing is a tool that enables therapists to better manage and track their caseload. It is built for cases where there are therapy frequency limitations that need to be adhered to. For example, in the case of an [IEP (Individualized Education Program)](https://ambiki.com/glossary-concepts/iep), 504 plan, or a Services plan. This gem helps to calculate remaining visits as well as a therapist's current pace to meet visit mandates.
+Pacing is a tool that enables therapists to better manage and track their caseload. It is built for cases where there are therapy frequency limitations that need to be adhered to. For example, in the case of an [IEP (Individualized Education Program)](https://ambiki.com/glossary-concepts/iep), 504 plan, or a Service plan. This gem helps to calculate remaining visits as well as a therapist's current pace to meet visit mandates.
 
 - 🐇 Ahead of pace
 - 😁 On pace
@@ -31,7 +31,7 @@ gem 'pacing'
 school_plan = {
   school_plan_services: [
     {
-      school_plan_type: "IEP", # string ('IEP', '504 Plan', 'Services Plan' )
+      school_plan_type: "IEP", # string ('IEP', '504 Plan', 'Service Plan' )
       start_date: "01-01-2022", # string (mm-dd-yyyy)
       end_date: "01-01-2023", # string (mm-dd-yyyy)
       type_of_service: "Language Therapy", # string ('Language Therapy', 'Speech Therapy', 'Occupation Therapy', 'Physical Therapy', 'Feeding Therapy', 'Speech and Language Therapy')
@@ -43,7 +43,7 @@ school_plan = {
       interval_for_extra_sessions_allowable: "monthly", # string ('weekly', 'monthly', 'yearly')
     },
     {
-      school_plan_type: "IEP", # string ('IEP', '504 Plan', 'Services Plan' )
+      school_plan_type: "IEP", # string ('IEP', '504 Plan', 'Service Plan' )
       start_date: "01-01-2022", # string (mm-dd-yyyy)
       end_date: "01-01-2023", # string (mm-dd-yyyy)
       type_of_service: "Physical Therapy", # string ('Language Therapy', 'Speech Therapy', 'Occupation Therapy', 'Physical Therapy', 'Feeding Therapy', 'Speech and Language Therapy')
@@ -155,7 +155,7 @@ The following list shows the various variables and what they consist of:
 
 - **IEP (Individualized Education Program)**: Individualized Education Programs (IEPs) are required by law for every student who receives special education services and are developed on an annual basis. The IEP is an educational document that the school generates. The therapist is bound to the frequency on the IEP, and the insurance companies will not pay for anything above or beyond what is on the IEP. It is a blueprint for a student’s special education experience in a public school. The plan must ensure that the child receives a free appropriate public education, (FAPE).
 - **504 Plan**: 504 plans are formal plans that schools develop to give kids with disabilities the support they need. That covers any condition that limits daily activities in a major way. These plans prevent discrimination and they protect the rights of kids with disabilities in school. They are covered under Section 504 of the Rehabilitation Act, a civil rights law.
-- **Services Plan**: A plan paid for by the local school district for students with disabilities who attend private schools. A services plan does not have to ensure a child is provided with FAPE (free appropriate public education). A services plan spells out the special education and related services the LEA will make available to a child. These services are provided at no cost to parents. But the student may not be able to receive these services at the private school. Instead, the LEA can require him to go to a public school for services like speech therapy sessions. [§34 CFR 300.130 through §300.144 of IDEA](https://sites.ed.gov/idea/files/CWD_Enrolled_by_Their_Parents_in_Private_Schools_11-16-06.pdf) is a specific section that describes how services are provided to kids in private school.
+- **Service Plan**: A plan paid for by the local school district for students with disabilities who attend private schools. A Service plan does not have to ensure a child is provided with FAPE (free appropriate public education). A Service plan spells out the special education and related services the LEA will make available to a child. These services are provided at no cost to parents. But the student may not be able to receive these services at the private school. Instead, the LEA can require him to go to a public school for services like speech therapy sessions. [§34 CFR 300.130 through §300.144 of IDEA](https://sites.ed.gov/idea/files/CWD_Enrolled_by_Their_Parents_in_Private_Schools_11-16-06.pdf) is a specific section that describes how services are provided to kids in private school.
 
 ## Testing
 
