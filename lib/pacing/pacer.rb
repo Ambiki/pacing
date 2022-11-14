@@ -122,6 +122,9 @@ module Pacing
       disciplines_cleaner ([speech_discipline(services), occupational_discipline(services), physical_discipline(services), feeding_discipline(services)])
     end
 
+    def get_interval()
+    end
+
     # get a spreadout of visit dates over an interval by using simple proportion.
     def expected_visits(start_date:, end_date:, frequency:, interval:)
       reset_start = start_of_treatment_date(start_date, interval)
@@ -245,6 +248,7 @@ module Pacing
 
     # get actual date of the first day of the week where date falls
     def week_start(date, offset_from_sunday=0)
+      offset_from_sunday = @mode == :liberal ? 1 : 0
       return date if date.monday?
       date - ((date.wday - offset_from_sunday) % 7)
     end
