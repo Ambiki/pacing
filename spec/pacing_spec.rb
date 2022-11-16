@@ -1,6 +1,8 @@
 require 'spec_helper'
 require 'date'
 
+# what happens when reset date falls in holiday, do we shift it to after the holidays?
+
 RSpec.describe Pacing::Pacer do
   describe "#interval" do
     it "return some the current interval #1" do
@@ -34,7 +36,7 @@ RSpec.describe Pacing::Pacer do
 
       date = '04-22-2022'
       non_business_days = ['04-25-2022']
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, mode: :strict).interval
+      results = Pacing::Calculator.new(school_plan: school_plan, date: date, non_business_days: non_business_days, mode: :strict).interval
 
       expect(results).to eq([
           {
@@ -81,7 +83,7 @@ RSpec.describe Pacing::Pacer do
 
       date = '05-19-2022'
       non_business_days = ['04-25-2022']
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, mode: :strict).interval
+      results = Pacing::Calculator.new(school_plan: school_plan, date: date, non_business_days: non_business_days, mode: :strict).interval
 
       expect(results).to eq([
           {
@@ -128,7 +130,7 @@ RSpec.describe Pacing::Pacer do
 
       date = '04-22-2022'
       non_business_days = ['04-25-2022']
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, mode: :liberal).interval
+      results = Pacing::Calculator.new(school_plan: school_plan, date: date, non_business_days: non_business_days, mode: :liberal).interval
 
       expect(results).to eq([
           {
@@ -175,7 +177,7 @@ RSpec.describe Pacing::Pacer do
 
       date = '05-19-2022'
       non_business_days = ['04-25-2022']
-      results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, mode: :liberal).interval
+      results = Pacing::Calculator.new(school_plan: school_plan, date: date, non_business_days: non_business_days, mode: :liberal).interval
 
       expect(results).to eq([
           {
@@ -918,7 +920,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>6, :used_visits=>6, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once every other day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
+      expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>3, :pace=>-3, :pace_indicator=>"🐢", :pace_suggestion=>"about once every other day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 23" do
@@ -952,7 +954,7 @@ RSpec.describe Pacing::Pacer do
       date = "10-17-2022"
       non_business_days = []
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
-      expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>8, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"about once every other day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
+      expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>2, :pace=>-4, :pace_indicator=>"🐢", :pace_suggestion=>"about once every other day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022"}])
     end
 
     it "should correctly parse the pacing for patient 28" do

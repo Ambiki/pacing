@@ -84,7 +84,8 @@ module Pacing
 
     def calculate
       # filter out services that haven't started or whose time is passed
-      services = @school_plan[:school_plan_services].filter do |school_plan_service|
+      school_plan_services = Pacing::Normalizer.new(@school_plan[:school_plan_services], @date).normalize
+      services = school_plan_services[:school_plan_services].filter do |school_plan_service|
         within = true
         if !(parse_date(school_plan_service[:start_date]) <= parse_date(@date) && parse_date(@date) <= parse_date(school_plan_service[:end_date]))
           within = false
@@ -119,10 +120,7 @@ module Pacing
         discipline
       end
 
-      disciplines_cleaner ([speech_discipline(services), occupational_discipline(services), physical_discipline(services), feeding_discipline(services)])
-    end
-
-    def get_interval()
+      disciplines_cleaner([speech_discipline(services), occupational_discipline(services), physical_discipline(services), feeding_discipline(services)])
     end
 
     # get a spreadout of visit dates over an interval by using simple proportion.
@@ -478,7 +476,7 @@ module Pacing
       holidays_start += 1 until holidays_start.wday == 1
 
       [holidays_start, holidays_end]
-    end
+    end 
   end
 end
 
