@@ -115,12 +115,17 @@ module Pacing
 
         discipline[:expected_visits_at_date] = expected
 
-        discipline[:type_of_service] = service[:type_of_service]
+        discipline[:discipline] = service[:type_of_service]
+
+        discipline[:pace_indicator] = pace_indicator(discipline[:pace])
+        discipline[:pace_suggestion] = readable_suggestion(rate: discipline[:suggested_rate])
+
+        discipline.delete(:suggested_rate)
 
         discipline
       end
 
-      disciplines_cleaner([speech_discipline(services), occupational_discipline(services), physical_discipline(services), feeding_discipline(services)])
+      services
     end
 
     # get a spreadout of visit dates over an interval by using simple proportion.
@@ -322,112 +327,6 @@ module Pacing
       valid_range_or_exceptions
     end
 
-    def speech_discipline(services)
-      discipline = {
-        :discipline => "Speech Therapy",
-        :remaining_visits => 0,
-        :used_visits => 0,
-        :pace => 0,
-        :pace_indicator => "🐢",
-        :pace_suggestion => "once a day",
-        :suggested_rate => 0,
-        :expected_visits_at_date => 0,
-        :reset_date => nil } # some arbitrarity date in the past
-
-      discipline_services = services.filter do |service|
-        ["pragmatic language", "speech and language", "language", "speech", "language therapy", "speech therapy", "speech and language therapy", "speech language therapy"].include?(service[:type_of_service].downcase)
-      end
-
-      return {} if discipline_services.empty?
-
-      discipline_data(discipline_services, discipline)
-    end
-
-    def occupational_discipline(services)
-      discipline = {
-        :discipline=>"Occupational Therapy",
-        :remaining_visits=>0,
-        :used_visits=>0,
-        :pace=>0,
-        :pace_indicator=>"🐢",
-        :pace_suggestion=>"once a day",
-        :suggested_rate => 0,
-        :expected_visits_at_date=>0,
-        :reset_date=> nil } # some arbitrarity date in the past
-
-      discipline_services = services.filter do |service|
-        ["occupation therapy", "occupational therapy"].include?(service[:type_of_service].downcase)
-      end
-
-      return {} if discipline_services.empty?
-
-      discipline_data(discipline_services, discipline)
-    end
-
-    def physical_discipline(services)
-      discipline = {
-        :discipline=>"Physical Therapy",
-        :remaining_visits=>0,
-        :used_visits=>0,
-        :pace=>0,
-        :pace_indicator=>"🐢",
-        :pace_suggestion=>"once a day",
-        :suggested_rate => 0,
-        :expected_visits_at_date=>0,
-        :reset_date=> nil } # some arbitrarity date in the past
-
-      discipline_services = services.filter do |service|
-        ["physical therapy"].include?(service[:type_of_service].downcase)
-      end
-
-      return {} if discipline_services.empty?
-
-      discipline_data(discipline_services, discipline)
-    end
-
-    def feeding_discipline(services)
-      discipline = {
-        :discipline=>"Feeding Therapy",
-        :remaining_visits=>0,
-        :used_visits=>0,
-        :pace=>0,
-        :pace_indicator=>"🐢",
-        :pace_suggestion=>"once a day",
-        :suggested_rate => 0,
-        :expected_visits_at_date=>0,
-        :reset_date=> nil } # some arbitrarity date in the past
-
-      discipline_services = services.filter do |service|
-        ["feeding therapy"].include?(service[:type_of_service].downcase)
-      end
-
-      return {} if discipline_services.empty?
-
-      discipline_data(discipline_services, discipline)
-    end
-
-    def discipline_data(services, discipline)
-      services.each do |service|
-        discipline[:pace] = discipline[:pace] ? discipline[:pace].to_i + service[:pace].to_i : service[:pace]
-
-        discipline[:remaining_visits] = discipline[:remaining_visits] ? discipline[:remaining_visits].to_i + service[:remaining_visits].to_i : service[:remaining_visits]
-
-        discipline[:used_visits] = discipline[:used_visits] ? discipline[:used_visits].to_i + service[:used_visits].to_i : service[:used_visits]
-
-        discipline[:expected_visits_at_date] = discipline[:expected_visits_at_date] ? discipline[:expected_visits_at_date].to_i + service[:expected_visits_at_date].to_i : service[:expected_visits_at_date]
-
-        discipline[:suggested_rate] = discipline[:suggested_rate] ? discipline[:suggested_rate].to_f + service[:suggested_rate].to_f : service[:suggested_rate].to_f
-
-        discipline[:reset_date] = (!discipline[:reset_date].nil? && parse_date(service[:reset_date]) < parse_date(discipline[:reset_date])) ? discipline[:reset_date] : service[:reset_date]
-      end
-
-      discipline[:pace_indicator] = pace_indicator(discipline[:pace])
-      discipline[:pace_suggestion] = readable_suggestion(rate: discipline[:suggested_rate])
-
-      discipline.delete(:suggested_rate)
-      discipline
-    end
-
     def readable_suggestion(rate:)
       # rate = suggested_rate(remaining_visits: remaining_visits, start_date: start_date, interval: interval)
 
@@ -461,11 +360,6 @@ module Pacing
       days_left = business_days(parse_date(@date), reset_end).count
 
       days_left
-    end
-
-    def disciplines_cleaner(disciplines)
-      # use the fake arbitrary reset date to remove unrequired disciplines
-      disciplines.filter { |discipline| !discipline.empty? }
     end
 
     def parse_summer_holiday_dates
