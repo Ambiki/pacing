@@ -809,7 +809,7 @@ RSpec.describe Pacing::Pacer do
     it "should respond with a friendly error message if date is out of range of school plan service start and end date" do
       school_plan = {school_plan_services: [{school_plan_type: 'IEP', start_date: '04-01-2022', end_date: '04-01-2023', type_of_service: 'Language Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1, interval_for_extra_sessions_allowable: 'monthly' }, {school_plan_type: 'IEP', start_date: '04-01-2022', end_date: '04-01-2023', type_of_service: 'Physical Therapy', frequency: 6, interval: 'monthly', time_per_session_in_minutes: 30, completed_visits_for_current_interval: 7, extra_sessions_allowable: 1, interval_for_extra_sessions_allowable: 'monthly' }]}
       date = '04-01-2018'
-      non_business_days = ['25-01-2022']
+      non_business_days = ['02-11-2022']
       expect { Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days ).calculate }.to raise_error('Date must be within the interval range of the school plan')
     end
 

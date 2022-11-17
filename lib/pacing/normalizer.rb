@@ -187,8 +187,6 @@ module Pacing
 
           service[:frequency] = ((service[:frequency] * interval_average_days["monthly"].to_f) / interval_average_days[service[:interval]]).round
 
-          puts "from interval #{service[:interval]} to monthly and frequency #{service[:frequency]} to frequency #{f}"
-
           service[:interval] = "monthly"
         end
 
