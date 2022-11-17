@@ -116,7 +116,28 @@ paced.calculate
     }
   ]
 =end
+
+paced.interval # Return current interval start and end dates
+
+# Below is the result you will get
+=begin
+=> [
+  {
+    discipline: 'Speech Therapy',
+    start_date: '04-01-2022',
+    reset_date: '05-01-2022'
+  },
+  {
+    discipline: 'Physical Therapy',
+    start_date: '04-01-2022',
+    reset_date: '05-01-2022'
+  }
+]
+# =>
+=end
 ```
+
+Interval `start_date` and `end_date`'s are different from start and end dates for the service. Here they define the start and end dates under evaluation in a specific interval, be it `month`, `week`, or `year`. They represent when the bounds of an interval.
 
 It is important to note that the `pace` is hugely influenced by the `summer_holidays` period and the `mode` in which it is calculated.
 
