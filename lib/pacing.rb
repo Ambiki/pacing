@@ -1,5 +1,4 @@
 require "pacing/normalizer"
-require "pacing/calculator"
 require "pacing/error"
 require "pacing/pacer"
 require "pacing/version"

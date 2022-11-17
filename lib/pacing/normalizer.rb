@@ -1,13 +1,7 @@
 require 'date'
 require 'holidays'
 
-# visits are for all(summation)
-# frequencies should be normalized(should be summed for one)(normalize towards month)
-# pacing should be calculated on the discipline
-# normalize also based on time per session
-
 module Pacing
-  # two modes(strict: use start dates strictly in calculating pacing)
   class Normalizer
 
     attr_accessor :services, :date
@@ -61,7 +55,7 @@ module Pacing
       }
 
       discipline_services = services.filter do |service|
-        ["occupation therapy", "occupational therapy"].include?(service[:type_of_service].downcase)
+        ["occupation therapy", "occupational therapy", "occupation"].include?(service[:type_of_service].downcase)
       end
       
       return {} if discipline_services.empty?
@@ -86,7 +80,7 @@ module Pacing
       }
 
       discipline_services = services.filter do |service|
-        ["physical therapy"].include?(service[:type_of_service].downcase)
+        ["physical therapy", "physical"].include?(service[:type_of_service].downcase)
       end
       
       return {} if discipline_services.empty?
@@ -111,7 +105,7 @@ module Pacing
       }
 
       discipline_services = services.filter do |service|
-        ["feeding therapy"].include?(service[:type_of_service].downcase)
+        ["feeding therapy", "feeding"].include?(service[:type_of_service].downcase)
       end
       
       return {} if discipline_services.empty?
@@ -122,17 +116,6 @@ module Pacing
     end
 
     def discipline_data(services, discipline)
-      # school_plan_type: 'IEP',
-      # start_date: '04-01-2022', -
-      # end_date: '04-01-2023', - 
-      # type_of_service: 'Speech Therapy', -
-      # frequency: 4, -
-      # interval: 'weekly', -
-      # time_per_session_in_minutes: 30, -
-      # completed_visits_for_current_interval: 0, -
-      # extra_sessions_allowable: 1, -
-      # interval_for_extra_sessions_allowable: 'weekly' -
-
       services.each do |service|
         discipline[:start_date] = parse_date(service[:start_date]) < parse_date(discipline[:start_date]) ? service[:start_date] : discipline[:start_date]
 
@@ -140,7 +123,7 @@ module Pacing
 
         discipline[:frequency] += service[:frequency].to_i
 
-        discipline[:completed_visits_for_current_interval] = service[:completed_visits_for_current_interval]
+        discipline[:completed_visits_for_current_interval] = service[:completed_visits_for_current_interval] if service[:completed_visits_for_current_interval] > discipline[:completed_visits_for_current_interval]
 
         discipline[:time_per_session_in_minutes] = service[:time_per_session_in_minutes] > discipline[:time_per_session_in_minutes] ? service[:time_per_session_in_minutes] : discipline[:time_per_session_in_minutes]
 
@@ -169,10 +152,11 @@ module Pacing
     end
 
     def normalize_to_monthly_frequency(services)
+      # average business days for each interval
       interval_average_days = {
         "weekly" => 5,
-        "monthly" => 20,
-        "yearly" => 200
+        "monthly" => 22,
+        "yearly" => 210 # take away average holidays period with is 2.5 months
       }
 
       return services if same_interval(services)

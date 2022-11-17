@@ -3,7 +3,6 @@ require 'holidays'
 
 module Pacing
   class Error
-    COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     attr_reader :school_plan, :date, :non_business_days, :state, :mode, :interval, :summer_holidays
 
     def initialize(school_plan:, date:, non_business_days:, state: :us_tn, mode: :liberal, summer_holidays: [])

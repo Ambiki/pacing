@@ -229,7 +229,9 @@ module Pacing
 
     # reset date for the monthly interval
     def reset_date_monthly(start_date, interval)
-      (start_of_treatment_date(parse_date(start_date), interval) + COMMON_YEAR_DAYS_IN_MONTH[(parse_date(@date)).month]).strftime("%m-%d-%Y")
+      month = (parse_date(@date)).month
+
+      (start_of_treatment_date(parse_date(start_date), interval) + COMMON_YEAR_DAYS_IN_MONTH[month]).strftime("%m-%d-%Y")
     end
 
     # reset date for the weekly interval
@@ -339,4 +341,3 @@ module Pacing
     end 
   end
 end
-
