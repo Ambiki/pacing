@@ -117,6 +117,39 @@ paced.calculate
   ]
 =end
 
+# Optionally if we want to include the frequency of the discipline in the pacing output we can
+# pass in the optional param `show_frequency`. This value defaults to false.
+
+paced = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, mode: :liberal, summer_holidays: summer_holidays, state: state, show_frequency: true)
+paced.calculate
+
+# Below is the output we will get when in strict mode and also showing the frequency in the pacing output.
+=begin
+=> [
+    {
+      discipline: 'Speech Therapy',
+      remaining_visits: 0,
+      used_visits: 7,
+      expected_visits_at_date: 3,
+      reset_date: '05-11-2022',
+      pace: 4,
+      pace_indicator: "🐇",
+      pace_suggestion: "less than once per week".
+      frequency: "6Mx30ST"
+    }, {
+      discipline: 'Physical Therapy',
+      remaining_visits: 0,
+      expected_visits_at_date: 3,
+      used_visits: 7,
+      reset_date: '05-11-2022',
+      pace: 4,
+      pace_indicator: "🐇",
+      pace_suggestion: "less than once per week",
+      frequency: "6Mx30PT"
+    }
+  ]
+=end
+
 paced.interval # Return current interval start and end dates
 
 # Below is the result you will get
