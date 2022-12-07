@@ -4,13 +4,14 @@ require 'holidays'
 module Pacing
   class Pacer
     COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    attr_reader :school_plan, :date, :non_business_days, :state, :mode, :interval, :summer_holidays
+    attr_reader :school_plan, :date, :non_business_days, :state, :mode, :interval, :summer_holidays, :show_frequency
 
-    def initialize(school_plan:, date:, non_business_days:, state: :us_tn, mode: :liberal, summer_holidays: [])
+    def initialize(school_plan:, date:, non_business_days:, state: :us_tn, mode: :liberal, summer_holidays: [], show_frequency: false)
       @school_plan = school_plan
       @non_business_days = non_business_days
       @date = date
       @state = state
+      @show_frequency = show_frequency
       @mode = [:strict, :liberal].include?(mode) ? mode : :liberal
 
       Pacing::Error.new(school_plan: school_plan, date: date, non_business_days: non_business_days, state: state, mode: mode, summer_holidays: summer_holidays)
@@ -85,6 +86,11 @@ module Pacing
 
         discipline[:pace_indicator] = pace_indicator(discipline[:pace])
         discipline[:pace_suggestion] = readable_suggestion(rate: discipline[:suggested_rate])
+
+        if show_frequency
+          # self.number_of_sessions.to_s + self.therapy_session_interval&.abbreviation.to_s + "x" + self.duration.to_s + self.domain&.abbreviation
+          discipline[:frequency] = service[:frequency].to_s + service[:interval][0].gsub(/(per)|p/i, "").upcase + "x" + service[:time_per_session_in_minutes].to_s + service[:type_of_service][0].upcase + "T"
+        end
 
         discipline.delete(:suggested_rate)
 
