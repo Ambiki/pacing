@@ -5183,3 +5183,53 @@ RSpec.describe Pacing::Pacer do
     end
   end
 end
+
+describe "should include frequency in the output if show frequency is true" do
+  it "should correctly parse the pacing for patient 4558" do
+    school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"02-23-2022", :end_date=>"02-23-2023", :type_of_service=>"Speech Therapy", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>3, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-19-2022", :end_date=>"11-01-2022", :type_of_service=>"Language Therapy", :frequency=>3, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
+    date = "10-17-2022"
+    non_business_days = []
+    results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, show_frequency: true).calculate
+    expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>22, :used_visits=>3, :pace=>-10, :pace_indicator=>"🐢", :pace_suggestion=>"once a day", :expected_visits_at_date=>13, :reset_date=>"11-01-2022", :frequency=>"25Mx20ST"}])
+  end
+
+  it "should correctly parse the pacing for patient 4559" do
+    school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"10-27-2021", :end_date=>"10-27-2022", :type_of_service=>"Speech Therapy", :frequency=>8, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>1, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"10-27-2021", :end_date=>"10-27-2022", :type_of_service=>"Speech Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>45, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
+    date = "10-17-2022"
+    non_business_days = []
+    results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, show_frequency: true).calculate
+    expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>11, :used_visits=>1, :pace=>-5, :pace_indicator=>"🐢", :pace_suggestion=>"about once every other day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022", :frequency=>"12Mx45ST"}])
+  end
+
+  it "should also accept 'Language' as a type of service 4560" do
+    school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"05-23-2022", :end_date=>"05-23-2023", :type_of_service=>"Speech Therapy", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}, {:school_plan_type=>"IEP", :start_date=>"05-23-2022", :end_date=>"05-23-2023", :type_of_service=>"Language", :frequency=>6, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
+    date = "10-17-2022"
+    non_business_days = []
+    results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, show_frequency: true).calculate
+    expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>10, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"about once every other day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022", :frequency=>"12Mx20ST"}])
+  end
+
+  it "should correctly parse the pacing for patient 4561" do
+    school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"12-03-2021", :end_date=>"12-03-2022", :type_of_service=>"Speech and language", :frequency=>12, :interval=>"monthly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>1, :interval_for_extra_sessions_allowable=>"monthly"}]}
+    date = "10-17-2022"
+    non_business_days = []
+    results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, show_frequency: true).calculate
+    expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>9, :used_visits=>4, :pace=>-2, :pace_indicator=>"🐢", :pace_suggestion=>"about once every other day", :expected_visits_at_date=>6, :reset_date=>"11-01-2022", :frequency=>"12Mx20ST"}])
+  end
+
+  it "should correctly parse the pacing for patient 4562" do
+    school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"09-27-2022", :end_date=>"09-27-2023", :type_of_service=>"Language Therapy", :frequency=>30, :interval=>"yearly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>4, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"yearly"}]}
+    date = "10-17-2022"
+    non_business_days = []
+    results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, show_frequency: true).calculate
+    expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>26, :used_visits=>4, :pace=>2, :pace_indicator=>"🐇", :pace_suggestion=>"less than once per week", :expected_visits_at_date=>2, :reset_date=>"09-27-2023", :frequency=>"30Yx20ST"}])
+  end
+
+  it "should correctly parse the pacing for patient 4563" do
+    school_plan = {:school_plan_services=>[{:school_plan_type=>"IEP", :start_date=>"11-03-2021", :end_date=>"11-03-2022", :type_of_service=>"Speech Therapy", :frequency=>1, :interval=>"weekly", :time_per_session_in_minutes=>20, :completed_visits_for_current_interval=>0, :extra_sessions_allowable=>0, :interval_for_extra_sessions_allowable=>"weekly"}]}
+    date = "10-17-2022"
+    non_business_days = []
+    results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, show_frequency: true).calculate
+    expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>1, :used_visits=>0, :pace=>0, :pace_indicator=>"😁", :pace_suggestion=>"once a week", :expected_visits_at_date=>0, :reset_date=>"10-24-2022", :frequency=>"1Wx20ST"}])
+  end
+end
