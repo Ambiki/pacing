@@ -32,7 +32,7 @@ module Pacing
       discipline_services = services.filter do |service|
         ["pragmatic language", "speech and language", "language", "speech", "language therapy", "speech therapy", "speech and language therapy", "speech language therapy"].include?(service[:type_of_service].downcase)
       end
-      
+
       return {} if discipline_services.empty?
 
       discipline_services = normalize_to_monthly_frequency(discipline_services)
@@ -57,7 +57,7 @@ module Pacing
       discipline_services = services.filter do |service|
         ["occupation therapy", "occupational therapy", "occupation"].include?(service[:type_of_service].downcase)
       end
-      
+
       return {} if discipline_services.empty?
 
       discipline_services = normalize_to_monthly_frequency(discipline_services)
@@ -82,7 +82,7 @@ module Pacing
       discipline_services = services.filter do |service|
         ["physical therapy", "physical"].include?(service[:type_of_service].downcase)
       end
-      
+
       return {} if discipline_services.empty?
 
       discipline_services = normalize_to_monthly_frequency(discipline_services)
@@ -107,7 +107,7 @@ module Pacing
       discipline_services = services.filter do |service|
         ["feeding therapy", "feeding"].include?(service[:type_of_service].downcase)
       end
-      
+
       return {} if discipline_services.empty?
 
       discipline_services = normalize_to_monthly_frequency(discipline_services)
@@ -155,8 +155,11 @@ module Pacing
       # average business days for each interval
       interval_average_days = {
         "weekly" => 5,
+        "per week" => 5,
         "monthly" => 22,
-        "yearly" => 210 # take away average holidays period with is 2.5 months
+        "per month" => 22,
+        "yearly" => 210,
+        "per year" => 210 # take away average holidays period with is 2.5 months
       }
 
       return services if same_interval(services)
@@ -164,7 +167,7 @@ module Pacing
       services.map do |service|
         if !(service[:interval] == "monthly")
           # weekly(5 days) = frequency # weekly
-          # monthly(20 days) = frequency * monthly 
+          # monthly(20 days) = frequency * monthly
           # yearly(200 days)
 
           f = service[:frequency]
@@ -207,4 +210,3 @@ module Pacing
     end
   end
 end
-

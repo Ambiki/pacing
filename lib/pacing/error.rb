@@ -53,7 +53,7 @@ module Pacing
 
       begin
         @school_plan[:school_plan_services].each do |school_plan_service|
-          if (parse_date(school_plan_service[:start_date]) < parse_date(@date) && parse_date(@date) < parse_date(school_plan_service[:end_date]))
+          if (parse_date(school_plan_service[:start_date]) <= parse_date(@date) && parse_date(@date) <= parse_date(school_plan_service[:end_date]))
             valid_range_or_exceptions = true
           end
         end
@@ -72,4 +72,3 @@ module Pacing
     end
   end
 end
-

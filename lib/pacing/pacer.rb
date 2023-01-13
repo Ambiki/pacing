@@ -101,7 +101,7 @@ module Pacing
 
     # discipline iep frequency
     def discipline_frequency(service)
-      service[:frequency].to_s + service[:interval][0].gsub(/(per)|p/i, "").strip.upcase + "x" + service[:time_per_session_in_minutes].to_s + service[:type_of_service][0].upcase + "T"
+      service[:frequency].to_s + service[:interval].gsub(/(per)|p/i, "").strip[0].upcase + "x" + service[:time_per_session_in_minutes].to_s + service[:type_of_service][0].upcase + "T"
     end
 
     # get a spreadout of visit dates over an interval by using simple proportion.
@@ -348,6 +348,6 @@ module Pacing
       holidays_start += 1 until holidays_start.wday == 1
 
       [holidays_start, holidays_end]
-    end 
+    end
   end
 end
