@@ -44,7 +44,9 @@ module Pacing
         discipline = {}
         discipline[:discipline] = discipline_name
         discipline[:reset_date] = reset_date(start_date: service[:start_date], interval: service[:interval])
-        discipline[:start_date] = start_of_treatment_date(parse_date(service[:start_date]), service[:interval]).strftime("%m-%d-%Y")
+        parsed_date = service[:start_date] ? parse_date(service[:start_date]) : nil
+        treatment_start_date = parsed_date && service[:interval] ? start_of_treatment_date(parsed_date, service[:interval]) : nil
+        discipline[:start_date] = treatment_start_date ? treatment_start_date.strftime("%m-%d-%Y") : nil
         discipline
       end
     end
