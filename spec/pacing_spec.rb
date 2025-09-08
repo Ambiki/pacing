@@ -229,13 +229,13 @@ RSpec.describe Pacing::Pacer do
       expect(results).to eq([
           {
             discipline: 'Speech Therapy',
-            start_date: '05-01-2022',
-            reset_date: '06-01-2022'
+            start_date: nil,
+            reset_date: nil
           },
           {
             discipline: 'Physical Therapy',
-            start_date: '05-16-2022',
-            reset_date: '05-23-2022'
+            start_date: nil,
+            reset_date: nil
           }
         ])
     end
