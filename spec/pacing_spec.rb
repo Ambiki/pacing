@@ -226,18 +226,7 @@ RSpec.describe Pacing::Pacer do
       non_business_days = ['04-25-2022']
       results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, mode: :liberal).interval
 
-      expect(results).to eq([
-          {
-            discipline: 'Speech Therapy',
-            start_date: nil,
-            reset_date: nil
-          },
-          {
-            discipline: 'Physical Therapy',
-            start_date: nil,
-            reset_date: nil
-          }
-        ])
+      expect(results).to eq([])
     end
   end
 
@@ -5304,5 +5293,92 @@ describe "should calculate pacing correctly when interval starts with 'per month
     non_business_days = []
     results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days, show_frequency: true).calculate
     expect(results).to eq([{:discipline=>"Speech Therapy", :remaining_visits=>26, :used_visits=>4, :pace=>2, :pace_indicator=>"🐇", :pace_suggestion=>"less than once per week", :expected_visits_at_date=>2, :reset_date=>"09-27-2023", :frequency=>"30Yx20ST"}])
+  end
+end
+
+describe "should skip services with unsupported intervals" do
+  it "should return an empty array when all services have unsupported intervals" do
+    school_plan = {
+      school_plan_services: [
+        {
+          school_plan_type: 'IEP',
+          start_date: '04-01-2022',
+          end_date: '04-01-2023',
+          type_of_service: 'Language Therapy',
+          frequency: 6,
+          interval: 'daily',
+          time_per_session_in_minutes: 30,
+          completed_visits_for_current_interval: 7,
+          extra_sessions_allowable: 1,
+          interval_for_extra_sessions_allowable: 'monthly'
+        }
+      ]
+    }
+
+    date = '05-19-2022'
+    non_business_days = []
+    results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
+    expect(results).to eq([])
+  end
+
+  it "should return an empty array for per reporting period interval" do
+    school_plan = {
+      school_plan_services: [
+        {
+          school_plan_type: 'IEP',
+          start_date: '04-01-2022',
+          end_date: '04-01-2023',
+          type_of_service: 'Speech Therapy',
+          frequency: 6,
+          interval: 'per reporting period',
+          time_per_session_in_minutes: 30,
+          completed_visits_for_current_interval: 3,
+          extra_sessions_allowable: 0,
+          interval_for_extra_sessions_allowable: 'monthly'
+        }
+      ]
+    }
+
+    date = '05-19-2022'
+    non_business_days = []
+    results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
+    expect(results).to eq([])
+  end
+
+  it "should only return results for services with supported intervals" do
+    school_plan = {
+      school_plan_services: [
+        {
+          school_plan_type: 'IEP',
+          start_date: '04-01-2022',
+          end_date: '04-01-2023',
+          type_of_service: 'Language Therapy',
+          frequency: 6,
+          interval: 'daily',
+          time_per_session_in_minutes: 30,
+          completed_visits_for_current_interval: 7,
+          extra_sessions_allowable: 1,
+          interval_for_extra_sessions_allowable: 'monthly'
+        },
+        {
+          school_plan_type: 'IEP',
+          start_date: '04-01-2022',
+          end_date: '04-01-2023',
+          type_of_service: 'Physical Therapy',
+          frequency: 6,
+          interval: 'monthly',
+          time_per_session_in_minutes: 30,
+          completed_visits_for_current_interval: 2,
+          extra_sessions_allowable: 1,
+          interval_for_extra_sessions_allowable: 'monthly'
+        }
+      ]
+    }
+
+    date = '05-19-2022'
+    non_business_days = []
+    results = Pacing::Pacer.new(school_plan: school_plan, date: date, non_business_days: non_business_days).calculate
+    expect(results.length).to eq(1)
+    expect(results[0][:discipline]).to eq('Physical Therapy')
   end
 end

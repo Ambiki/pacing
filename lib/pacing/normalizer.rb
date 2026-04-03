@@ -165,7 +165,7 @@ module Pacing
       return services if same_interval(services)
 
       services.map do |service|
-        if !(service[:interval] == "monthly")
+        if !(service[:interval] == "monthly") && interval_average_days.key?(service[:interval])
           # weekly(5 days) = frequency # weekly
           # monthly(20 days) = frequency * monthly
           # yearly(200 days)
