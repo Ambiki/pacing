@@ -4,6 +4,7 @@ require 'holidays'
 module Pacing
   class Pacer
     COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    SUPPORTED_INTERVALS = %w[monthly per\ month weekly per\ week yearly per\ year].freeze
     attr_reader :school_plan, :date, :non_business_days, :state, :mode, :interval, :summer_holidays, :show_frequency
 
     def initialize(school_plan:, date:, non_business_days:, state: :us_tn, mode: :liberal, summer_holidays: [], show_frequency: false)
@@ -22,6 +23,8 @@ module Pacing
     def interval
       # filter out services that haven't started or whose time is passed
       services = @school_plan[:school_plan_services].filter do |school_plan_service|
+        next false unless SUPPORTED_INTERVALS.include?(school_plan_service[:interval])
+
         within = true
         if !(parse_date(school_plan_service[:start_date]) <= parse_date(@date) && parse_date(@date) <= parse_date(school_plan_service[:end_date]))
           within = false
@@ -55,6 +58,8 @@ module Pacing
       # filter out services that haven't started or whose time is passed
       school_plan_services = Pacing::Normalizer.new(@school_plan[:school_plan_services], @date).normalize
       services = school_plan_services[:school_plan_services].filter do |school_plan_service|
+        next false unless SUPPORTED_INTERVALS.include?(school_plan_service[:interval])
+
         within = true
         if !(parse_date(school_plan_service[:start_date]) <= parse_date(@date) && parse_date(@date) <= parse_date(school_plan_service[:end_date]))
           within = false
